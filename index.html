@@ -3,954 +3,795 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT Quest — Gamified Learning</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>IT Quest — Gamified Learning Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #050810;
-    --bg2: #0a0f1e;
-    --bg3: #0d1428;
-    --accent: #00f5ff;
-    --accent2: #7b2ff7;
-    --accent3: #ff006e;
-    --gold: #ffd700;
-    --text: #e0e8ff;
-    --text-dim: #6a7a9b;
-    --card: #0e1830;
-    --border: #1a2a4a;
-    --glow: 0 0 20px rgba(0,245,255,0.3);
-    --glow2: 0 0 20px rgba(123,47,247,0.4);
-  }
+:root {
+  --bg: #020b18;
+  --bg2: #041525;
+  --bg3: #061d35;
+  --card: #071e36;
+  --border: #0e3358;
+  --accent: #0ea5e9;
+  --accent2: #6366f1;
+  --accent3: #10b981;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --text-dim: #64748b;
+  --text-muted: #94a3b8;
+  --glow: 0 0 30px rgba(14,165,233,0.2);
+  --glow2: 0 0 30px rgba(99,102,241,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(14,165,233,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* PAGE SYSTEM */
+.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.page.active { display: block; }
 
-  html { scroll-behavior: smooth; }
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 0 48px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(2,11,24,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem; font-weight: 900;
+  color: var(--accent); letter-spacing: 2px; cursor: pointer;
+}
+.nav-logo span { color: var(--accent2); }
+.nav-center { display: flex; gap: 4px; }
+.nav-link {
+  background: none; border: none;
+  color: var(--text-muted);
+  padding: 8px 16px; border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-link.active-nav { color: var(--accent); background: rgba(14,165,233,0.1); }
+.nav-right { display: flex; gap: 10px; align-items: center; }
+.nav-user { display: none; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-muted); }
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; color: white;
+}
+.btn { padding: 9px 20px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+.btn-primary { background: var(--accent); color: #020b18; }
+.btn-primary:hover { background: #38bdf8; transform: translateY(-1px); box-shadow: var(--glow); }
+.btn-secondary { background: var(--accent2); color: white; }
+.btn-secondary:hover { background: #818cf8; transform: translateY(-1px); }
+.btn-success { background: var(--accent3); color: white; }
+.btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 10px; }
+.btn-full { width: 100%; }
+.btn-sm { padding: 7px 14px; font-size: 0.8rem; border-radius: 7px; }
 
-  body {
-    font-family: 'Rajdhani', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-    cursor: none;
-  }
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  padding: 100px 40px 60px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(14,165,233,0.1);
+  border: 1px solid rgba(14,165,233,0.2);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--accent); letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 32px;
+  animation: fadeDown 0.6s ease;
+}
+.hero h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900; line-height: 1.1; margin-bottom: 24px;
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+.grad { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-desc {
+  max-width: 580px; font-size: 1.1rem;
+  color: var(--text-muted); line-height: 1.7; margin-bottom: 40px;
+  animation: fadeUp 0.6s ease 0.2s both;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s ease 0.3s both; }
+.hero-stats { display: flex; gap: 48px; margin-top: 64px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s ease 0.4s both; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900; color: var(--accent); }
+.hero-stat-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-    box-shadow: 0 0 10px var(--accent);
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.15s;
-    opacity: 0.5;
-  }
+/* SECTIONS */
+section { padding: 80px 48px; position: relative; z-index: 1; }
+.section-inner { max-width: 1140px; margin: 0 auto; }
+.section-label { font-size: 0.75rem; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; font-weight: 600; margin-bottom: 12px; }
+.section-title { font-family: 'Orbitron', monospace; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; margin-bottom: 16px; }
+.section-sub { font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.6; margin-bottom: 48px; }
 
-  /* Animated background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* FEATURES */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.3s; }
+.feature-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--glow); }
+.feature-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
+.fi-blue { background: rgba(14,165,233,0.15); }
+.fi-purple { background: rgba(99,102,241,0.15); }
+.fi-green { background: rgba(16,185,129,0.15); }
+.fi-gold { background: rgba(245,158,11,0.15); }
+.feature-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+.feature-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 16px 40px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(5,8,16,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
+/* EXPLORE */
+.modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.module-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+.module-card:hover { border-color: var(--accent2); transform: translateY(-4px); box-shadow: var(--glow2); }
+.module-header { padding: 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
+.module-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.module-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+.module-tag { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 600; }
+.tag-beginner { background: rgba(16,185,129,0.15); color: var(--accent3); }
+.tag-intermediate { background: rgba(245,158,11,0.15); color: var(--gold); }
+.tag-advanced { background: rgba(239,68,68,0.15); color: var(--red); }
+.module-body { padding: 20px 24px; }
+.module-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+.module-topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.topic-chip { background: var(--bg3); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted); }
+.module-footer { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-top: 1px solid var(--border); }
+.module-stats { display: flex; gap: 16px; }
+.module-stat { font-size: 0.82rem; color: var(--text-dim); }
+.progress-bar { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
 
-  .nav-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
-    font-weight: 900;
-    color: var(--accent);
-    text-shadow: var(--glow);
-    letter-spacing: 2px;
-  }
-  .nav-logo span { color: var(--accent3); }
+/* QUIZ */
+.quiz-container { max-width: 780px; margin: 0 auto; padding: 100px 24px 60px; }
+.quiz-progress-bar { height: 6px; background: var(--border); border-radius: 100px; margin-bottom: 12px; overflow: hidden; }
+.quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; transition: width 0.4s; }
+.quiz-meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
+.quiz-timer { font-family: 'Orbitron', monospace; color: var(--accent3); font-size: 1rem; font-weight: 700; }
+.quiz-card-ui { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px; margin-bottom: 16px; }
+.quiz-category { font-size: 0.75rem; color: var(--accent); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.quiz-question { font-size: 1.15rem; font-weight: 600; line-height: 1.5; margin-bottom: 28px; }
+.quiz-options { display: flex; flex-direction: column; gap: 12px; }
+.quiz-option {
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 15px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: all 0.2s;
+  font-size: 0.95rem; font-weight: 500; color: var(--text);
+  text-align: left; width: 100%; font-family: 'Inter', sans-serif;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--accent2); background: rgba(99,102,241,0.08); }
+.quiz-option.correct { border-color: var(--accent3) !important; background: rgba(16,185,129,0.1) !important; color: var(--accent3) !important; }
+.quiz-option.wrong { border-color: var(--red) !important; background: rgba(239,68,68,0.1) !important; color: var(--red) !important; }
+.opt-num { width: 30px; height: 30px; border-radius: 7px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 0.68rem; font-weight: 700; flex-shrink: 0; }
+.quiz-feedback { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; display: none; margin-bottom: 16px; }
+.quiz-feedback.show { display: block; }
+.feedback-correct { border-color: var(--accent3) !important; }
+.feedback-wrong { border-color: var(--red) !important; }
+.feedback-title { font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; }
+.feedback-correct .feedback-title { color: var(--accent3); }
+.feedback-wrong .feedback-title { color: var(--red); }
+.feedback-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+.score-result { text-align: center; padding: 48px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 24px; }
+.score-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900; color: var(--accent); box-shadow: var(--glow); }
+.score-title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900; margin-bottom: 8px; }
+.score-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+.score-breakdown { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.score-item-num { font-size: 1.6rem; font-weight: 700; }
+.score-item-label { font-size: 0.78rem; color: var(--text-dim); }
 
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
+/* LEADERBOARD */
+.lb-top3 { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 16px; margin-bottom: 32px; align-items: end; }
+.lb-podium { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 16px; text-align: center; }
+.lb-podium.first { border-color: var(--gold); box-shadow: 0 0 20px rgba(245,158,11,0.15); }
+.lb-podium.second { border-color: #94a3b8; }
+.lb-podium.third { border-color: #cd7f32; }
+.podium-crown { font-size: 2rem; margin-bottom: 8px; }
+.podium-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: white; }
+.av-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.av-silver { background: linear-gradient(135deg, #94a3b8, #64748b); }
+.av-bronze { background: linear-gradient(135deg, #cd7f32, #a16207); }
+.podium-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+.podium-score { font-family: 'Orbitron', monospace; font-size: 1rem; color: var(--accent); font-weight: 700; }
+.podium-badge { font-size: 0.72rem; color: var(--text-dim); margin-top: 4px; }
+.lb-list { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.lb-row { display: grid; grid-template-columns: 56px 1fr 110px 110px; padding: 15px 24px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.2s; }
+.lb-row:last-child { border-bottom: none; }
+.lb-row:hover { background: rgba(255,255,255,0.02); }
+.lb-row-head { font-size: 0.73rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 56px 1fr 110px 110px; }
+.lb-rank { font-family: 'Orbitron', monospace; font-weight: 700; font-size: 0.88rem; color: var(--text-dim); }
+.lb-player { display: flex; align-items: center; gap: 12px; }
+.lb-av { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; flex-shrink: 0; }
+.lb-pname { font-weight: 600; font-size: 0.92rem; }
+.lb-pid { font-size: 0.76rem; color: var(--text-dim); }
+.lb-score { font-family: 'Orbitron', monospace; font-weight: 700; color: var(--accent); font-size: 0.92rem; }
+.badge-pill { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+.bp-gold { background: rgba(245,158,11,0.15); color: var(--gold); }
+.bp-silver { background: rgba(148,163,184,0.15); color: #94a3b8; }
+.bp-bronze { background: rgba(205,127,50,0.15); color: #cd7f32; }
+.bp-blue { background: rgba(14,165,233,0.15); color: var(--accent); }
+.bp-green { background: rgba(16,185,129,0.15); color: var(--accent3); }
 
-  .nav-btn {
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 10px 24px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .nav-btn:hover {
-    background: var(--accent);
-    color: var(--bg);
-    box-shadow: var(--glow);
-  }
+/* ACHIEVEMENTS */
+.ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; }
+.ach-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 16px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
+.ach-card.unlocked { border-color: var(--gold); }
+.ach-card.unlocked::after { content: '✓'; position: absolute; top: 10px; right: 12px; color: var(--accent3); font-weight: 800; font-size: 0.8rem; }
+.ach-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.ach-card.locked { opacity: 0.5; filter: grayscale(0.8); }
+.ach-icon { font-size: 2.4rem; margin-bottom: 12px; }
+.ach-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; }
+.ach-desc { font-size: 0.76rem; color: var(--text-dim); line-height: 1.4; }
 
-  /* SECTIONS */
-  section { position: relative; z-index: 1; }
+/* AUTH */
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px 60px; }
+.auth-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 480px; position: relative; overflow: hidden; }
+.auth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)); }
+.auth-logo { font-family: 'Orbitron', monospace; font-size: 1.5rem; font-weight: 900; color: var(--accent); text-align: center; margin-bottom: 8px; letter-spacing: 2px; }
+.auth-logo span { color: var(--accent2); }
+.auth-sub { text-align: center; color: var(--text-muted); font-size: 0.92rem; margin-bottom: 36px; }
+.form-group { margin-bottom: 18px; }
+.form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 7px; letter-spacing: 0.3px; }
+.form-input { width: 100%; background: var(--bg3); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); padding: 13px 16px; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+.form-input::placeholder { color: var(--text-dim); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.alert { border-radius: 10px; padding: 12px 16px; font-size: 0.88rem; margin-bottom: 16px; display: none; }
+.alert.show { display: block; }
+.alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+.alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+.auth-footer { text-align: center; margin-top: 22px; font-size: 0.9rem; color: var(--text-muted); }
+.auth-footer a { color: var(--accent); cursor: pointer; font-weight: 600; }
+.auth-footer a:hover { text-decoration: underline; }
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 100px 40px 60px;
-    position: relative;
-    overflow: hidden;
-  }
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -200px; left: 50%; transform: translateX(-50%);
-    width: 800px; height: 800px;
-    background: radial-gradient(ellipse, rgba(123,47,247,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid var(--accent2);
-    padding: 6px 16px;
-    border-radius: 100px;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: var(--accent2);
-    margin-bottom: 32px;
-    animation: fadeDown 0.8s ease;
-  }
-  .hero-badge::before {
-    content: '⬡';
-    font-size: 0.7rem;
-  }
-
-  .hero h1 {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 8px;
-    animation: fadeUp 0.8s ease 0.1s both;
-  }
-  .hero h1 .it { color: var(--accent); text-shadow: var(--glow); }
-  .hero h1 .quest { color: var(--accent3); text-shadow: 0 0 20px rgba(255,0,110,0.4); }
-
-  .hero-sub {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-    color: var(--text-dim);
-    margin: 20px 0 40px;
-    letter-spacing: 2px;
-    font-weight: 300;
-    animation: fadeUp 0.8s ease 0.2s both;
-  }
-
-  .hero-desc {
-    max-width: 560px;
-    font-size: 1.05rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-    margin-bottom: 48px;
-    animation: fadeUp 0.8s ease 0.3s both;
-  }
-
-  .hero-btns {
-    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-    animation: fadeUp 0.8s ease 0.4s both;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent2), var(--accent3));
-    color: white;
-    border: none;
-    padding: 16px 40px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-    transition: all 0.3s;
-    box-shadow: 0 0 30px rgba(123,47,247,0.4);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 50px rgba(123,47,247,0.6);
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 16px 40px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-    transition: all 0.3s;
-  }
-  .btn-secondary:hover {
-    background: rgba(0,245,255,0.1);
-    box-shadow: var(--glow);
-  }
-
-  /* STATS BAR */
-  .stats-bar {
-    display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
-    padding: 40px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-    margin-top: 60px;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--accent);
-    text-shadow: var(--glow);
-  }
-  .stat-label {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  /* FEATURES */
-  .features {
-    padding: 100px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 64px;
-  }
-  .section-tag {
-    font-size: 0.75rem;
-    letter-spacing: 4px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 900;
-    line-height: 1.2;
-  }
-  .section-title span { color: var(--accent3); }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-  }
-
-  .feature-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 36px 28px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-  }
-  .feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 2px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-    transform: scaleX(0);
-    transition: transform 0.3s;
-  }
-  .feature-card:hover {
-    border-color: var(--accent2);
-    transform: translateY(-4px);
-    box-shadow: var(--glow2);
-  }
-  .feature-card:hover::before { transform: scaleX(1); }
-
-  .feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    display: block;
-  }
-  .feature-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-  }
-  .feature-desc {
-    font-size: 0.95rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-  }
-
-  /* LEADERBOARD */
-  .leaderboard-section {
-    padding: 100px 40px;
-    background: var(--bg2);
-  }
-  .leaderboard-inner {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .lb-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 40px;
-  }
-  .lb-table th {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-  }
-  .lb-row {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-    animation: fadeIn 0.5s ease both;
-  }
-  .lb-row:hover { background: rgba(0,245,255,0.03); }
-  .lb-row td { padding: 16px; }
-
-  .lb-rank {
-    font-family: 'Orbitron', monospace;
-    font-weight: 900;
-    font-size: 1.1rem;
-  }
-  .rank-1 { color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-  .rank-2 { color: #c0c0c0; }
-  .rank-3 { color: #cd7f32; }
-  .rank-other { color: var(--text-dim); }
-
-  .lb-name {
-    font-weight: 700;
-    font-size: 1rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .lb-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent2), var(--accent3));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem;
-    font-weight: 700;
-  }
-  .lb-score {
-    font-family: 'Orbitron', monospace;
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .lb-badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    font-weight: 600;
-  }
-  .badge-gold { background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
-  .badge-silver { background: rgba(192,192,192,0.1); color: #c0c0c0; border: 1px solid rgba(192,192,192,0.3); }
-  .badge-bronze { background: rgba(205,127,50,0.1); color: #cd7f32; border: 1px solid rgba(205,127,50,0.3); }
-  .badge-blue { background: rgba(0,245,255,0.1); color: var(--accent); border: 1px solid rgba(0,245,255,0.3); }
-
-  /* QUIZ PREVIEW */
-  .quiz-section {
-    padding: 100px 40px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  .quiz-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 48px;
-    clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
-    position: relative;
-  }
-  .quiz-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(123,47,247,0.05) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .quiz-q {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.1rem;
-    margin-bottom: 32px;
-    line-height: 1.5;
-    color: var(--text);
-  }
-  .quiz-q span { color: var(--accent); }
-  .quiz-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .quiz-opt {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 16px 20px;
-    cursor: pointer;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text);
-    transition: all 0.2s;
-    text-align: left;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .quiz-opt:hover {
-    border-color: var(--accent2);
-    background: rgba(123,47,247,0.1);
-    color: white;
-  }
-  .quiz-opt.correct {
-    border-color: #00ff88;
-    background: rgba(0,255,136,0.1);
-    color: #00ff88;
-  }
-  .quiz-opt.wrong {
-    border-color: var(--accent3);
-    background: rgba(255,0,110,0.1);
-    color: var(--accent3);
-  }
-  .opt-letter {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    width: 24px; height: 24px;
-    border: 1px solid currentColor;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .quiz-meta {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 32px;
-  }
-  .quiz-progress {
-    display: flex; gap: 6px;
-  }
-  .progress-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-  }
-  .progress-dot.done { background: var(--accent2); }
-  .progress-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-  .quiz-timer {
-    font-family: 'Orbitron', monospace;
-    color: var(--accent3);
-    font-size: 0.9rem;
-  }
-
-  /* BADGES */
-  .badges-section {
-    padding: 100px 40px;
-    background: var(--bg2);
-  }
-  .badges-inner { max-width: 1100px; margin: 0 auto; }
-  .badges-grid {
-    display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
-    margin-top: 48px;
-  }
-  .badge-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 28px 24px;
-    text-align: center;
-    width: 160px;
-    transition: all 0.3s;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    aspect-ratio: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-  }
-  .badge-card:hover {
-    transform: scale(1.1);
-    border-color: var(--gold);
-    box-shadow: 0 0 30px rgba(255,215,0,0.2);
-  }
-  .badge-icon { font-size: 2.5rem; margin-bottom: 8px; }
-  .badge-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 1px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-  }
-
-  /* LOGIN */
-  .login-section {
-    padding: 100px 40px;
-    display: flex; justify-content: center;
-  }
-  .login-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 56px 48px;
-    width: 100%; max-width: 460px;
-    position: relative;
-    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
-  }
-  .login-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent3), var(--accent));
-  }
-  .login-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
-    font-weight: 900;
-    margin-bottom: 8px;
-    text-align: center;
-  }
-  .login-sub {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .form-group { margin-bottom: 20px; }
-  .form-label {
-    display: block;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .form-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 14px 16px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .form-input::placeholder { color: var(--text-dim); }
-  .login-btn {
-    width: 100%;
-    background: linear-gradient(135deg, var(--accent2), var(--accent3));
-    border: none;
-    color: white;
-    padding: 16px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: all 0.3s;
-  }
-  .login-btn:hover {
-    opacity: 0.9;
-    box-shadow: 0 0 30px rgba(123,47,247,0.5);
-    transform: translateY(-1px);
-  }
-  .login-footer {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 0.9rem;
-    color: var(--text-dim);
-  }
-  .login-footer a { color: var(--accent); text-decoration: none; }
-
-  /* FOOTER */
-  footer {
-    padding: 40px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-  }
-  footer .logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.2rem;
-    color: var(--accent);
-    margin-bottom: 16px;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  .scanline {
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 9997;
-  }
-
-  /* MOBILE */
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    .nav-links { display: none; }
-    .hero { padding: 120px 20px 60px; }
-    .stats-bar { gap: 30px; }
-    .quiz-options { grid-template-columns: 1fr; }
-    .login-card { padding: 40px 24px; }
-    .features { padding: 60px 20px; }
-  }
+@media (max-width: 768px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  section { padding: 60px 20px; }
+  .lb-top3 { grid-template-columns: 1fr; }
+  .lb-row, .lb-row-head { grid-template-columns: 50px 1fr 90px; }
+  .lb-row > *:last-child, .lb-row-head > *:last-child { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+  .auth-card { padding: 36px 22px; }
+  .hero-stats { gap: 28px; }
+}
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="scanline"></div>
-
 <!-- NAV -->
 <nav>
-  <div class="nav-logo"><span>IT</span> QUEST</div>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#quiz">Quiz</a></li>
-    <li><a href="#leaderboard">Ranks</a></li>
-    <li><a href="#badges">Badges</a></li>
-  </ul>
-  <button class="nav-btn" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">LOGIN</button>
+  <div class="nav-logo" onclick="goHome()"><span>IT</span>QUEST</div>
+  <div class="nav-center">
+    <button class="nav-link active-nav" onclick="goHome()">Home</button>
+    <button class="nav-link" onclick="showPage('explore')">Explore</button>
+    <button class="nav-link" onclick="showPage('quiz')">Quiz</button>
+    <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
+    <button class="nav-link" onclick="showPage('achievements')">Badges</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user" id="navUser">
+      <div class="nav-avatar" id="navAvatar">A</div>
+      <span id="navName">Student</span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+    </div>
+    <div id="navAuth" style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="showPage('login')">Login</button>
+      <button class="btn btn-primary" onclick="showPage('register')">Register</button>
+    </div>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">BSIT GAMIFIED LEARNING PLATFORM</div>
-  <h1><span class="it">IT</span> <span class="quest">QUEST</span></h1>
-  <p class="hero-sub">LEVEL UP YOUR IT SKILLS</p>
-  <p class="hero-desc">
-    A gamified learning platform for BSIT students. Solve coding puzzles, take quizzes, earn badges, and climb the leaderboard!
-  </p>
-  <div class="hero-btns">
-    <button class="btn-primary" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">▶ START QUEST</button>
-    <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">EXPLORE</button>
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-eyebrow">🎓 BSIT Gamified Learning Platform</div>
+    <h1>Master IT Skills<br>Through <span class="grad">IT Quest</span></h1>
+    <p class="hero-desc">A professional learning platform for BSIT students. Solve coding challenges, ace quizzes, earn achievements, and compete on the leaderboard.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="showPage('register')">Get Started Free</button>
+      <button class="btn btn-ghost btn-lg" onclick="showPage('explore')">Explore Modules</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">Students</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">120+</div><div class="hero-stat-label">Quizzes</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Challenges</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Achievements</div></div>
+    </div>
   </div>
-</section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat">
-    <div class="stat-num">500+</div>
-    <div class="stat-label">Students</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">120+</div>
-    <div class="stat-label">Quizzes</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">50+</div>
-    <div class="stat-label">Coding Puzzles</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">30+</div>
-    <div class="stat-label">Badges</div>
+  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:48px;">
+        <div class="section-label">Core Features</div>
+        <div class="section-title">Everything You Need to <span class="grad">Level Up</span></div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon fi-blue">🧩</div><div class="feature-title">Coding Challenges</div><div class="feature-desc">Write and run JavaScript & Java in your browser. See instant output in the console.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-purple">📝</div><div class="feature-title">Interactive Quizzes</div><div class="feature-desc">Timed quizzes covering networking, programming, databases, OS, cybersecurity and more.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-gold">🏆</div><div class="feature-title">Live Leaderboard</div><div class="feature-desc">Compete with classmates. Real-time rankings show who leads your class.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-green">🎖️</div><div class="feature-title">Achievement Badges</div><div class="feature-desc">Earn unique badges by completing challenges and reaching milestones.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-blue">🔐</div><div class="feature-title">Student Accounts</div><div class="feature-desc">Secure login and register. Scores, progress, and badges tracked individually.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-green">📊</div><div class="feature-title">Progress Tracking</div><div class="feature-desc">Monitor your learning with detailed stats, completion rates, and performance data.</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- EXPLORE -->
+<div class="page" id="page-explore">
+  <section style="padding-top:100px;">
+    <div class="section-inner">
+      <div class="section-label">Learning Modules</div>
+      <div class="section-title">Explore <span class="grad">All Courses</span></div>
+      <p class="section-sub">Choose a module to start. Each has real quizzes, coding challenges, and achievements to unlock.</p>
+      <div class="modules-grid">
+
+        <div class="module-card" onclick="startQuiz('networking')">
+          <div class="module-header">
+            <div class="module-icon fi-blue">🌐</div>
+            <div><div class="module-title">Computer Networking</div><span class="module-tag tag-beginner">Beginner</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Learn OSI model, TCP/IP, IP addressing, DNS, HTTP, and how data travels across networks.</div>
+            <div class="module-topics"><span class="topic-chip">OSI Model</span><span class="topic-chip">TCP/IP</span><span class="topic-chip">HTTP/HTTPS</span><span class="topic-chip">DNS</span><span class="topic-chip">IP Address</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 20 Quizzes</span><span class="module-stat">🧩 8 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+        <div class="module-card" onclick="startQuiz('programming')">
+          <div class="module-header">
+            <div class="module-icon fi-purple">💻</div>
+            <div><div class="module-title">Programming Fundamentals</div><span class="module-tag tag-beginner">Beginner</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Master variables, loops, functions, arrays, and OOP principles in Java and JavaScript.</div>
+            <div class="module-topics"><span class="topic-chip">Variables</span><span class="topic-chip">Loops</span><span class="topic-chip">Functions</span><span class="topic-chip">OOP</span><span class="topic-chip">Arrays</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 25 Quizzes</span><span class="module-stat">🧩 12 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+        <div class="module-card" onclick="startQuiz('database')">
+          <div class="module-header">
+            <div class="module-icon fi-green">🗄️</div>
+            <div><div class="module-title">Database Management</div><span class="module-tag tag-intermediate">Intermediate</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Learn SQL, database design, normalization, ERDs, and MySQL queries for real applications.</div>
+            <div class="module-topics"><span class="topic-chip">SQL</span><span class="topic-chip">Normalization</span><span class="topic-chip">ERD</span><span class="topic-chip">MySQL</span><span class="topic-chip">Joins</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 18 Quizzes</span><span class="module-stat">🧩 10 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+        <div class="module-card" onclick="startQuiz('webdev')">
+          <div class="module-header">
+            <div class="module-icon fi-gold">🌍</div>
+            <div><div class="module-title">Web Development</div><span class="module-tag tag-intermediate">Intermediate</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Build websites using HTML5, CSS3, and JavaScript. Learn responsive design and DOM manipulation.</div>
+            <div class="module-topics"><span class="topic-chip">HTML5</span><span class="topic-chip">CSS3</span><span class="topic-chip">JavaScript</span><span class="topic-chip">DOM</span><span class="topic-chip">Responsive</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 22 Quizzes</span><span class="module-stat">🧩 15 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+        <div class="module-card" onclick="startQuiz('os')">
+          <div class="module-header">
+            <div class="module-icon fi-blue">⚙️</div>
+            <div><div class="module-title">Operating Systems</div><span class="module-tag tag-intermediate">Intermediate</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Understand processes, memory management, file systems, and CPU scheduling algorithms.</div>
+            <div class="module-topics"><span class="topic-chip">Processes</span><span class="topic-chip">Memory</span><span class="topic-chip">File Systems</span><span class="topic-chip">Scheduling</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 16 Quizzes</span><span class="module-stat">🧩 6 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+        <div class="module-card" onclick="startQuiz('cybersecurity')">
+          <div class="module-header">
+            <div class="module-icon fi-purple">🔒</div>
+            <div><div class="module-title">Cybersecurity Basics</div><span class="module-tag tag-advanced">Advanced</span></div>
+          </div>
+          <div class="module-body">
+            <div class="module-desc">Learn threats, encryption, firewalls, VPNs, phishing, and ethical hacking fundamentals.</div>
+            <div class="module-topics"><span class="topic-chip">Encryption</span><span class="topic-chip">Firewalls</span><span class="topic-chip">Phishing</span><span class="topic-chip">VPN</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 14 Quizzes</span><span class="module-stat">🧩 5 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- QUIZ -->
+<div class="page" id="page-quiz">
+  <div class="quiz-container">
+    <div id="quizArea">
+      <div>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
+        <div class="quiz-meta-row">
+          <span id="quizQNum">Question 1 of 5</span>
+          <span class="quiz-timer" id="quizTimer">⏱ 30s</span>
+        </div>
+      </div>
+      <div class="quiz-card-ui">
+        <div class="quiz-category" id="quizCat">NETWORKING</div>
+        <div class="quiz-question" id="quizQ">Loading...</div>
+        <div class="quiz-options" id="quizOpts"></div>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback">
+        <div class="feedback-title" id="fbTitle"></div>
+        <div class="feedback-text" id="fbText"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" style="display:none;">Next Question →</button>
+      </div>
+    </div>
+    <div id="quizResult" style="display:none;">
+      <div class="score-result">
+        <div class="score-circle" id="scoreCircle">0%</div>
+        <div class="score-title" id="scoreTitle">Quiz Complete!</div>
+        <div class="score-sub" id="scoreSub"></div>
+        <div class="score-breakdown">
+          <div class="score-item"><div class="score-item-num" id="sCorrect" style="color:var(--accent3)">0</div><div class="score-item-label">Correct</div></div>
+          <div class="score-item"><div class="score-item-num" id="sWrong" style="color:var(--red)">0</div><div class="score-item-label">Wrong</div></div>
+          <div class="score-item"><div class="score-item-num" id="sPoints" style="color:var(--accent)">0</div><div class="score-item-label">Points</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary btn-lg" onclick="restartQ()">Try Again</button>
+        <button class="btn btn-ghost btn-lg" onclick="showPage('explore')">More Modules</button>
+        <button class="btn btn-secondary btn-lg" onclick="showPage('leaderboard')">Leaderboard</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="section-header">
-    <div class="section-tag">// CORE MODULES</div>
-    <h2 class="section-title">Why Choose <span>IT Quest?</span></h2>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="feature-icon">🧩</span>
-      <div class="feature-title">CODING PUZZLES</div>
-      <div class="feature-desc">Write JavaScript & Java directly in your browser. Click Run and see output instantly in the console area.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📝</span>
-      <div class="feature-title">INTERACTIVE QUIZZES</div>
-      <div class="feature-desc">Test your IT knowledge with timed, challenging quizzes covering networking, programming, databases and more.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🏆</span>
-      <div class="feature-title">LEADERBOARD</div>
-      <div class="feature-desc">Compete with your classmates in real-time. See who ranks #1 and push yourself to the top!</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🎖️</span>
-      <div class="feature-title">ACHIEVEMENT BADGES</div>
-      <div class="feature-desc">Earn unique badges as you complete challenges. Show off your achievements to your classmates.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔐</span>
-      <div class="feature-title">STUDENT AUTH</div>
-      <div class="feature-desc">Secure login system tracks your scores, badges, and progress individually across all sessions.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📊</span>
-      <div class="feature-title">PROGRESS TRACKING</div>
-      <div class="feature-desc">Monitor your learning journey with detailed stats, completion rates, and performance analytics.</div>
-    </div>
-  </div>
-</section>
-
-<!-- QUIZ PREVIEW -->
-<section class="quiz-section" id="quiz">
-  <div class="section-header">
-    <div class="section-tag">// SAMPLE QUIZ</div>
-    <h2 class="section-title">Test Your <span>Knowledge</span></h2>
-  </div>
-  <div class="quiz-card">
-    <div class="quiz-meta">
-      <div class="quiz-progress">
-        <div class="progress-dot done"></div>
-        <div class="progress-dot done"></div>
-        <div class="progress-dot active"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-      </div>
-      <div class="quiz-timer">⏱ 00:42</div>
-    </div>
-    <div class="quiz-q">Q3. What does <span>HTTP</span> stand for in web communication?</div>
-    <div class="quiz-options">
-      <button class="quiz-opt" onclick="selectOpt(this, false)">
-        <span class="opt-letter">A</span> HyperText Transfer Protocol
-      </button>
-      <button class="quiz-opt" onclick="selectOpt(this, true)">
-        <span class="opt-letter">B</span> HyperText Transmission Protocol
-      </button>
-      <button class="quiz-opt" onclick="selectOpt(this, false)">
-        <span class="opt-letter">C</span> High Transfer Text Protocol
-      </button>
-      <button class="quiz-opt" onclick="selectOpt(this, false)">
-        <span class="opt-letter">D</span> Hyperlink Text Transfer Protocol
-      </button>
-    </div>
-  </div>
-</section>
-
 <!-- LEADERBOARD -->
-<section class="leaderboard-section" id="leaderboard">
-  <div class="leaderboard-inner">
-    <div class="section-header">
-      <div class="section-tag">// TOP QUESTERS</div>
-      <h2 class="section-title">Global <span>Leaderboard</span></h2>
+<div class="page" id="page-leaderboard">
+  <section style="padding-top:100px;">
+    <div class="section-inner" style="max-width:860px;">
+      <div class="section-label">Top Performers</div>
+      <div class="section-title">Global <span class="grad">Leaderboard</span></div>
+      <p class="section-sub">Rankings update based on quiz scores and challenge completions.</p>
+      <div class="lb-top3">
+        <div class="lb-podium second"><div class="podium-crown">🥈</div><div class="podium-avatar av-silver">SM</div><div class="podium-name">Sarah Martinez</div><div class="podium-score">8,720</div><div class="podium-badge">BSIT-2A • Expert</div></div>
+        <div class="lb-podium first"><div class="podium-crown">👑</div><div class="podium-avatar av-gold">AJ</div><div class="podium-name">Alex Johnson</div><div class="podium-score">9,850</div><div class="podium-badge">BSIT-3B • Grandmaster</div></div>
+        <div class="lb-podium third"><div class="podium-crown">🥉</div><div class="podium-avatar av-bronze">KC</div><div class="podium-name">Kevin Cruz</div><div class="podium-score">7,540</div><div class="podium-badge">BSIT-2B • Advanced</div></div>
+      </div>
+      <div class="lb-list">
+        <div class="lb-row-head"><div>Rank</div><div>Student</div><div>Score</div><div>Badge</div></div>
+        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-player"><div class="lb-av">ML</div><div><div class="lb-pname">Maria Lopez</div><div class="lb-pid">BSIT-1A</div></div></div><div class="lb-score">6,890</div><div><span class="badge-pill bp-blue">Skilled</span></div></div>
+        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-player"><div class="lb-av">JR</div><div><div class="lb-pname">James Reyes</div><div class="lb-pid">BSIT-3A</div></div></div><div class="lb-score">5,430</div><div><span class="badge-pill bp-blue">Skilled</span></div></div>
+        <div class="lb-row"><div class="lb-rank">#6</div><div class="lb-player"><div class="lb-av">AT</div><div><div class="lb-pname">Ana Torres</div><div class="lb-pid">BSIT-2C</div></div></div><div class="lb-score">4,200</div><div><span class="badge-pill bp-green">Rising</span></div></div>
+        <div class="lb-row"><div class="lb-rank">#7</div><div class="lb-player"><div class="lb-av">RD</div><div><div class="lb-pname">Rico Dela Cruz</div><div class="lb-pid">BSIT-1B</div></div></div><div class="lb-score">3,750</div><div><span class="badge-pill bp-green">Rising</span></div></div>
+        <div class="lb-row"><div class="lb-rank">#8</div><div class="lb-player"><div class="lb-av">MN</div><div><div class="lb-pname">Maya Nguyen</div><div class="lb-pid">BSIT-2A</div></div></div><div class="lb-score">2,980</div><div><span class="badge-pill bp-green">Rising</span></div></div>
+      </div>
     </div>
-    <table class="lb-table">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Student</th>
-          <th>Score</th>
-          <th>Badge</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="lb-row" style="animation-delay:0.1s">
-          <td><span class="lb-rank rank-1">🥇 #1</span></td>
-          <td><div class="lb-name"><div class="lb-avatar">AJ</div> Alex Johnson</div></td>
-          <td><span class="lb-score">9,850</span></td>
-          <td><span class="lb-badge badge-gold">GRANDMASTER</span></td>
-        </tr>
-        <tr class="lb-row" style="animation-delay:0.2s">
-          <td><span class="lb-rank rank-2">🥈 #2</span></td>
-          <td><div class="lb-name"><div class="lb-avatar">SM</div> Sarah Martinez</div></td>
-          <td><span class="lb-score">8,720</span></td>
-          <td><span class="lb-badge badge-silver">EXPERT</span></td>
-        </tr>
-        <tr class="lb-row" style="animation-delay:0.3s">
-          <td><span class="lb-rank rank-3">🥉 #3</span></td>
-          <td><div class="lb-name"><div class="lb-avatar">KC</div> Kevin Cruz</div></td>
-          <td><span class="lb-score">7,540</span></td>
-          <td><span class="lb-badge badge-bronze">ADVANCED</span></td>
-        </tr>
-        <tr class="lb-row" style="animation-delay:0.4s">
-          <td><span class="lb-rank rank-other">#4</span></td>
-          <td><div class="lb-name"><div class="lb-avatar">ML</div> Maria Lopez</div></td>
-          <td><span class="lb-score">6,890</span></td>
-          <td><span class="lb-badge badge-blue">SKILLED</span></td>
-        </tr>
-        <tr class="lb-row" style="animation-delay:0.5s">
-          <td><span class="lb-rank rank-other">#5</span></td>
-          <td><div class="lb-name"><div class="lb-avatar">JR</div> James Reyes</div></td>
-          <td><span class="lb-score">5,430</span></td>
-          <td><span class="lb-badge badge-blue">SKILLED</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- BADGES -->
-<section class="badges-section" id="badges">
-  <div class="badges-inner">
-    <div class="section-header">
-      <div class="section-tag">// ACHIEVEMENTS</div>
-      <h2 class="section-title">Earn <span>Badges</span></h2>
-    </div>
-    <div class="badges-grid">
-      <div class="badge-card">
-        <div class="badge-icon">🔥</div>
-        <div class="badge-name">First Blood</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">⚡</div>
-        <div class="badge-name">Speed Coder</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">🧠</div>
-        <div class="badge-name">Big Brain</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">💎</div>
-        <div class="badge-name">Diamond</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">🏆</div>
-        <div class="badge-name">Champion</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">🎯</div>
-        <div class="badge-name">Perfectionist</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">🚀</div>
-        <div class="badge-name">Rocket Start</div>
-      </div>
-      <div class="badge-card">
-        <div class="badge-icon">👑</div>
-        <div class="badge-name">Grandmaster</div>
+<!-- ACHIEVEMENTS -->
+<div class="page" id="page-achievements">
+  <section style="padding-top:100px;">
+    <div class="section-inner">
+      <div class="section-label">Achievements</div>
+      <div class="section-title">Earn <span class="grad">Badges</span></div>
+      <p class="section-sub">Complete quizzes and challenges to unlock achievements and show off your expertise.</p>
+      <div class="ach-grid">
+        <div class="ach-card unlocked"><div class="ach-icon">🔥</div><div class="ach-name">First Blood</div><div class="ach-desc">Complete your first quiz</div></div>
+        <div class="ach-card unlocked"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div><div class="ach-desc">Finish a quiz under 60 seconds</div></div>
+        <div class="ach-card unlocked"><div class="ach-icon">🎯</div><div class="ach-name">Perfectionist</div><div class="ach-desc">Score 100% on any quiz</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🧠</div><div class="ach-name">Big Brain</div><div class="ach-desc">Complete 10 quizzes</div></div>
+        <div class="ach-card locked"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div><div class="ach-desc">Reach 5,000 points</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">Reach #1 on leaderboard</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🚀</div><div class="ach-name">Rocket Start</div><div class="ach-desc">Complete 3 modules in a day</div></div>
+        <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-name">Grandmaster</div><div class="ach-desc">Complete all 6 modules</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🌐</div><div class="ach-name">Network Guru</div><div class="ach-desc">Finish Networking module</div></div>
+        <div class="ach-card locked"><div class="ach-icon">💻</div><div class="ach-name">Code Wizard</div><div class="ach-desc">Finish Programming module</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🗄️</div><div class="ach-name">Data Master</div><div class="ach-desc">Finish Database module</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🔒</div><div class="ach-name">Cyber Shield</div><div class="ach-desc">Finish Cybersecurity module</div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- LOGIN -->
-<section class="login-section" id="login">
-  <div class="login-card">
-    <div class="login-title">WELCOME BACK</div>
-    <div class="login-sub">Login to continue your quest, Quester!</div>
-    <div class="form-group">
-      <label class="form-label">Student ID / Username</label>
-      <input type="text" class="form-input" placeholder="Enter your student ID">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input type="password" class="form-input" placeholder="Enter your password">
-    </div>
-    <button class="login-btn">▶ ENTER THE QUEST</button>
-    <div class="login-footer">
-      New student? <a href="#">Register here</a>
+<div class="page" id="page-login">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo"><span>IT</span>QUEST</div>
+      <div class="auth-sub">Welcome back! Login to continue your quest.</div>
+      <div class="alert alert-error" id="loginErr">Invalid Student ID or password.</div>
+      <div class="form-group"><label class="form-label">Student ID</label><input type="text" class="form-input" id="loginId" placeholder="e.g. BSIT-2024-001"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPass" placeholder="Enter your password"></div>
+      <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()" style="margin-top:8px;">Login to IT Quest</button>
+      <div class="auth-footer">Don't have an account? <a onclick="showPage('register')">Register here</a></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="logo">IT QUEST</div>
-  <p>© 2026 IT Quest — Gamified Learning for BSIT Students</p>
-  <p style="margin-top:8px; font-size:0.75rem;">Built with 💙 for learning</p>
-</footer>
+<!-- REGISTER -->
+<div class="page" id="page-register">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo"><span>IT</span>QUEST</div>
+      <div class="auth-sub">Create your free account and start learning!</div>
+      <div class="alert alert-error" id="regErr"></div>
+      <div class="alert alert-success" id="regOk"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="regFn" placeholder="Juan"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="regLn" placeholder="Dela Cruz"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Student ID</label><input type="text" class="form-input" id="regId" placeholder="e.g. BSIT-2024-001"></div>
+      <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="regEmail" placeholder="student@school.edu"></div>
+      <div class="form-group"><label class="form-label">Section</label><input type="text" class="form-input" id="regSec" placeholder="e.g. BSIT-2A"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="regP1" placeholder="Min. 6 characters"></div>
+        <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" class="form-input" id="regP2" placeholder="Repeat password"></div>
+      </div>
+      <button class="btn btn-secondary btn-full btn-lg" onclick="doRegister()" style="margin-top:8px;">Create My Account</button>
+      <div class="auth-footer">Already registered? <a onclick="showPage('login')">Login here</a></div>
+    </div>
+  </div>
+</div>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX - 6 + 'px';
-    cursor.style.top = e.clientY - 6 + 'px';
-    ring.style.left = e.clientX - 18 + 'px';
-    ring.style.top = e.clientY - 18 + 'px';
-  });
+// STORAGE
+function getUsers() { return JSON.parse(localStorage.getItem('itq_users') || '[]'); }
+function saveUsers(u) { localStorage.setItem('itq_users', JSON.stringify(u)); }
+function getMe() { return JSON.parse(localStorage.getItem('itq_me') || 'null'); }
+function setMe(u) { localStorage.setItem('itq_me', JSON.stringify(u)); }
 
-  // Quiz interaction
-  function selectOpt(el, isCorrect) {
-    document.querySelectorAll('.quiz-opt').forEach(o => {
-      o.classList.remove('correct', 'wrong');
-      o.disabled = true;
-    });
-    el.classList.add(isCorrect ? 'correct' : 'wrong');
-    if (!isCorrect) {
-      document.querySelectorAll('.quiz-opt')[0].classList.add('correct');
-    }
+// PAGES
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-nav'));
+}
+function goHome() {
+  showPage('home');
+  document.querySelectorAll('.nav-link')[0].classList.add('active-nav');
+}
+
+// NAV HIGHLIGHT
+document.querySelectorAll('.nav-link').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-nav'));
+    btn.classList.add('active-nav');
+  });
+});
+
+// AUTH
+function doRegister() {
+  const fn = document.getElementById('regFn').value.trim();
+  const ln = document.getElementById('regLn').value.trim();
+  const id = document.getElementById('regId').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const sec = document.getElementById('regSec').value.trim();
+  const p1 = document.getElementById('regP1').value;
+  const p2 = document.getElementById('regP2').value;
+  const err = document.getElementById('regErr');
+  const ok = document.getElementById('regOk');
+  err.classList.remove('show'); ok.classList.remove('show');
+  if (!fn||!ln||!id||!email||!sec||!p1||!p2) { err.textContent='Please fill in all fields.'; err.classList.add('show'); return; }
+  if (p1.length < 6) { err.textContent='Password must be at least 6 characters.'; err.classList.add('show'); return; }
+  if (p1 !== p2) { err.textContent='Passwords do not match.'; err.classList.add('show'); return; }
+  const users = getUsers();
+  if (users.find(u => u.id === id)) { err.textContent='Student ID already registered.'; err.classList.add('show'); return; }
+  users.push({ fn, ln, id, email, sec, pass: p1, score: 0 });
+  saveUsers(users);
+  ok.textContent = '✅ Account created! Redirecting to login...';
+  ok.classList.add('show');
+  setTimeout(() => showPage('login'), 2000);
+}
+
+function doLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  err.classList.remove('show');
+  const user = getUsers().find(u => u.id === id && u.pass === pass);
+  if (!user) { err.classList.add('show'); return; }
+  setMe(user);
+  document.getElementById('navUser').style.display = 'flex';
+  document.getElementById('navAuth').style.display = 'none';
+  document.getElementById('navAvatar').textContent = user.fn[0] + user.ln[0];
+  document.getElementById('navName').textContent = user.fn;
+  goHome();
+}
+
+function logout() {
+  localStorage.removeItem('itq_me');
+  document.getElementById('navUser').style.display = 'none';
+  document.getElementById('navAuth').style.display = 'flex';
+  goHome();
+}
+
+// QUIZ DATA
+const QD = {
+  networking: { title:'Computer Networking', qs:[
+    {q:'What does HTTP stand for?', o:['HyperText Transfer Protocol','High Transfer Text Protocol','Hyperlink Text Protocol','HyperText Transmission Protocol'], a:0, ex:'HTTP stands for HyperText Transfer Protocol — the foundation of web communication.'},
+    {q:'Which OSI layer handles IP addressing and routing?', o:['Data Link','Transport','Network','Session'], a:2, ex:'The Network Layer (Layer 3) handles logical IP addressing and routing between networks.'},
+    {q:'What is the default port for HTTPS?', o:['80','8080','443','21'], a:2, ex:'HTTPS uses port 443. HTTP uses port 80.'},
+    {q:'What does DNS stand for?', o:['Domain Name System','Data Network Service','Digital Name Server','Dynamic Network System'], a:0, ex:'DNS (Domain Name System) translates domain names like google.com into IP addresses.'},
+    {q:'Which protocol is used for sending emails?', o:['HTTP','FTP','SMTP','SSH'], a:2, ex:'SMTP (Simple Mail Transfer Protocol) is the standard for sending email messages.'},
+  ]},
+  programming: { title:'Programming Fundamentals', qs:[
+    {q:'What is the correct way to declare a variable in JavaScript?', o:['variable x = 5','let x = 5','int x = 5','dim x = 5'], a:1, ex:'In JavaScript, variables are declared using let, const, or var keywords.'},
+    {q:'What does OOP stand for?', o:['Object Oriented Programming','Open Output Processing','Object Output Protocol','Ordered Object Programming'], a:0, ex:'OOP stands for Object Oriented Programming — a paradigm based on objects and classes.'},
+    {q:'Which loop always runs at least once?', o:['for loop','while loop','do-while loop','foreach loop'], a:2, ex:'A do-while loop executes the body at least once before checking the condition.'},
+    {q:'What is recursion?', o:['A loop structure','A function that calls itself','A type of array','An error handler'], a:1, ex:'Recursion is when a function calls itself. It must have a base case to avoid infinite loops.'},
+    {q:'What does the "return" statement do?', o:['Stops the program','Outputs a value and ends the function','Creates a variable','Starts a loop'], a:1, ex:'The return statement sends a value back from the function and ends its execution.'},
+  ]},
+  database: { title:'Database Management', qs:[
+    {q:'What does SQL stand for?', o:['Structured Query Language','Simple Question Language','System Query Logic','Structured Question Logic'], a:0, ex:'SQL stands for Structured Query Language — used to manage relational databases.'},
+    {q:'Which SQL command retrieves data?', o:['INSERT','UPDATE','SELECT','DELETE'], a:2, ex:'SELECT retrieves data from one or more tables in a database.'},
+    {q:'What is a Primary Key?', o:['An encryption key','A unique identifier for each record','The first column','A foreign reference'], a:1, ex:'A Primary Key uniquely identifies each record in a database table.'},
+    {q:'What is normalization?', o:['Sorting data alphabetically','Organizing data to reduce redundancy','Encrypting database files','Backing up data'], a:1, ex:'Normalization organizes database structure to reduce redundancy and improve data integrity.'},
+    {q:'Which SQL clause filters records?', o:['ORDER BY','GROUP BY','WHERE','HAVING'], a:2, ex:'The WHERE clause filters records based on a specified condition.'},
+  ]},
+  webdev: { title:'Web Development', qs:[
+    {q:'What does HTML stand for?', o:['HyperText Markup Language','High Text Machine Language','Hyperlink Text Mode Language','HyperText Managed Language'], a:0, ex:'HTML stands for HyperText Markup Language — the standard for creating web pages.'},
+    {q:'Which HTML tag creates a hyperlink?', o:['<link>','<href>','<a>','<url>'], a:2, ex:'The <a> anchor tag creates hyperlinks in HTML using the href attribute.'},
+    {q:'What does CSS stand for?', o:['Creative Style Sheets','Cascading Style Sheets','Computer Style System','Coded Style Sheets'], a:1, ex:'CSS stands for Cascading Style Sheets — used to style and layout HTML elements.'},
+    {q:'Which JavaScript method selects an element by ID?', o:['getElement()','querySelector()','getElementById()','findById()'], a:2, ex:'document.getElementById() selects an HTML element using its id attribute.'},
+    {q:'What is the DOM?', o:['Document Object Model','Data Output Manager','Design Object Method','Document Output Mode'], a:0, ex:'DOM (Document Object Model) is a programming interface for HTML documents.'},
+  ]},
+  os: { title:'Operating Systems', qs:[
+    {q:'What is a process in an OS?', o:['A file on disk','A program in execution','A type of memory','A hardware component'], a:1, ex:'A process is a program in execution, including its code, data, and current activity.'},
+    {q:'What does CPU stand for?', o:['Central Processing Unit','Computer Power Unit','Central Program Utility','Control Processing Unit'], a:0, ex:'CPU stands for Central Processing Unit — the main component that executes instructions.'},
+    {q:'What is virtual memory?', o:['RAM inside the GPU','Extra USB storage','Using disk space as extended RAM','Cloud-based memory'], a:2, ex:'Virtual memory uses hard disk space to extend available RAM for running processes.'},
+    {q:'Which scheduling gives each process equal CPU time?', o:['FIFO','Round Robin','Priority Scheduling','Shortest Job First'], a:1, ex:'Round Robin scheduling gives each process a fixed time slice (quantum) in rotation.'},
+    {q:'What is deadlock?', o:['A crashed program','Processes waiting for each other indefinitely','A virus attack','CPU overheating'], a:1, ex:'Deadlock occurs when processes each wait for resources held by another, halting all progress.'},
+  ]},
+  cybersecurity: { title:'Cybersecurity Basics', qs:[
+    {q:'What is phishing?', o:['A type of encryption','Fraudulent attempt to steal sensitive info','A firewall technique','A programming language'], a:1, ex:'Phishing uses fake emails or websites to trick users into revealing sensitive information.'},
+    {q:'What does VPN stand for?', o:['Virtual Private Network','Verified Protocol Node','Virtual Public Network','Verified Private Node'], a:0, ex:'VPN stands for Virtual Private Network — encrypts your internet connection for privacy.'},
+    {q:'What is encryption?', o:['Deleting data securely','Converting data to unreadable format','Compressing files','Backing up data'], a:1, ex:'Encryption converts readable data (plaintext) into unreadable format (ciphertext) to protect it.'},
+    {q:'What is a firewall?', o:['Antivirus software','A system that monitors network traffic','A type of malware','An operating system'], a:1, ex:'A firewall monitors and controls incoming and outgoing network traffic based on security rules.'},
+    {q:'What is two-factor authentication (2FA)?', o:['Using two passwords','Logging in twice','Verification using two different methods','Having two accounts'], a:2, ex:'2FA adds an extra security layer by requiring two different types of verification to log in.'},
+  ]}
+};
+
+// QUIZ ENGINE
+let cQuiz, cQ, score, correct, wrong, timer, timeLeft, answered;
+
+function startQuiz(mod) {
+  cQuiz = QD[mod]; cQ = 0; score = 0; correct = 0; wrong = 0;
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizResult').style.display = 'none';
+  showPage('quiz');
+  loadQ();
+}
+
+function loadQ() {
+  if (cQ >= cQuiz.qs.length) { showResult(); return; }
+  answered = false;
+  const q = cQuiz.qs[cQ];
+  const total = cQuiz.qs.length;
+  document.getElementById('quizCat').textContent = cQuiz.title.toUpperCase();
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizQNum').textContent = `Question ${cQ+1} of ${total}`;
+  document.getElementById('quizFill').style.width = ((cQ/total)*100)+'%';
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const opts = document.getElementById('quizOpts');
+  opts.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.innerHTML = `<span class="opt-num">${String.fromCharCode(65+i)}</span>${opt}`;
+    btn.onclick = () => pickAns(i, btn);
+    opts.appendChild(btn);
+  });
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timer); timeLeft = 30;
+  document.getElementById('quizTimer').textContent = `⏱ ${timeLeft}s`;
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById('quizTimer').textContent = `⏱ ${timeLeft}s`;
+    if (timeLeft <= 0) { clearInterval(timer); timeUp(); }
+  }, 1000);
+}
+
+function timeUp() {
+  if (answered) return;
+  answered = true; wrong++;
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  document.querySelectorAll('.quiz-option')[cQuiz.qs[cQ].a].classList.add('correct');
+  showFB(false, '⏰ Time\'s up! ' + cQuiz.qs[cQ].ex);
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function pickAns(idx, btn) {
+  if (answered) return;
+  answered = true; clearInterval(timer);
+  const q = cQuiz.qs[cQ];
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  if (idx === q.a) { btn.classList.add('correct'); correct++; score += Math.max(100, timeLeft*10); showFB(true, '✅ Correct! '+q.ex); }
+  else { btn.classList.add('wrong'); wrong++; document.querySelectorAll('.quiz-option')[q.a].classList.add('correct'); showFB(false, '❌ Wrong. '+q.ex); }
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function showFB(ok, txt) {
+  const el = document.getElementById('quizFeedback');
+  el.className = 'quiz-feedback show ' + (ok ? 'feedback-correct' : 'feedback-wrong');
+  document.getElementById('fbTitle').textContent = ok ? 'Correct!' : 'Incorrect';
+  document.getElementById('fbText').textContent = txt;
+}
+
+function nextQ() { cQ++; loadQ(); }
+
+function showResult() {
+  clearInterval(timer);
+  const pct = Math.round((correct/cQuiz.qs.length)*100);
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+  document.getElementById('scoreCircle').textContent = pct+'%';
+  document.getElementById('sCorrect').textContent = correct;
+  document.getElementById('sWrong').textContent = wrong;
+  document.getElementById('sPoints').textContent = score;
+  const t = pct<40?'Keep Practicing! 💪':pct<60?'Good Effort! 👍':pct<80?'Well Done! 🎉':pct<100?'Excellent! 🌟':'Perfect Score! 🏆';
+  document.getElementById('scoreTitle').textContent = t;
+  document.getElementById('scoreSub').textContent = `You got ${correct} out of ${cQuiz.qs.length} correct and earned ${score} points!`;
+}
+
+function restartQ() {
+  cQ = 0; score = 0; correct = 0; wrong = 0;
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizResult').style.display = 'none';
+  loadQ();
+}
+
+// INIT
+window.onload = () => {
+  const me = getMe();
+  if (me) {
+    document.getElementById('navUser').style.display = 'flex';
+    document.getElementById('navAuth').style.display = 'none';
+    document.getElementById('navAvatar').textContent = me.fn[0] + me.ln[0];
+    document.getElementById('navName').textContent = me.fn;
   }
-
-  // Scroll animations
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.style.animation = 'fadeUp 0.6s ease forwards';
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.feature-card, .lb-row, .badge-card').forEach(el => {
-    el.style.opacity = '0';
-    observer.observe(el);
-  });
+};
 </script>
 </body>
 </html>
