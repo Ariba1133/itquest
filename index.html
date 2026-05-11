@@ -4,283 +4,386 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IT Quest — Gamified Learning Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #020b18;
-  --bg2: #041525;
-  --bg3: #061d35;
-  --card: #071e36;
-  --border: #0e3358;
-  --accent: #0ea5e9;
-  --accent2: #6366f1;
-  --accent3: #10b981;
-  --gold: #f59e0b;
+  --purple: #6c35de;
+  --purple2: #8b5cf6;
+  --purple3: #a78bfa;
+  --purple-dark: #4c1d95;
+  --purple-light: #ede9fe;
+  --purple-bg: #f5f3ff;
+  --pink: #ec4899;
+  --yellow: #f59e0b;
+  --green: #10b981;
   --red: #ef4444;
-  --text: #e2e8f0;
-  --text-dim: #64748b;
-  --text-muted: #94a3b8;
-  --glow: 0 0 30px rgba(14,165,233,0.2);
-  --glow2: 0 0 30px rgba(99,102,241,0.3);
+  --white: #ffffff;
+  --gray: #6b7280;
+  --gray2: #9ca3af;
+  --dark: #1e1b4b;
+  --text: #1f2937;
+  --border: #e5e7eb;
+  --card-shadow: 0 4px 24px rgba(108,53,222,0.10);
+  --card-shadow-hover: 0 8px 40px rgba(108,53,222,0.18);
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(14,165,233,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.04) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Poppins',sans-serif; background:#fff; color:var(--text); overflow-x:hidden; }
 
-/* PAGE SYSTEM */
-.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
-.page.active { display: block; }
+/* PAGE */
+.page { display:none; min-height:100vh; }
+.page.active { display:block; }
 
 /* NAV */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  padding: 0 48px; height: 68px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(2,11,24,0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  padding:0 48px; height:70px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 20px rgba(108,53,222,0.08);
 }
 .nav-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.3rem; font-weight: 900;
-  color: var(--accent); letter-spacing: 2px; cursor: pointer;
+  font-size:1.4rem; font-weight:800;
+  color:var(--purple); cursor:pointer; letter-spacing:-0.5px;
 }
-.nav-logo span { color: var(--accent2); }
-.nav-center { display: flex; gap: 4px; }
+.nav-logo span { color:var(--pink); }
+.nav-center { display:flex; gap:4px; }
 .nav-link {
-  background: none; border: none;
-  color: var(--text-muted);
-  padding: 8px 16px; border-radius: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem; font-weight: 500;
-  cursor: pointer; transition: all 0.2s;
+  background:none; border:none; color:var(--gray);
+  padding:8px 18px; border-radius:8px;
+  font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:500;
+  cursor:pointer; transition:all 0.2s;
 }
-.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-.nav-link.active-nav { color: var(--accent); background: rgba(14,165,233,0.1); }
-.nav-right { display: flex; gap: 10px; align-items: center; }
-.nav-user { display: none; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-muted); }
+.nav-link:hover { color:var(--purple); background:var(--purple-light); }
+.nav-link.anav { color:var(--purple); background:var(--purple-light); font-weight:600; }
+.nav-right { display:flex; gap:10px; align-items:center; }
+.nav-user { display:none; align-items:center; gap:10px; }
 .nav-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.85rem; color: white;
+  width:38px; height:38px; border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.85rem; color:#fff;
 }
-.btn { padding: 9px 20px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
-.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
-.btn-primary { background: var(--accent); color: #020b18; }
-.btn-primary:hover { background: #38bdf8; transform: translateY(-1px); box-shadow: var(--glow); }
-.btn-secondary { background: var(--accent2); color: white; }
-.btn-secondary:hover { background: #818cf8; transform: translateY(-1px); }
-.btn-success { background: var(--accent3); color: white; }
-.btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 10px; }
-.btn-full { width: 100%; }
-.btn-sm { padding: 7px 14px; font-size: 0.8rem; border-radius: 7px; }
+.nav-uname { font-size:0.9rem; font-weight:600; color:var(--dark); }
+
+.btn { padding:10px 22px; border-radius:10px; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; cursor:pointer; transition:all 0.2s; border:none; display:inline-flex; align-items:center; gap:6px; }
+.btn-outline { background:transparent; color:var(--purple); border:2px solid var(--purple); }
+.btn-outline:hover { background:var(--purple); color:#fff; }
+.btn-purple { background:var(--purple); color:#fff; box-shadow:0 4px 15px rgba(108,53,222,0.3); }
+.btn-purple:hover { background:var(--purple-dark); transform:translateY(-1px); box-shadow:0 6px 20px rgba(108,53,222,0.4); }
+.btn-pink { background:var(--pink); color:#fff; box-shadow:0 4px 15px rgba(236,72,153,0.3); }
+.btn-pink:hover { background:#db2777; transform:translateY(-1px); }
+.btn-white { background:#fff; color:var(--purple); box-shadow:0 4px 15px rgba(0,0,0,0.1); }
+.btn-white:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,0,0,0.15); }
+.btn-lg { padding:14px 36px; font-size:1rem; border-radius:12px; }
+.btn-full { width:100%; justify-content:center; }
+.btn-sm { padding:7px 16px; font-size:0.8rem; border-radius:8px; }
 
 /* HERO */
 .hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; text-align: center;
-  padding: 100px 40px 60px;
+  min-height:100vh;
+  background:linear-gradient(135deg, #6c35de 0%, #8b5cf6 50%, #a78bfa 100%);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; text-align:center;
+  padding:100px 40px 80px;
+  position:relative; overflow:hidden;
 }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(14,165,233,0.1);
-  border: 1px solid rgba(14,165,233,0.2);
-  padding: 6px 16px; border-radius: 100px;
-  font-size: 0.8rem; font-weight: 600;
-  color: var(--accent); letter-spacing: 1px;
-  text-transform: uppercase; margin-bottom: 32px;
-  animation: fadeDown 0.6s ease;
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);
+  padding:8px 20px; border-radius:100px;
+  font-size:0.82rem; font-weight:600; color:#fff;
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:28px;
+  backdrop-filter:blur(8px);
+  animation:fadeDown 0.6s ease;
 }
 .hero h1 {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 900; line-height: 1.1; margin-bottom: 24px;
-  animation: fadeUp 0.6s ease 0.1s both;
+  font-size:clamp(2.5rem,6vw,5rem); font-weight:900;
+  color:#fff; line-height:1.1; margin-bottom:20px;
+  animation:fadeUp 0.6s ease 0.1s both;
 }
-.grad { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero h1 .yellow { color:#fde68a; }
 .hero-desc {
-  max-width: 580px; font-size: 1.1rem;
-  color: var(--text-muted); line-height: 1.7; margin-bottom: 40px;
-  animation: fadeUp 0.6s ease 0.2s both;
+  max-width:600px; font-size:1.1rem; color:rgba(255,255,255,0.85);
+  line-height:1.7; margin-bottom:40px;
+  animation:fadeUp 0.6s ease 0.2s both;
 }
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s ease 0.3s both; }
-.hero-stats { display: flex; gap: 48px; margin-top: 64px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s ease 0.4s both; }
-.hero-stat { text-align: center; }
-.hero-stat-num { font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900; color: var(--accent); }
-.hero-stat-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.6s ease 0.3s both; }
+.hero-stats {
+  display:flex; gap:40px; margin-top:64px; flex-wrap:wrap; justify-content:center;
+  animation:fadeUp 0.6s ease 0.4s both;
+}
+.hero-stat { text-align:center; }
+.hero-stat-num { font-size:2rem; font-weight:800; color:#fff; }
+.hero-stat-label { font-size:0.78rem; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
-/* SECTIONS */
-section { padding: 80px 48px; position: relative; z-index: 1; }
-.section-inner { max-width: 1140px; margin: 0 auto; }
-.section-label { font-size: 0.75rem; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; font-weight: 600; margin-bottom: 12px; }
-.section-title { font-family: 'Orbitron', monospace; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; margin-bottom: 16px; }
-.section-sub { font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.6; margin-bottom: 48px; }
+/* CATEGORIES SECTION */
+.categories { padding:80px 48px; background:#fff; }
+.section-center { text-align:center; margin-bottom:52px; }
+.section-badge {
+  display:inline-block; background:var(--purple-light);
+  color:var(--purple); padding:6px 16px; border-radius:100px;
+  font-size:0.78rem; font-weight:600; letter-spacing:1px;
+  text-transform:uppercase; margin-bottom:14px;
+}
+.section-title { font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:800; color:var(--dark); margin-bottom:14px; }
+.section-sub { font-size:1rem; color:var(--gray); max-width:540px; margin:0 auto; line-height:1.6; }
+
+.categories-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:20px; max-width:1100px; margin:0 auto;
+}
+.cat-card {
+  background:#fff; border:2px solid var(--border);
+  border-radius:16px; padding:28px 16px; text-align:center;
+  cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden;
+}
+.cat-card::before { content:''; position:absolute; inset:0; background:var(--purple); opacity:0; transition:opacity 0.3s; }
+.cat-card:hover { border-color:var(--purple); transform:translateY(-6px); box-shadow:var(--card-shadow-hover); }
+.cat-card:hover::before { opacity:0.04; }
+.cat-icon { font-size:2.4rem; margin-bottom:12px; display:block; }
+.cat-name { font-weight:700; font-size:0.92rem; color:var(--dark); margin-bottom:4px; }
+.cat-count { font-size:0.78rem; color:var(--gray2); }
+.cat-pill {
+  display:inline-block; margin-top:10px;
+  padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600;
+}
+.cp-green { background:#d1fae5; color:#065f46; }
+.cp-yellow { background:#fef3c7; color:#92400e; }
+.cp-red { background:#fee2e2; color:#991b1b; }
 
 /* FEATURES */
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-.feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.3s; }
-.feature-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--glow); }
-.feature-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
-.fi-blue { background: rgba(14,165,233,0.15); }
-.fi-purple { background: rgba(99,102,241,0.15); }
-.fi-green { background: rgba(16,185,129,0.15); }
-.fi-gold { background: rgba(245,158,11,0.15); }
-.feature-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
-.feature-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+.features { padding:80px 48px; background:var(--purple-bg); }
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; max-width:1100px; margin:0 auto; }
+.feature-card {
+  background:#fff; border-radius:18px; padding:32px 28px;
+  box-shadow:var(--card-shadow); transition:all 0.3s;
+}
+.feature-card:hover { transform:translateY(-4px); box-shadow:var(--card-shadow-hover); }
+.feat-icon {
+  width:56px; height:56px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.6rem; margin-bottom:18px;
+}
+.fi-purple { background:linear-gradient(135deg,#ede9fe,#ddd6fe); }
+.fi-pink { background:linear-gradient(135deg,#fce7f3,#fbcfe8); }
+.fi-yellow { background:linear-gradient(135deg,#fef9c3,#fde68a); }
+.fi-green { background:linear-gradient(135deg,#d1fae5,#a7f3d0); }
+.feat-title { font-weight:700; font-size:1.05rem; color:var(--dark); margin-bottom:8px; }
+.feat-desc { font-size:0.9rem; color:var(--gray); line-height:1.6; }
 
 /* EXPLORE */
-.modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-.module-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
-.module-card:hover { border-color: var(--accent2); transform: translateY(-4px); box-shadow: var(--glow2); }
-.module-header { padding: 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
-.module-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-.module-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
-.module-tag { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 600; }
-.tag-beginner { background: rgba(16,185,129,0.15); color: var(--accent3); }
-.tag-intermediate { background: rgba(245,158,11,0.15); color: var(--gold); }
-.tag-advanced { background: rgba(239,68,68,0.15); color: var(--red); }
-.module-body { padding: 20px 24px; }
-.module-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
-.module-topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.topic-chip { background: var(--bg3); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted); }
-.module-footer { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-top: 1px solid var(--border); }
-.module-stats { display: flex; gap: 16px; }
-.module-stat { font-size: 0.82rem; color: var(--text-dim); }
-.progress-bar { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 8px; }
-.progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.explore { padding:80px 48px; background:#fff; }
+.modules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; max-width:1100px; margin:0 auto; }
+.module-card {
+  background:#fff; border:2px solid var(--border);
+  border-radius:18px; overflow:hidden; transition:all 0.3s; cursor:pointer;
+}
+.module-card:hover { border-color:var(--purple); transform:translateY(-5px); box-shadow:var(--card-shadow-hover); }
+.mod-header { padding:24px; display:flex; align-items:center; gap:16px; }
+.mod-icon {
+  width:54px; height:54px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center; font-size:1.5rem;
+}
+.mod-title { font-weight:700; font-size:1rem; color:var(--dark); margin-bottom:4px; }
+.mod-tag { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600; }
+.tag-b { background:#d1fae5; color:#065f46; }
+.tag-i { background:#fef3c7; color:#92400e; }
+.tag-a { background:#fee2e2; color:#991b1b; }
+.mod-body { padding:0 24px 16px; }
+.mod-desc { font-size:0.88rem; color:var(--gray); line-height:1.6; margin-bottom:14px; }
+.mod-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.chip { background:var(--purple-bg); color:var(--purple); border:1px solid #ddd6fe; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:500; }
+.prog-bar { height:5px; background:#e5e7eb; border-radius:100px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--purple),var(--pink)); }
+.mod-footer { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-top:1px solid var(--border); }
+.mod-stats { display:flex; gap:14px; }
+.mod-stat { font-size:0.8rem; color:var(--gray); }
 
 /* QUIZ */
-.quiz-container { max-width: 780px; margin: 0 auto; padding: 100px 24px 60px; }
-.quiz-progress-bar { height: 6px; background: var(--border); border-radius: 100px; margin-bottom: 12px; overflow: hidden; }
-.quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; transition: width 0.4s; }
-.quiz-meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
-.quiz-timer { font-family: 'Orbitron', monospace; color: var(--accent3); font-size: 1rem; font-weight: 700; }
-.quiz-card-ui { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px; margin-bottom: 16px; }
-.quiz-category { font-size: 0.75rem; color: var(--accent); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-.quiz-question { font-size: 1.15rem; font-weight: 600; line-height: 1.5; margin-bottom: 28px; }
-.quiz-options { display: flex; flex-direction: column; gap: 12px; }
-.quiz-option {
-  background: var(--bg3); border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 15px 20px;
-  display: flex; align-items: center; gap: 14px;
-  cursor: pointer; transition: all 0.2s;
-  font-size: 0.95rem; font-weight: 500; color: var(--text);
-  text-align: left; width: 100%; font-family: 'Inter', sans-serif;
+.quiz-page { padding:100px 24px 60px; }
+.quiz-wrap { max-width:760px; margin:0 auto; }
+.quiz-top { margin-bottom:24px; }
+.qprog-bar { height:8px; background:#e5e7eb; border-radius:100px; overflow:hidden; margin-bottom:12px; }
+.qprog-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--pink)); border-radius:100px; transition:width 0.4s; }
+.q-meta { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gray); }
+.q-timer { font-weight:700; color:var(--purple); font-size:1rem; }
+.quiz-card {
+  background:#fff; border:2px solid var(--border);
+  border-radius:20px; padding:36px; margin-bottom:16px;
+  box-shadow:var(--card-shadow);
 }
-.quiz-option:hover:not(:disabled) { border-color: var(--accent2); background: rgba(99,102,241,0.08); }
-.quiz-option.correct { border-color: var(--accent3) !important; background: rgba(16,185,129,0.1) !important; color: var(--accent3) !important; }
-.quiz-option.wrong { border-color: var(--red) !important; background: rgba(239,68,68,0.1) !important; color: var(--red) !important; }
-.opt-num { width: 30px; height: 30px; border-radius: 7px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 0.68rem; font-weight: 700; flex-shrink: 0; }
-.quiz-feedback { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; display: none; margin-bottom: 16px; }
-.quiz-feedback.show { display: block; }
-.feedback-correct { border-color: var(--accent3) !important; }
-.feedback-wrong { border-color: var(--red) !important; }
-.feedback-title { font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; }
-.feedback-correct .feedback-title { color: var(--accent3); }
-.feedback-wrong .feedback-title { color: var(--red); }
-.feedback-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
-.score-result { text-align: center; padding: 48px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 24px; }
-.score-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900; color: var(--accent); box-shadow: var(--glow); }
-.score-title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900; margin-bottom: 8px; }
-.score-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
-.score-breakdown { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
-.score-item-num { font-size: 1.6rem; font-weight: 700; }
-.score-item-label { font-size: 0.78rem; color: var(--text-dim); }
+.q-cat { font-size:0.75rem; color:var(--purple); font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+.q-text { font-size:1.15rem; font-weight:700; color:var(--dark); line-height:1.5; margin-bottom:28px; }
+.q-opts { display:flex; flex-direction:column; gap:12px; }
+.q-opt {
+  background:#fff; border:2px solid var(--border);
+  border-radius:12px; padding:14px 18px;
+  display:flex; align-items:center; gap:14px;
+  cursor:pointer; transition:all 0.2s;
+  font-size:0.95rem; font-weight:500; color:var(--dark);
+  text-align:left; width:100%; font-family:'Poppins',sans-serif;
+}
+.q-opt:hover:not(:disabled) { border-color:var(--purple); background:var(--purple-bg); color:var(--purple); }
+.q-opt.correct { border-color:var(--green) !important; background:#d1fae5 !important; color:#065f46 !important; }
+.q-opt.wrong { border-color:var(--red) !important; background:#fee2e2 !important; color:#991b1b !important; }
+.opt-letter {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--purple-bg); border:1px solid #ddd6fe;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.78rem; color:var(--purple); flex-shrink:0;
+}
+.q-feedback {
+  background:#fff; border:2px solid var(--border);
+  border-radius:14px; padding:18px 22px; display:none; margin-bottom:16px;
+  box-shadow:var(--card-shadow);
+}
+.q-feedback.show { display:block; }
+.fb-correct { border-color:var(--green) !important; background:#f0fdf4; }
+.fb-wrong { border-color:var(--red) !important; background:#fff1f2; }
+.fb-title { font-weight:700; margin-bottom:4px; font-size:0.95rem; }
+.fb-correct .fb-title { color:var(--green); }
+.fb-wrong .fb-title { color:var(--red); }
+.fb-text { font-size:0.88rem; color:var(--gray); line-height:1.5; }
+
+/* RESULT */
+.result-card {
+  background:#fff; border:2px solid var(--border);
+  border-radius:20px; padding:48px 32px; text-align:center;
+  margin-bottom:28px; box-shadow:var(--card-shadow);
+}
+.result-circle {
+  width:130px; height:130px; border-radius:50%;
+  border:5px solid var(--purple);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px;
+  font-size:2rem; font-weight:900; color:var(--purple);
+  box-shadow:0 0 30px rgba(108,53,222,0.15);
+}
+.result-title { font-size:1.6rem; font-weight:800; color:var(--dark); margin-bottom:8px; }
+.result-sub { color:var(--gray); font-size:0.95rem; margin-bottom:28px; }
+.result-stats { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
+.rs-num { font-size:1.8rem; font-weight:800; }
+.rs-label { font-size:0.78rem; color:var(--gray2); }
 
 /* LEADERBOARD */
-.lb-top3 { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 16px; margin-bottom: 32px; align-items: end; }
-.lb-podium { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 16px; text-align: center; }
-.lb-podium.first { border-color: var(--gold); box-shadow: 0 0 20px rgba(245,158,11,0.15); }
-.lb-podium.second { border-color: #94a3b8; }
-.lb-podium.third { border-color: #cd7f32; }
-.podium-crown { font-size: 2rem; margin-bottom: 8px; }
-.podium-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: white; }
-.av-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.av-silver { background: linear-gradient(135deg, #94a3b8, #64748b); }
-.av-bronze { background: linear-gradient(135deg, #cd7f32, #a16207); }
-.podium-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
-.podium-score { font-family: 'Orbitron', monospace; font-size: 1rem; color: var(--accent); font-weight: 700; }
-.podium-badge { font-size: 0.72rem; color: var(--text-dim); margin-top: 4px; }
-.lb-list { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-.lb-row { display: grid; grid-template-columns: 56px 1fr 110px 110px; padding: 15px 24px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.2s; }
-.lb-row:last-child { border-bottom: none; }
-.lb-row:hover { background: rgba(255,255,255,0.02); }
-.lb-row-head { font-size: 0.73rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 56px 1fr 110px 110px; }
-.lb-rank { font-family: 'Orbitron', monospace; font-weight: 700; font-size: 0.88rem; color: var(--text-dim); }
-.lb-player { display: flex; align-items: center; gap: 12px; }
-.lb-av { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; flex-shrink: 0; }
-.lb-pname { font-weight: 600; font-size: 0.92rem; }
-.lb-pid { font-size: 0.76rem; color: var(--text-dim); }
-.lb-score { font-family: 'Orbitron', monospace; font-weight: 700; color: var(--accent); font-size: 0.92rem; }
-.badge-pill { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
-.bp-gold { background: rgba(245,158,11,0.15); color: var(--gold); }
-.bp-silver { background: rgba(148,163,184,0.15); color: #94a3b8; }
-.bp-bronze { background: rgba(205,127,50,0.15); color: #cd7f32; }
-.bp-blue { background: rgba(14,165,233,0.15); color: var(--accent); }
-.bp-green { background: rgba(16,185,129,0.15); color: var(--accent3); }
+.lb-page { padding:80px 48px; }
+.lb-wrap { max-width:860px; margin:0 auto; }
+.podiums { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:16px; margin-bottom:32px; align-items:end; }
+.podium {
+  background:#fff; border:2px solid var(--border);
+  border-radius:18px; padding:24px 16px; text-align:center;
+  box-shadow:var(--card-shadow);
+}
+.podium.p1 { border-color:var(--yellow); background:linear-gradient(135deg,#fffbeb,#fef9c3); }
+.podium.p2 { border-color:#d1d5db; }
+.podium.p3 { border-color:#d97706; }
+.pod-crown { font-size:2.2rem; margin-bottom:8px; }
+.pod-av {
+  width:60px; height:60px; border-radius:50%;
+  margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:1.1rem; color:#fff;
+}
+.av1 { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.av2 { background:linear-gradient(135deg,#94a3b8,#64748b); }
+.av3 { background:linear-gradient(135deg,#cd7f32,#a16207); }
+.pod-name { font-weight:700; font-size:0.95rem; color:var(--dark); margin-bottom:4px; }
+.pod-score { font-size:1.2rem; font-weight:800; color:var(--purple); }
+.pod-info { font-size:0.72rem; color:var(--gray2); margin-top:4px; }
+.lb-table {
+  background:#fff; border:2px solid var(--border);
+  border-radius:18px; overflow:hidden; box-shadow:var(--card-shadow);
+}
+.lb-head { display:grid; grid-template-columns:60px 1fr 110px 110px; padding:14px 24px; background:var(--purple-bg); border-bottom:1px solid var(--border); font-size:0.75rem; color:var(--purple); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+.lb-row { display:grid; grid-template-columns:60px 1fr 110px 110px; padding:15px 24px; border-bottom:1px solid var(--border); align-items:center; transition:background 0.2s; }
+.lb-row:last-child { border-bottom:none; }
+.lb-row:hover { background:var(--purple-bg); }
+.lb-rank { font-weight:800; font-size:0.9rem; color:var(--purple); }
+.lb-player { display:flex; align-items:center; gap:12px; }
+.lb-av { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--purple),var(--pink)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; color:#fff; }
+.lb-pname { font-weight:600; font-size:0.92rem; color:var(--dark); }
+.lb-pid { font-size:0.76rem; color:var(--gray2); }
+.lb-score { font-weight:800; color:var(--purple); font-size:0.92rem; }
+.badge-pill { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600; }
+.bp-gold { background:#fef3c7; color:#92400e; }
+.bp-silver { background:#f1f5f9; color:#475569; }
+.bp-purple { background:var(--purple-light); color:var(--purple); }
+.bp-green { background:#d1fae5; color:#065f46; }
 
 /* ACHIEVEMENTS */
-.ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; }
-.ach-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 16px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
-.ach-card.unlocked { border-color: var(--gold); }
-.ach-card.unlocked::after { content: '✓'; position: absolute; top: 10px; right: 12px; color: var(--accent3); font-weight: 800; font-size: 0.8rem; }
-.ach-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-.ach-card.locked { opacity: 0.5; filter: grayscale(0.8); }
-.ach-icon { font-size: 2.4rem; margin-bottom: 12px; }
-.ach-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; }
-.ach-desc { font-size: 0.76rem; color: var(--text-dim); line-height: 1.4; }
+.ach-page { padding:80px 48px; background:var(--purple-bg); }
+.ach-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:16px; max-width:1100px; margin:0 auto; }
+.ach-card {
+  background:#fff; border:2px solid var(--border);
+  border-radius:16px; padding:24px 16px; text-align:center;
+  transition:all 0.3s; position:relative; box-shadow:var(--card-shadow);
+}
+.ach-card.unlocked { border-color:var(--yellow); }
+.ach-card.unlocked::after { content:'✓'; position:absolute; top:10px; right:12px; color:var(--green); font-weight:800; }
+.ach-card:hover { transform:translateY(-4px); box-shadow:var(--card-shadow-hover); }
+.ach-card.locked { opacity:0.5; }
+.ach-icon { font-size:2.4rem; margin-bottom:10px; }
+.ach-name { font-weight:700; font-size:0.88rem; color:var(--dark); margin-bottom:5px; }
+.ach-desc { font-size:0.75rem; color:var(--gray); line-height:1.4; }
 
 /* AUTH */
-.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px 60px; }
-.auth-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 480px; position: relative; overflow: hidden; }
-.auth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)); }
-.auth-logo { font-family: 'Orbitron', monospace; font-size: 1.5rem; font-weight: 900; color: var(--accent); text-align: center; margin-bottom: 8px; letter-spacing: 2px; }
-.auth-logo span { color: var(--accent2); }
-.auth-sub { text-align: center; color: var(--text-muted); font-size: 0.92rem; margin-bottom: 36px; }
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 7px; letter-spacing: 0.3px; }
-.form-input { width: 100%; background: var(--bg3); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); padding: 13px 16px; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
-.form-input::placeholder { color: var(--text-dim); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.alert { border-radius: 10px; padding: 12px 16px; font-size: 0.88rem; margin-bottom: 16px; display: none; }
-.alert.show { display: block; }
-.alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
-.alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
-.auth-footer { text-align: center; margin-top: 22px; font-size: 0.9rem; color: var(--text-muted); }
-.auth-footer a { color: var(--accent); cursor: pointer; font-weight: 600; }
-.auth-footer a:hover { text-decoration: underline; }
+.auth-page { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:100px 24px 60px; background:var(--purple-bg); }
+.auth-card {
+  background:#fff; border-radius:24px; padding:48px 40px;
+  width:100%; max-width:480px;
+  box-shadow:0 20px 60px rgba(108,53,222,0.15);
+}
+.auth-logo { font-size:1.8rem; font-weight:900; color:var(--purple); text-align:center; margin-bottom:6px; }
+.auth-logo span { color:var(--pink); }
+.auth-sub { text-align:center; color:var(--gray); font-size:0.92rem; margin-bottom:32px; }
+.auth-hero { width:80px; height:80px; background:linear-gradient(135deg,var(--purple),var(--pink)); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 20px; }
+.form-group { margin-bottom:18px; }
+.form-label { display:block; font-size:0.82rem; font-weight:600; color:var(--dark); margin-bottom:7px; }
+.form-input {
+  width:100%; background:#f9fafb; border:2px solid var(--border);
+  border-radius:10px; color:var(--dark);
+  padding:13px 16px; font-family:'Poppins',sans-serif;
+  font-size:0.92rem; outline:none; transition:all 0.2s;
+}
+.form-input:focus { border-color:var(--purple); background:#fff; box-shadow:0 0 0 4px rgba(108,53,222,0.08); }
+.form-input::placeholder { color:var(--gray2); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.alert { border-radius:10px; padding:12px 16px; font-size:0.85rem; margin-bottom:16px; display:none; font-weight:500; }
+.alert.show { display:block; }
+.alert-error { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+.alert-success { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
+.auth-footer { text-align:center; margin-top:20px; font-size:0.88rem; color:var(--gray); }
+.auth-footer a { color:var(--purple); cursor:pointer; font-weight:600; }
+
+/* FOOTER */
+footer {
+  background:var(--dark); color:rgba(255,255,255,0.7);
+  padding:40px 48px; text-align:center;
+}
+footer .footer-logo { font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:10px; }
+footer .footer-logo span { color:var(--purple3); }
 
 /* ANIMATIONS */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
 
-@media (max-width: 768px) {
-  nav { padding: 0 16px; }
-  .nav-center { display: none; }
-  section { padding: 60px 20px; }
-  .lb-top3 { grid-template-columns: 1fr; }
-  .lb-row, .lb-row-head { grid-template-columns: 50px 1fr 90px; }
-  .lb-row > *:last-child, .lb-row-head > *:last-child { display: none; }
-  .form-row { grid-template-columns: 1fr; }
-  .auth-card { padding: 36px 22px; }
-  .hero-stats { gap: 28px; }
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .nav-center { display:none; }
+  .categories,.features,.explore,.lb-page,.ach-page { padding:60px 20px; }
+  .podiums { grid-template-columns:1fr; }
+  .lb-head,.lb-row { grid-template-columns:50px 1fr 90px; }
+  .lb-head>*:last-child,.lb-row>*:last-child { display:none; }
+  .form-row { grid-template-columns:1fr; }
+  .auth-card { padding:36px 20px; }
 }
 </style>
 </head>
@@ -288,194 +391,167 @@ section { padding: 80px 48px; position: relative; z-index: 1; }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo" onclick="goHome()"><span>IT</span>QUEST</div>
+  <div class="nav-logo" onclick="goHome()"><span>IT</span>Quest</div>
   <div class="nav-center">
-    <button class="nav-link active-nav" onclick="goHome()">Home</button>
-    <button class="nav-link" onclick="showPage('explore')">Explore</button>
-    <button class="nav-link" onclick="showPage('quiz')">Quiz</button>
-    <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
-    <button class="nav-link" onclick="showPage('achievements')">Badges</button>
+    <button class="nav-link anav" onclick="goHome()">Home</button>
+    <button class="nav-link" onclick="goTo('explore')">Discover Quiz</button>
+    <button class="nav-link" onclick="goTo('leaderboard')">Leaderboard</button>
+    <button class="nav-link" onclick="goTo('achievements')">Badges</button>
   </div>
   <div class="nav-right">
     <div class="nav-user" id="navUser">
-      <div class="nav-avatar" id="navAvatar">A</div>
-      <span id="navName">Student</span>
-      <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      <div class="nav-avatar" id="navAv">A</div>
+      <span class="nav-uname" id="navNm">Student</span>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
     </div>
-    <div id="navAuth" style="display:flex;gap:8px;">
-      <button class="btn btn-ghost" onclick="showPage('login')">Login</button>
-      <button class="btn btn-primary" onclick="showPage('register')">Register</button>
+    <div id="navAuth" style="display:flex;gap:10px;">
+      <button class="btn btn-outline" onclick="goTo('login')">Log In</button>
+      <button class="btn btn-purple" onclick="goTo('register')">Sign Up</button>
     </div>
   </div>
 </nav>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
+
+  <!-- HERO -->
   <div class="hero">
-    <div class="hero-eyebrow">🎓 BSIT Gamified Learning Platform</div>
-    <h1>Master IT Skills<br>Through <span class="grad">IT Quest</span></h1>
-    <p class="hero-desc">A professional learning platform for BSIT students. Solve coding challenges, ace quizzes, earn achievements, and compete on the leaderboard.</p>
+    <div class="hero-tag">🎓 BSIT Gamified Learning Platform</div>
+    <h1>Dive into a World of<br><span class="yellow">IT Quest</span> Learning!</h1>
+    <p class="hero-desc">Get ready for an exciting journey filled with IT challenges, quizzes, and coding puzzles. Whether you're a beginner or an expert, there's always something new to discover!</p>
     <div class="hero-btns">
-      <button class="btn btn-primary btn-lg" onclick="showPage('register')">Get Started Free</button>
-      <button class="btn btn-ghost btn-lg" onclick="showPage('explore')">Explore Modules</button>
+      <button class="btn btn-white btn-lg" onclick="goTo('register')">▶ Play Now</button>
+      <button class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.3);" onclick="goTo('explore')">Discover Modules</button>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">Students</div></div>
       <div class="hero-stat"><div class="hero-stat-num">120+</div><div class="hero-stat-label">Quizzes</div></div>
       <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Challenges</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Achievements</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Badges</div></div>
     </div>
   </div>
 
-  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-    <div class="section-inner">
-      <div style="text-align:center;margin-bottom:48px;">
-        <div class="section-label">Core Features</div>
-        <div class="section-title">Everything You Need to <span class="grad">Level Up</span></div>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon fi-blue">🧩</div><div class="feature-title">Coding Challenges</div><div class="feature-desc">Write and run JavaScript & Java in your browser. See instant output in the console.</div></div>
-        <div class="feature-card"><div class="feature-icon fi-purple">📝</div><div class="feature-title">Interactive Quizzes</div><div class="feature-desc">Timed quizzes covering networking, programming, databases, OS, cybersecurity and more.</div></div>
-        <div class="feature-card"><div class="feature-icon fi-gold">🏆</div><div class="feature-title">Live Leaderboard</div><div class="feature-desc">Compete with classmates. Real-time rankings show who leads your class.</div></div>
-        <div class="feature-card"><div class="feature-icon fi-green">🎖️</div><div class="feature-title">Achievement Badges</div><div class="feature-desc">Earn unique badges by completing challenges and reaching milestones.</div></div>
-        <div class="feature-card"><div class="feature-icon fi-blue">🔐</div><div class="feature-title">Student Accounts</div><div class="feature-desc">Secure login and register. Scores, progress, and badges tracked individually.</div></div>
-        <div class="feature-card"><div class="feature-icon fi-green">📊</div><div class="feature-title">Progress Tracking</div><div class="feature-desc">Monitor your learning with detailed stats, completion rates, and performance data.</div></div>
-      </div>
+  <!-- CATEGORIES -->
+  <div class="categories">
+    <div class="section-center">
+      <div class="section-badge">Quiz Categories</div>
+      <div class="section-title">Choose Your <span style="color:var(--purple)">Topic</span></div>
+      <p class="section-sub">Pick a category and start testing your knowledge right away!</p>
     </div>
-  </section>
+    <div class="categories-grid">
+      <div class="cat-card" onclick="startQuiz('networking')"><span class="cat-icon">🌐</span><div class="cat-name">Networking</div><div class="cat-count">20 Quizzes</div><span class="cat-pill cp-green">Beginner</span></div>
+      <div class="cat-card" onclick="startQuiz('programming')"><span class="cat-icon">💻</span><div class="cat-name">Programming</div><div class="cat-count">25 Quizzes</div><span class="cat-pill cp-green">Beginner</span></div>
+      <div class="cat-card" onclick="startQuiz('database')"><span class="cat-icon">🗄️</span><div class="cat-name">Database</div><div class="cat-count">18 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
+      <div class="cat-card" onclick="startQuiz('webdev')"><span class="cat-icon">🌍</span><div class="cat-name">Web Dev</div><div class="cat-count">22 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
+      <div class="cat-card" onclick="startQuiz('os')"><span class="cat-icon">⚙️</span><div class="cat-name">OS</div><div class="cat-count">16 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
+      <div class="cat-card" onclick="startQuiz('cybersecurity')"><span class="cat-icon">🔒</span><div class="cat-name">Cybersecurity</div><div class="cat-count">14 Quizzes</div><span class="cat-pill cp-red">Advanced</span></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="section-center">
+      <div class="section-badge">Why IT Quest</div>
+      <div class="section-title">Everything You Need to <span style="color:var(--purple)">Level Up</span></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feat-icon fi-purple">🧩</div><div class="feat-title">Coding Challenges</div><div class="feat-desc">Write and run JavaScript & Java directly in your browser with instant console output.</div></div>
+      <div class="feature-card"><div class="feat-icon fi-pink">📝</div><div class="feat-title">Interactive Quizzes</div><div class="feat-desc">Timed quizzes covering all major IT topics. Get instant feedback on every answer.</div></div>
+      <div class="feature-card"><div class="feat-icon fi-yellow">🏆</div><div class="feat-title">Live Leaderboard</div><div class="feat-desc">Compete with classmates in real-time. Track who leads the rankings every day.</div></div>
+      <div class="feature-card"><div class="feat-icon fi-green">🎖️</div><div class="feat-title">Achievement Badges</div><div class="feat-desc">Earn unique badges by completing challenges and reaching milestones.</div></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><span>IT</span>Quest</div>
+    <p>© 2026 IT Quest — Gamified Learning for BSIT Students</p>
+    <p style="margin-top:6px;font-size:0.8rem;">Built with 💜 for learning</p>
+  </footer>
+
 </div>
 
 <!-- EXPLORE -->
 <div class="page" id="page-explore">
-  <section style="padding-top:100px;">
-    <div class="section-inner">
-      <div class="section-label">Learning Modules</div>
-      <div class="section-title">Explore <span class="grad">All Courses</span></div>
-      <p class="section-sub">Choose a module to start. Each has real quizzes, coding challenges, and achievements to unlock.</p>
-      <div class="modules-grid">
-
-        <div class="module-card" onclick="startQuiz('networking')">
-          <div class="module-header">
-            <div class="module-icon fi-blue">🌐</div>
-            <div><div class="module-title">Computer Networking</div><span class="module-tag tag-beginner">Beginner</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Learn OSI model, TCP/IP, IP addressing, DNS, HTTP, and how data travels across networks.</div>
-            <div class="module-topics"><span class="topic-chip">OSI Model</span><span class="topic-chip">TCP/IP</span><span class="topic-chip">HTTP/HTTPS</span><span class="topic-chip">DNS</span><span class="topic-chip">IP Address</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 20 Quizzes</span><span class="module-stat">🧩 8 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
-        <div class="module-card" onclick="startQuiz('programming')">
-          <div class="module-header">
-            <div class="module-icon fi-purple">💻</div>
-            <div><div class="module-title">Programming Fundamentals</div><span class="module-tag tag-beginner">Beginner</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Master variables, loops, functions, arrays, and OOP principles in Java and JavaScript.</div>
-            <div class="module-topics"><span class="topic-chip">Variables</span><span class="topic-chip">Loops</span><span class="topic-chip">Functions</span><span class="topic-chip">OOP</span><span class="topic-chip">Arrays</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 25 Quizzes</span><span class="module-stat">🧩 12 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
-        <div class="module-card" onclick="startQuiz('database')">
-          <div class="module-header">
-            <div class="module-icon fi-green">🗄️</div>
-            <div><div class="module-title">Database Management</div><span class="module-tag tag-intermediate">Intermediate</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Learn SQL, database design, normalization, ERDs, and MySQL queries for real applications.</div>
-            <div class="module-topics"><span class="topic-chip">SQL</span><span class="topic-chip">Normalization</span><span class="topic-chip">ERD</span><span class="topic-chip">MySQL</span><span class="topic-chip">Joins</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 18 Quizzes</span><span class="module-stat">🧩 10 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
-        <div class="module-card" onclick="startQuiz('webdev')">
-          <div class="module-header">
-            <div class="module-icon fi-gold">🌍</div>
-            <div><div class="module-title">Web Development</div><span class="module-tag tag-intermediate">Intermediate</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Build websites using HTML5, CSS3, and JavaScript. Learn responsive design and DOM manipulation.</div>
-            <div class="module-topics"><span class="topic-chip">HTML5</span><span class="topic-chip">CSS3</span><span class="topic-chip">JavaScript</span><span class="topic-chip">DOM</span><span class="topic-chip">Responsive</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 22 Quizzes</span><span class="module-stat">🧩 15 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
-        <div class="module-card" onclick="startQuiz('os')">
-          <div class="module-header">
-            <div class="module-icon fi-blue">⚙️</div>
-            <div><div class="module-title">Operating Systems</div><span class="module-tag tag-intermediate">Intermediate</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Understand processes, memory management, file systems, and CPU scheduling algorithms.</div>
-            <div class="module-topics"><span class="topic-chip">Processes</span><span class="topic-chip">Memory</span><span class="topic-chip">File Systems</span><span class="topic-chip">Scheduling</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 16 Quizzes</span><span class="module-stat">🧩 6 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
-        <div class="module-card" onclick="startQuiz('cybersecurity')">
-          <div class="module-header">
-            <div class="module-icon fi-purple">🔒</div>
-            <div><div class="module-title">Cybersecurity Basics</div><span class="module-tag tag-advanced">Advanced</span></div>
-          </div>
-          <div class="module-body">
-            <div class="module-desc">Learn threats, encryption, firewalls, VPNs, phishing, and ethical hacking fundamentals.</div>
-            <div class="module-topics"><span class="topic-chip">Encryption</span><span class="topic-chip">Firewalls</span><span class="topic-chip">Phishing</span><span class="topic-chip">VPN</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-          </div>
-          <div class="module-footer"><div class="module-stats"><span class="module-stat">📝 14 Quizzes</span><span class="module-stat">🧩 5 Challenges</span></div><button class="btn btn-primary btn-sm">Start →</button></div>
-        </div>
-
+  <div class="explore" style="padding-top:100px;">
+    <div class="section-center">
+      <div class="section-badge">All Modules</div>
+      <div class="section-title">Discover <span style="color:var(--purple)">Quiz Modules</span></div>
+      <p class="section-sub">Choose a module to start. Each has real quiz questions, topics, and challenges to complete.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card" onclick="startQuiz('networking')">
+        <div class="mod-header"><div class="mod-icon fi-purple">🌐</div><div><div class="mod-title">Computer Networking</div><span class="mod-tag tag-b">Beginner</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Learn OSI model, TCP/IP, IP addressing, DNS, HTTP and how data travels across networks.</div><div class="mod-chips"><span class="chip">OSI Model</span><span class="chip">TCP/IP</span><span class="chip">HTTP/HTTPS</span><span class="chip">DNS</span><span class="chip">IP Address</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 20 Quizzes</span><span class="mod-stat">🧩 8 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
+      </div>
+      <div class="module-card" onclick="startQuiz('programming')">
+        <div class="mod-header"><div class="mod-icon fi-pink">💻</div><div><div class="mod-title">Programming Fundamentals</div><span class="mod-tag tag-b">Beginner</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Master variables, loops, functions, arrays, and OOP principles in Java and JavaScript.</div><div class="mod-chips"><span class="chip">Variables</span><span class="chip">Loops</span><span class="chip">Functions</span><span class="chip">OOP</span><span class="chip">Arrays</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 25 Quizzes</span><span class="mod-stat">🧩 12 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
+      </div>
+      <div class="module-card" onclick="startQuiz('database')">
+        <div class="mod-header"><div class="mod-icon fi-green">🗄️</div><div><div class="mod-title">Database Management</div><span class="mod-tag tag-i">Intermediate</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Learn SQL, database design, normalization, ERDs, and MySQL queries for real applications.</div><div class="mod-chips"><span class="chip">SQL</span><span class="chip">Normalization</span><span class="chip">ERD</span><span class="chip">MySQL</span><span class="chip">Joins</span></div><div class="prog-bar"><div class="prog-fill" style="width:20%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 18 Quizzes</span><span class="mod-stat">🧩 10 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
+      </div>
+      <div class="module-card" onclick="startQuiz('webdev')">
+        <div class="mod-header"><div class="mod-icon fi-yellow">🌍</div><div><div class="mod-title">Web Development</div><span class="mod-tag tag-i">Intermediate</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Build websites using HTML5, CSS3, and JavaScript. Learn responsive design and DOM manipulation.</div><div class="mod-chips"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">DOM</span><span class="chip">Responsive</span></div><div class="prog-bar"><div class="prog-fill" style="width:10%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 22 Quizzes</span><span class="mod-stat">🧩 15 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
+      </div>
+      <div class="module-card" onclick="startQuiz('os')">
+        <div class="mod-header"><div class="mod-icon fi-purple">⚙️</div><div><div class="mod-title">Operating Systems</div><span class="mod-tag tag-i">Intermediate</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Understand processes, memory management, file systems, and CPU scheduling algorithms.</div><div class="mod-chips"><span class="chip">Processes</span><span class="chip">Memory</span><span class="chip">File Systems</span><span class="chip">Scheduling</span></div><div class="prog-bar"><div class="prog-fill" style="width:5%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 16 Quizzes</span><span class="mod-stat">🧩 6 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
+      </div>
+      <div class="module-card" onclick="startQuiz('cybersecurity')">
+        <div class="mod-header"><div class="mod-icon fi-pink">🔒</div><div><div class="mod-title">Cybersecurity Basics</div><span class="mod-tag tag-a">Advanced</span></div></div>
+        <div class="mod-body"><div class="mod-desc">Learn threats, encryption, firewalls, VPNs, phishing, and ethical hacking fundamentals.</div><div class="mod-chips"><span class="chip">Encryption</span><span class="chip">Firewalls</span><span class="chip">Phishing</span><span class="chip">VPN</span></div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></div>
+        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 14 Quizzes</span><span class="mod-stat">🧩 5 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
 
-<!-- QUIZ -->
+<!-- QUIZ PAGE -->
 <div class="page" id="page-quiz">
-  <div class="quiz-container">
-    <div id="quizArea">
-      <div>
-        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
-        <div class="quiz-meta-row">
-          <span id="quizQNum">Question 1 of 5</span>
-          <span class="quiz-timer" id="quizTimer">⏱ 30s</span>
+  <div class="quiz-page">
+    <div class="quiz-wrap">
+      <div id="quizArea">
+        <div class="quiz-top">
+          <div class="qprog-bar"><div class="qprog-fill" id="qFill" style="width:0%"></div></div>
+          <div class="q-meta"><span id="qNum">Question 1 of 5</span><span class="q-timer" id="qTimer">⏱ 30s</span></div>
+        </div>
+        <div class="quiz-card">
+          <div class="q-cat" id="qCat">NETWORKING</div>
+          <div class="q-text" id="qText">Loading...</div>
+          <div class="q-opts" id="qOpts"></div>
+        </div>
+        <div class="q-feedback" id="qFeedback">
+          <div class="fb-title" id="fbTitle"></div>
+          <div class="fb-text" id="fbText"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+          <button class="btn btn-purple" id="nextBtn" onclick="nextQ()" style="display:none;">Next Question →</button>
         </div>
       </div>
-      <div class="quiz-card-ui">
-        <div class="quiz-category" id="quizCat">NETWORKING</div>
-        <div class="quiz-question" id="quizQ">Loading...</div>
-        <div class="quiz-options" id="quizOpts"></div>
-      </div>
-      <div class="quiz-feedback" id="quizFeedback">
-        <div class="feedback-title" id="fbTitle"></div>
-        <div class="feedback-text" id="fbText"></div>
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-top:8px;">
-        <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" style="display:none;">Next Question →</button>
-      </div>
-    </div>
-    <div id="quizResult" style="display:none;">
-      <div class="score-result">
-        <div class="score-circle" id="scoreCircle">0%</div>
-        <div class="score-title" id="scoreTitle">Quiz Complete!</div>
-        <div class="score-sub" id="scoreSub"></div>
-        <div class="score-breakdown">
-          <div class="score-item"><div class="score-item-num" id="sCorrect" style="color:var(--accent3)">0</div><div class="score-item-label">Correct</div></div>
-          <div class="score-item"><div class="score-item-num" id="sWrong" style="color:var(--red)">0</div><div class="score-item-label">Wrong</div></div>
-          <div class="score-item"><div class="score-item-num" id="sPoints" style="color:var(--accent)">0</div><div class="score-item-label">Points</div></div>
+      <div id="quizResult" style="display:none;">
+        <div class="result-card">
+          <div class="result-circle" id="rCircle">0%</div>
+          <div class="result-title" id="rTitle">Quiz Complete!</div>
+          <div class="result-sub" id="rSub"></div>
+          <div class="result-stats">
+            <div><div class="rs-num" id="rCorrect" style="color:var(--green)">0</div><div class="rs-label">Correct</div></div>
+            <div><div class="rs-num" id="rWrong" style="color:var(--red)">0</div><div class="rs-label">Wrong</div></div>
+            <div><div class="rs-num" id="rPoints" style="color:var(--purple)">0</div><div class="rs-label">Points</div></div>
+          </div>
         </div>
-      </div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn btn-primary btn-lg" onclick="restartQ()">Try Again</button>
-        <button class="btn btn-ghost btn-lg" onclick="showPage('explore')">More Modules</button>
-        <button class="btn btn-secondary btn-lg" onclick="showPage('leaderboard')">Leaderboard</button>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-purple btn-lg" onclick="restartQ()">Try Again</button>
+          <button class="btn btn-outline btn-lg" onclick="goTo('explore')">More Modules</button>
+          <button class="btn btn-pink btn-lg" onclick="goTo('leaderboard')">Leaderboard</button>
+        </div>
       </div>
     </div>
   </div>
@@ -483,64 +559,67 @@ section { padding: 80px 48px; position: relative; z-index: 1; }
 
 <!-- LEADERBOARD -->
 <div class="page" id="page-leaderboard">
-  <section style="padding-top:100px;">
-    <div class="section-inner" style="max-width:860px;">
-      <div class="section-label">Top Performers</div>
-      <div class="section-title">Global <span class="grad">Leaderboard</span></div>
-      <p class="section-sub">Rankings update based on quiz scores and challenge completions.</p>
-      <div class="lb-top3">
-        <div class="lb-podium second"><div class="podium-crown">🥈</div><div class="podium-avatar av-silver">SM</div><div class="podium-name">Sarah Martinez</div><div class="podium-score">8,720</div><div class="podium-badge">BSIT-2A • Expert</div></div>
-        <div class="lb-podium first"><div class="podium-crown">👑</div><div class="podium-avatar av-gold">AJ</div><div class="podium-name">Alex Johnson</div><div class="podium-score">9,850</div><div class="podium-badge">BSIT-3B • Grandmaster</div></div>
-        <div class="lb-podium third"><div class="podium-crown">🥉</div><div class="podium-avatar av-bronze">KC</div><div class="podium-name">Kevin Cruz</div><div class="podium-score">7,540</div><div class="podium-badge">BSIT-2B • Advanced</div></div>
+  <div class="lb-page" style="padding-top:100px;">
+    <div class="lb-wrap">
+      <div class="section-center">
+        <div class="section-badge">Top Performers</div>
+        <div class="section-title">Global <span style="color:var(--purple)">Leaderboard</span></div>
+        <p class="section-sub">Rankings update based on quiz scores and challenge completions.</p>
       </div>
-      <div class="lb-list">
-        <div class="lb-row-head"><div>Rank</div><div>Student</div><div>Score</div><div>Badge</div></div>
-        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-player"><div class="lb-av">ML</div><div><div class="lb-pname">Maria Lopez</div><div class="lb-pid">BSIT-1A</div></div></div><div class="lb-score">6,890</div><div><span class="badge-pill bp-blue">Skilled</span></div></div>
-        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-player"><div class="lb-av">JR</div><div><div class="lb-pname">James Reyes</div><div class="lb-pid">BSIT-3A</div></div></div><div class="lb-score">5,430</div><div><span class="badge-pill bp-blue">Skilled</span></div></div>
+      <div class="podiums">
+        <div class="podium p2"><div class="pod-crown">🥈</div><div class="pod-av av2">SM</div><div class="pod-name">Sarah Martinez</div><div class="pod-score">8,720</div><div class="pod-info">BSIT-2A • Expert</div></div>
+        <div class="podium p1"><div class="pod-crown">👑</div><div class="pod-av av1">AJ</div><div class="pod-name">Alex Johnson</div><div class="pod-score">9,850</div><div class="pod-info">BSIT-3B • Grandmaster</div></div>
+        <div class="podium p3"><div class="pod-crown">🥉</div><div class="pod-av av3">KC</div><div class="pod-name">Kevin Cruz</div><div class="pod-score">7,540</div><div class="pod-info">BSIT-2B • Advanced</div></div>
+      </div>
+      <div class="lb-table">
+        <div class="lb-head"><div>Rank</div><div>Student</div><div>Score</div><div>Badge</div></div>
+        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-player"><div class="lb-av">ML</div><div><div class="lb-pname">Maria Lopez</div><div class="lb-pid">BSIT-1A</div></div></div><div class="lb-score">6,890</div><div><span class="badge-pill bp-purple">Skilled</span></div></div>
+        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-player"><div class="lb-av">JR</div><div><div class="lb-pname">James Reyes</div><div class="lb-pid">BSIT-3A</div></div></div><div class="lb-score">5,430</div><div><span class="badge-pill bp-purple">Skilled</span></div></div>
         <div class="lb-row"><div class="lb-rank">#6</div><div class="lb-player"><div class="lb-av">AT</div><div><div class="lb-pname">Ana Torres</div><div class="lb-pid">BSIT-2C</div></div></div><div class="lb-score">4,200</div><div><span class="badge-pill bp-green">Rising</span></div></div>
         <div class="lb-row"><div class="lb-rank">#7</div><div class="lb-player"><div class="lb-av">RD</div><div><div class="lb-pname">Rico Dela Cruz</div><div class="lb-pid">BSIT-1B</div></div></div><div class="lb-score">3,750</div><div><span class="badge-pill bp-green">Rising</span></div></div>
         <div class="lb-row"><div class="lb-rank">#8</div><div class="lb-player"><div class="lb-av">MN</div><div><div class="lb-pname">Maya Nguyen</div><div class="lb-pid">BSIT-2A</div></div></div><div class="lb-score">2,980</div><div><span class="badge-pill bp-green">Rising</span></div></div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
 
 <!-- ACHIEVEMENTS -->
 <div class="page" id="page-achievements">
-  <section style="padding-top:100px;">
-    <div class="section-inner">
-      <div class="section-label">Achievements</div>
-      <div class="section-title">Earn <span class="grad">Badges</span></div>
-      <p class="section-sub">Complete quizzes and challenges to unlock achievements and show off your expertise.</p>
-      <div class="ach-grid">
-        <div class="ach-card unlocked"><div class="ach-icon">🔥</div><div class="ach-name">First Blood</div><div class="ach-desc">Complete your first quiz</div></div>
-        <div class="ach-card unlocked"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div><div class="ach-desc">Finish a quiz under 60 seconds</div></div>
-        <div class="ach-card unlocked"><div class="ach-icon">🎯</div><div class="ach-name">Perfectionist</div><div class="ach-desc">Score 100% on any quiz</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🧠</div><div class="ach-name">Big Brain</div><div class="ach-desc">Complete 10 quizzes</div></div>
-        <div class="ach-card locked"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div><div class="ach-desc">Reach 5,000 points</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">Reach #1 on leaderboard</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🚀</div><div class="ach-name">Rocket Start</div><div class="ach-desc">Complete 3 modules in a day</div></div>
-        <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-name">Grandmaster</div><div class="ach-desc">Complete all 6 modules</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🌐</div><div class="ach-name">Network Guru</div><div class="ach-desc">Finish Networking module</div></div>
-        <div class="ach-card locked"><div class="ach-icon">💻</div><div class="ach-name">Code Wizard</div><div class="ach-desc">Finish Programming module</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🗄️</div><div class="ach-name">Data Master</div><div class="ach-desc">Finish Database module</div></div>
-        <div class="ach-card locked"><div class="ach-icon">🔒</div><div class="ach-name">Cyber Shield</div><div class="ach-desc">Finish Cybersecurity module</div></div>
-      </div>
+  <div class="ach-page" style="padding-top:100px;">
+    <div class="section-center">
+      <div class="section-badge">Achievements</div>
+      <div class="section-title">Earn <span style="color:var(--purple)">Badges</span></div>
+      <p class="section-sub">Complete quizzes and challenges to unlock achievements and show off your skills.</p>
     </div>
-  </section>
+    <div class="ach-grid">
+      <div class="ach-card unlocked"><div class="ach-icon">🔥</div><div class="ach-name">First Blood</div><div class="ach-desc">Complete your first quiz</div></div>
+      <div class="ach-card unlocked"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div><div class="ach-desc">Finish a quiz under 60 seconds</div></div>
+      <div class="ach-card unlocked"><div class="ach-icon">🎯</div><div class="ach-name">Perfectionist</div><div class="ach-desc">Score 100% on any quiz</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🧠</div><div class="ach-name">Big Brain</div><div class="ach-desc">Complete 10 quizzes</div></div>
+      <div class="ach-card locked"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div><div class="ach-desc">Reach 5,000 points</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">Reach #1 on leaderboard</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🚀</div><div class="ach-name">Rocket Start</div><div class="ach-desc">Complete 3 modules in a day</div></div>
+      <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-name">Grandmaster</div><div class="ach-desc">Complete all 6 modules</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🌐</div><div class="ach-name">Network Guru</div><div class="ach-desc">Finish Networking module</div></div>
+      <div class="ach-card locked"><div class="ach-icon">💻</div><div class="ach-name">Code Wizard</div><div class="ach-desc">Finish Programming module</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🗄️</div><div class="ach-name">Data Master</div><div class="ach-desc">Finish Database module</div></div>
+      <div class="ach-card locked"><div class="ach-icon">🔒</div><div class="ach-name">Cyber Shield</div><div class="ach-desc">Finish Cybersecurity module</div></div>
+    </div>
+  </div>
 </div>
 
 <!-- LOGIN -->
 <div class="page" id="page-login">
   <div class="auth-page">
     <div class="auth-card">
-      <div class="auth-logo"><span>IT</span>QUEST</div>
+      <div class="auth-hero">🎮</div>
+      <div class="auth-logo"><span>IT</span>Quest</div>
       <div class="auth-sub">Welcome back! Login to continue your quest.</div>
       <div class="alert alert-error" id="loginErr">Invalid Student ID or password.</div>
       <div class="form-group"><label class="form-label">Student ID</label><input type="text" class="form-input" id="loginId" placeholder="e.g. BSIT-2024-001"></div>
       <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPass" placeholder="Enter your password"></div>
-      <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()" style="margin-top:8px;">Login to IT Quest</button>
-      <div class="auth-footer">Don't have an account? <a onclick="showPage('register')">Register here</a></div>
+      <button class="btn btn-purple btn-full btn-lg" onclick="doLogin()" style="margin-top:10px;">Log In →</button>
+      <div class="auth-footer">Don't have an account? <a onclick="goTo('register')">Sign Up Free</a></div>
     </div>
   </div>
 </div>
@@ -549,8 +628,9 @@ section { padding: 80px 48px; position: relative; z-index: 1; }
 <div class="page" id="page-register">
   <div class="auth-page">
     <div class="auth-card">
-      <div class="auth-logo"><span>IT</span>QUEST</div>
-      <div class="auth-sub">Create your free account and start learning!</div>
+      <div class="auth-hero">🚀</div>
+      <div class="auth-logo"><span>IT</span>Quest</div>
+      <div class="auth-sub">Create your free account and start your learning quest!</div>
       <div class="alert alert-error" id="regErr"></div>
       <div class="alert alert-success" id="regOk"></div>
       <div class="form-row">
@@ -564,232 +644,216 @@ section { padding: 80px 48px; position: relative; z-index: 1; }
         <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="regP1" placeholder="Min. 6 characters"></div>
         <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" class="form-input" id="regP2" placeholder="Repeat password"></div>
       </div>
-      <button class="btn btn-secondary btn-full btn-lg" onclick="doRegister()" style="margin-top:8px;">Create My Account</button>
-      <div class="auth-footer">Already registered? <a onclick="showPage('login')">Login here</a></div>
+      <button class="btn btn-purple btn-full btn-lg" onclick="doRegister()" style="margin-top:10px;">Create My Account →</button>
+      <div class="auth-footer">Already have an account? <a onclick="goTo('login')">Log In</a></div>
     </div>
   </div>
 </div>
 
 <script>
 // STORAGE
-function getUsers() { return JSON.parse(localStorage.getItem('itq_users') || '[]'); }
-function saveUsers(u) { localStorage.setItem('itq_users', JSON.stringify(u)); }
-function getMe() { return JSON.parse(localStorage.getItem('itq_me') || 'null'); }
-function setMe(u) { localStorage.setItem('itq_me', JSON.stringify(u)); }
+function getUsers(){return JSON.parse(localStorage.getItem('itq_u')||'[]');}
+function saveUsers(u){localStorage.setItem('itq_u',JSON.stringify(u));}
+function getMe(){return JSON.parse(localStorage.getItem('itq_me')||'null');}
+function setMe(u){localStorage.setItem('itq_me',JSON.stringify(u));}
 
-// PAGES
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
+// NAVIGATION
+function goTo(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
   window.scrollTo(0,0);
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-nav'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('anav'));
 }
-function goHome() {
-  showPage('home');
-  document.querySelectorAll('.nav-link')[0].classList.add('active-nav');
+function goHome(){
+  goTo('home');
+  document.querySelectorAll('.nav-link')[0].classList.add('anav');
 }
-
-// NAV HIGHLIGHT
-document.querySelectorAll('.nav-link').forEach((btn, i) => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-nav'));
-    btn.classList.add('active-nav');
+document.querySelectorAll('.nav-link').forEach((b,i)=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('anav'));
+    b.classList.add('anav');
   });
 });
 
 // AUTH
-function doRegister() {
-  const fn = document.getElementById('regFn').value.trim();
-  const ln = document.getElementById('regLn').value.trim();
-  const id = document.getElementById('regId').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const sec = document.getElementById('regSec').value.trim();
-  const p1 = document.getElementById('regP1').value;
-  const p2 = document.getElementById('regP2').value;
-  const err = document.getElementById('regErr');
-  const ok = document.getElementById('regOk');
+function doRegister(){
+  const fn=document.getElementById('regFn').value.trim();
+  const ln=document.getElementById('regLn').value.trim();
+  const id=document.getElementById('regId').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const sec=document.getElementById('regSec').value.trim();
+  const p1=document.getElementById('regP1').value;
+  const p2=document.getElementById('regP2').value;
+  const err=document.getElementById('regErr');
+  const ok=document.getElementById('regOk');
   err.classList.remove('show'); ok.classList.remove('show');
-  if (!fn||!ln||!id||!email||!sec||!p1||!p2) { err.textContent='Please fill in all fields.'; err.classList.add('show'); return; }
-  if (p1.length < 6) { err.textContent='Password must be at least 6 characters.'; err.classList.add('show'); return; }
-  if (p1 !== p2) { err.textContent='Passwords do not match.'; err.classList.add('show'); return; }
-  const users = getUsers();
-  if (users.find(u => u.id === id)) { err.textContent='Student ID already registered.'; err.classList.add('show'); return; }
-  users.push({ fn, ln, id, email, sec, pass: p1, score: 0 });
+  if(!fn||!ln||!id||!email||!sec||!p1||!p2){err.textContent='Please fill in all fields.';err.classList.add('show');return;}
+  if(p1.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
+  if(p1!==p2){err.textContent='Passwords do not match.';err.classList.add('show');return;}
+  const users=getUsers();
+  if(users.find(u=>u.id===id)){err.textContent='Student ID already registered.';err.classList.add('show');return;}
+  users.push({fn,ln,id,email,sec,pass:p1,score:0});
   saveUsers(users);
-  ok.textContent = '✅ Account created! Redirecting to login...';
+  ok.textContent='✅ Account created successfully! Redirecting to login...';
   ok.classList.add('show');
-  setTimeout(() => showPage('login'), 2000);
+  setTimeout(()=>goTo('login'),2000);
 }
 
-function doLogin() {
-  const id = document.getElementById('loginId').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const err = document.getElementById('loginErr');
+function doLogin(){
+  const id=document.getElementById('loginId').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr');
   err.classList.remove('show');
-  const user = getUsers().find(u => u.id === id && u.pass === pass);
-  if (!user) { err.classList.add('show'); return; }
+  const user=getUsers().find(u=>u.id===id&&u.pass===pass);
+  if(!user){err.classList.add('show');return;}
   setMe(user);
-  document.getElementById('navUser').style.display = 'flex';
-  document.getElementById('navAuth').style.display = 'none';
-  document.getElementById('navAvatar').textContent = user.fn[0] + user.ln[0];
-  document.getElementById('navName').textContent = user.fn;
+  document.getElementById('navUser').style.display='flex';
+  document.getElementById('navAuth').style.display='none';
+  document.getElementById('navAv').textContent=user.fn[0]+user.ln[0];
+  document.getElementById('navNm').textContent=user.fn;
   goHome();
 }
 
-function logout() {
+function logout(){
   localStorage.removeItem('itq_me');
-  document.getElementById('navUser').style.display = 'none';
-  document.getElementById('navAuth').style.display = 'flex';
+  document.getElementById('navUser').style.display='none';
+  document.getElementById('navAuth').style.display='flex';
   goHome();
 }
 
 // QUIZ DATA
-const QD = {
-  networking: { title:'Computer Networking', qs:[
-    {q:'What does HTTP stand for?', o:['HyperText Transfer Protocol','High Transfer Text Protocol','Hyperlink Text Protocol','HyperText Transmission Protocol'], a:0, ex:'HTTP stands for HyperText Transfer Protocol — the foundation of web communication.'},
-    {q:'Which OSI layer handles IP addressing and routing?', o:['Data Link','Transport','Network','Session'], a:2, ex:'The Network Layer (Layer 3) handles logical IP addressing and routing between networks.'},
-    {q:'What is the default port for HTTPS?', o:['80','8080','443','21'], a:2, ex:'HTTPS uses port 443. HTTP uses port 80.'},
-    {q:'What does DNS stand for?', o:['Domain Name System','Data Network Service','Digital Name Server','Dynamic Network System'], a:0, ex:'DNS (Domain Name System) translates domain names like google.com into IP addresses.'},
-    {q:'Which protocol is used for sending emails?', o:['HTTP','FTP','SMTP','SSH'], a:2, ex:'SMTP (Simple Mail Transfer Protocol) is the standard for sending email messages.'},
+const QD={
+  networking:{title:'Computer Networking',qs:[
+    {q:'What does HTTP stand for?',o:['HyperText Transfer Protocol','High Transfer Text Protocol','Hyperlink Text Protocol','HyperText Transmission Protocol'],a:0,ex:'HTTP stands for HyperText Transfer Protocol — the foundation of web communication.'},
+    {q:'Which OSI layer handles IP addressing and routing?',o:['Data Link','Transport','Network','Session'],a:2,ex:'The Network Layer (Layer 3) handles logical IP addressing and routing.'},
+    {q:'What is the default port for HTTPS?',o:['80','8080','443','21'],a:2,ex:'HTTPS uses port 443. HTTP uses port 80.'},
+    {q:'What does DNS stand for?',o:['Domain Name System','Data Network Service','Digital Name Server','Dynamic Network System'],a:0,ex:'DNS (Domain Name System) translates domain names into IP addresses.'},
+    {q:'Which protocol is used for sending emails?',o:['HTTP','FTP','SMTP','SSH'],a:2,ex:'SMTP (Simple Mail Transfer Protocol) is the standard for sending emails.'},
   ]},
-  programming: { title:'Programming Fundamentals', qs:[
-    {q:'What is the correct way to declare a variable in JavaScript?', o:['variable x = 5','let x = 5','int x = 5','dim x = 5'], a:1, ex:'In JavaScript, variables are declared using let, const, or var keywords.'},
-    {q:'What does OOP stand for?', o:['Object Oriented Programming','Open Output Processing','Object Output Protocol','Ordered Object Programming'], a:0, ex:'OOP stands for Object Oriented Programming — a paradigm based on objects and classes.'},
-    {q:'Which loop always runs at least once?', o:['for loop','while loop','do-while loop','foreach loop'], a:2, ex:'A do-while loop executes the body at least once before checking the condition.'},
-    {q:'What is recursion?', o:['A loop structure','A function that calls itself','A type of array','An error handler'], a:1, ex:'Recursion is when a function calls itself. It must have a base case to avoid infinite loops.'},
-    {q:'What does the "return" statement do?', o:['Stops the program','Outputs a value and ends the function','Creates a variable','Starts a loop'], a:1, ex:'The return statement sends a value back from the function and ends its execution.'},
+  programming:{title:'Programming Fundamentals',qs:[
+    {q:'How do you declare a variable in JavaScript?',o:['variable x = 5','let x = 5','int x = 5','dim x = 5'],a:1,ex:'In JavaScript, variables are declared using let, const, or var.'},
+    {q:'What does OOP stand for?',o:['Object Oriented Programming','Open Output Processing','Object Output Protocol','Ordered Object Programming'],a:0,ex:'OOP stands for Object Oriented Programming — based on objects and classes.'},
+    {q:'Which loop always runs at least once?',o:['for loop','while loop','do-while loop','foreach loop'],a:2,ex:'A do-while loop executes the body at least once before checking the condition.'},
+    {q:'What is recursion?',o:['A loop structure','A function that calls itself','A type of array','An error handler'],a:1,ex:'Recursion is when a function calls itself. It must have a base case to stop.'},
+    {q:'What does the "return" statement do?',o:['Stops the program','Outputs a value and ends the function','Creates a variable','Starts a loop'],a:1,ex:'The return statement sends a value back from a function and ends its execution.'},
   ]},
-  database: { title:'Database Management', qs:[
-    {q:'What does SQL stand for?', o:['Structured Query Language','Simple Question Language','System Query Logic','Structured Question Logic'], a:0, ex:'SQL stands for Structured Query Language — used to manage relational databases.'},
-    {q:'Which SQL command retrieves data?', o:['INSERT','UPDATE','SELECT','DELETE'], a:2, ex:'SELECT retrieves data from one or more tables in a database.'},
-    {q:'What is a Primary Key?', o:['An encryption key','A unique identifier for each record','The first column','A foreign reference'], a:1, ex:'A Primary Key uniquely identifies each record in a database table.'},
-    {q:'What is normalization?', o:['Sorting data alphabetically','Organizing data to reduce redundancy','Encrypting database files','Backing up data'], a:1, ex:'Normalization organizes database structure to reduce redundancy and improve data integrity.'},
-    {q:'Which SQL clause filters records?', o:['ORDER BY','GROUP BY','WHERE','HAVING'], a:2, ex:'The WHERE clause filters records based on a specified condition.'},
+  database:{title:'Database Management',qs:[
+    {q:'What does SQL stand for?',o:['Structured Query Language','Simple Question Language','System Query Logic','Structured Question Logic'],a:0,ex:'SQL stands for Structured Query Language — used to manage relational databases.'},
+    {q:'Which SQL command retrieves data?',o:['INSERT','UPDATE','SELECT','DELETE'],a:2,ex:'SELECT retrieves data from tables in a database.'},
+    {q:'What is a Primary Key?',o:['An encryption key','A unique identifier for each record','The first column','A foreign reference'],a:1,ex:'A Primary Key uniquely identifies each record in a database table.'},
+    {q:'What is normalization?',o:['Sorting alphabetically','Reducing data redundancy','Encrypting files','Backing up data'],a:1,ex:'Normalization reduces redundancy and improves data integrity in a database.'},
+    {q:'Which SQL clause filters records?',o:['ORDER BY','GROUP BY','WHERE','HAVING'],a:2,ex:'The WHERE clause filters records based on a specified condition.'},
   ]},
-  webdev: { title:'Web Development', qs:[
-    {q:'What does HTML stand for?', o:['HyperText Markup Language','High Text Machine Language','Hyperlink Text Mode Language','HyperText Managed Language'], a:0, ex:'HTML stands for HyperText Markup Language — the standard for creating web pages.'},
-    {q:'Which HTML tag creates a hyperlink?', o:['<link>','<href>','<a>','<url>'], a:2, ex:'The <a> anchor tag creates hyperlinks in HTML using the href attribute.'},
-    {q:'What does CSS stand for?', o:['Creative Style Sheets','Cascading Style Sheets','Computer Style System','Coded Style Sheets'], a:1, ex:'CSS stands for Cascading Style Sheets — used to style and layout HTML elements.'},
-    {q:'Which JavaScript method selects an element by ID?', o:['getElement()','querySelector()','getElementById()','findById()'], a:2, ex:'document.getElementById() selects an HTML element using its id attribute.'},
-    {q:'What is the DOM?', o:['Document Object Model','Data Output Manager','Design Object Method','Document Output Mode'], a:0, ex:'DOM (Document Object Model) is a programming interface for HTML documents.'},
+  webdev:{title:'Web Development',qs:[
+    {q:'What does HTML stand for?',o:['HyperText Markup Language','High Text Machine Language','Hyperlink Text Mode Language','HyperText Managed Language'],a:0,ex:'HTML stands for HyperText Markup Language — the standard for web pages.'},
+    {q:'Which HTML tag creates a hyperlink?',o:['<link>','<href>','<a>','<url>'],a:2,ex:'The <a> anchor tag creates hyperlinks using the href attribute.'},
+    {q:'What does CSS stand for?',o:['Creative Style Sheets','Cascading Style Sheets','Computer Style System','Coded Style Sheets'],a:1,ex:'CSS stands for Cascading Style Sheets — used to style HTML elements.'},
+    {q:'Which JS method selects an element by ID?',o:['getElement()','querySelector()','getElementById()','findById()'],a:2,ex:'document.getElementById() selects an element by its id attribute.'},
+    {q:'What is the DOM?',o:['Document Object Model','Data Output Manager','Design Object Method','Document Output Mode'],a:0,ex:'DOM (Document Object Model) is a programming interface for HTML documents.'},
   ]},
-  os: { title:'Operating Systems', qs:[
-    {q:'What is a process in an OS?', o:['A file on disk','A program in execution','A type of memory','A hardware component'], a:1, ex:'A process is a program in execution, including its code, data, and current activity.'},
-    {q:'What does CPU stand for?', o:['Central Processing Unit','Computer Power Unit','Central Program Utility','Control Processing Unit'], a:0, ex:'CPU stands for Central Processing Unit — the main component that executes instructions.'},
-    {q:'What is virtual memory?', o:['RAM inside the GPU','Extra USB storage','Using disk space as extended RAM','Cloud-based memory'], a:2, ex:'Virtual memory uses hard disk space to extend available RAM for running processes.'},
-    {q:'Which scheduling gives each process equal CPU time?', o:['FIFO','Round Robin','Priority Scheduling','Shortest Job First'], a:1, ex:'Round Robin scheduling gives each process a fixed time slice (quantum) in rotation.'},
-    {q:'What is deadlock?', o:['A crashed program','Processes waiting for each other indefinitely','A virus attack','CPU overheating'], a:1, ex:'Deadlock occurs when processes each wait for resources held by another, halting all progress.'},
+  os:{title:'Operating Systems',qs:[
+    {q:'What is a process in an OS?',o:['A file on disk','A program in execution','A type of memory','A hardware component'],a:1,ex:'A process is a program in execution, including its code and current activity.'},
+    {q:'What does CPU stand for?',o:['Central Processing Unit','Computer Power Unit','Central Program Utility','Control Processing Unit'],a:0,ex:'CPU stands for Central Processing Unit — the main component that executes instructions.'},
+    {q:'What is virtual memory?',o:['RAM inside GPU','Extra USB storage','Using disk space as extended RAM','Cloud memory'],a:2,ex:'Virtual memory uses hard disk space to extend the available RAM for processes.'},
+    {q:'Which scheduling gives equal CPU time?',o:['FIFO','Round Robin','Priority','Shortest Job First'],a:1,ex:'Round Robin gives each process a fixed time slice (quantum) in rotation.'},
+    {q:'What is deadlock?',o:['A crashed program','Processes waiting for each other indefinitely','A virus attack','CPU overheating'],a:1,ex:'Deadlock occurs when processes each wait for resources held by another, halting progress.'},
   ]},
-  cybersecurity: { title:'Cybersecurity Basics', qs:[
-    {q:'What is phishing?', o:['A type of encryption','Fraudulent attempt to steal sensitive info','A firewall technique','A programming language'], a:1, ex:'Phishing uses fake emails or websites to trick users into revealing sensitive information.'},
-    {q:'What does VPN stand for?', o:['Virtual Private Network','Verified Protocol Node','Virtual Public Network','Verified Private Node'], a:0, ex:'VPN stands for Virtual Private Network — encrypts your internet connection for privacy.'},
-    {q:'What is encryption?', o:['Deleting data securely','Converting data to unreadable format','Compressing files','Backing up data'], a:1, ex:'Encryption converts readable data (plaintext) into unreadable format (ciphertext) to protect it.'},
-    {q:'What is a firewall?', o:['Antivirus software','A system that monitors network traffic','A type of malware','An operating system'], a:1, ex:'A firewall monitors and controls incoming and outgoing network traffic based on security rules.'},
-    {q:'What is two-factor authentication (2FA)?', o:['Using two passwords','Logging in twice','Verification using two different methods','Having two accounts'], a:2, ex:'2FA adds an extra security layer by requiring two different types of verification to log in.'},
+  cybersecurity:{title:'Cybersecurity Basics',qs:[
+    {q:'What is phishing?',o:['A type of encryption','Fraudulent attempt to steal info','A firewall technique','A programming language'],a:1,ex:'Phishing uses fake emails or websites to trick users into revealing sensitive info.'},
+    {q:'What does VPN stand for?',o:['Virtual Private Network','Verified Protocol Node','Virtual Public Network','Verified Private Node'],a:0,ex:'VPN stands for Virtual Private Network — encrypts your internet connection.'},
+    {q:'What is encryption?',o:['Deleting data','Converting data to unreadable format','Compressing files','Backing up'],a:1,ex:'Encryption converts readable data into unreadable format to protect it.'},
+    {q:'What is a firewall?',o:['Antivirus software','A system that monitors network traffic','A type of malware','An OS'],a:1,ex:'A firewall monitors and controls incoming and outgoing network traffic.'},
+    {q:'What is two-factor authentication (2FA)?',o:['Using two passwords','Logging in twice','Verification using two different methods','Having two accounts'],a:2,ex:'2FA requires two different types of verification to access an account.'},
   ]}
 };
 
 // QUIZ ENGINE
-let cQuiz, cQ, score, correct, wrong, timer, timeLeft, answered;
-
-function startQuiz(mod) {
-  cQuiz = QD[mod]; cQ = 0; score = 0; correct = 0; wrong = 0;
-  document.getElementById('quizArea').style.display = 'block';
-  document.getElementById('quizResult').style.display = 'none';
-  showPage('quiz');
-  loadQ();
+let cQ2,cIdx,pts,corr,wrng,tmr,tLeft,done;
+function startQuiz(mod){
+  cQ2=QD[mod];cIdx=0;pts=0;corr=0;wrng=0;
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('quizResult').style.display='none';
+  goTo('quiz'); loadQ();
 }
-
-function loadQ() {
-  if (cQ >= cQuiz.qs.length) { showResult(); return; }
-  answered = false;
-  const q = cQuiz.qs[cQ];
-  const total = cQuiz.qs.length;
-  document.getElementById('quizCat').textContent = cQuiz.title.toUpperCase();
-  document.getElementById('quizQ').textContent = q.q;
-  document.getElementById('quizQNum').textContent = `Question ${cQ+1} of ${total}`;
-  document.getElementById('quizFill').style.width = ((cQ/total)*100)+'%';
-  document.getElementById('quizFeedback').className = 'quiz-feedback';
-  document.getElementById('nextBtn').style.display = 'none';
-  const opts = document.getElementById('quizOpts');
-  opts.innerHTML = '';
-  q.o.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'quiz-option';
-    btn.innerHTML = `<span class="opt-num">${String.fromCharCode(65+i)}</span>${opt}`;
-    btn.onclick = () => pickAns(i, btn);
+function loadQ(){
+  if(cIdx>=cQ2.qs.length){showResult();return;}
+  done=false;
+  const q=cQ2.qs[cIdx],total=cQ2.qs.length;
+  document.getElementById('qCat').textContent=cQ2.title.toUpperCase();
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qNum').textContent=`Question ${cIdx+1} of ${total}`;
+  document.getElementById('qFill').style.width=((cIdx/total)*100)+'%';
+  document.getElementById('qFeedback').className='q-feedback';
+  document.getElementById('nextBtn').style.display='none';
+  const opts=document.getElementById('qOpts');
+  opts.innerHTML='';
+  q.o.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+i)}</span>${opt}`;
+    btn.onclick=()=>pick(i,btn);
     opts.appendChild(btn);
   });
-  startTimer();
+  startTmr();
 }
-
-function startTimer() {
-  clearInterval(timer); timeLeft = 30;
-  document.getElementById('quizTimer').textContent = `⏱ ${timeLeft}s`;
-  timer = setInterval(() => {
-    timeLeft--;
-    document.getElementById('quizTimer').textContent = `⏱ ${timeLeft}s`;
-    if (timeLeft <= 0) { clearInterval(timer); timeUp(); }
-  }, 1000);
+function startTmr(){
+  clearInterval(tmr);tLeft=30;
+  document.getElementById('qTimer').textContent=`⏱ ${tLeft}s`;
+  tmr=setInterval(()=>{
+    tLeft--;document.getElementById('qTimer').textContent=`⏱ ${tLeft}s`;
+    if(tLeft<=0){clearInterval(tmr);timeUp();}
+  },1000);
 }
-
-function timeUp() {
-  if (answered) return;
-  answered = true; wrong++;
-  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
-  document.querySelectorAll('.quiz-option')[cQuiz.qs[cQ].a].classList.add('correct');
-  showFB(false, '⏰ Time\'s up! ' + cQuiz.qs[cQ].ex);
-  document.getElementById('nextBtn').style.display = 'block';
+function timeUp(){
+  if(done)return;done=true;wrng++;
+  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.q-opt')[cQ2.qs[cIdx].a].classList.add('correct');
+  showFB(false,'⏰ Time\'s up! '+cQ2.qs[cIdx].ex);
+  document.getElementById('nextBtn').style.display='block';
 }
-
-function pickAns(idx, btn) {
-  if (answered) return;
-  answered = true; clearInterval(timer);
-  const q = cQuiz.qs[cQ];
-  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
-  if (idx === q.a) { btn.classList.add('correct'); correct++; score += Math.max(100, timeLeft*10); showFB(true, '✅ Correct! '+q.ex); }
-  else { btn.classList.add('wrong'); wrong++; document.querySelectorAll('.quiz-option')[q.a].classList.add('correct'); showFB(false, '❌ Wrong. '+q.ex); }
-  document.getElementById('nextBtn').style.display = 'block';
+function pick(idx,btn){
+  if(done)return;done=true;clearInterval(tmr);
+  const q=cQ2.qs[cIdx];
+  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  if(idx===q.a){btn.classList.add('correct');corr++;pts+=Math.max(100,tLeft*10);showFB(true,'✅ Correct! '+q.ex);}
+  else{btn.classList.add('wrong');wrng++;document.querySelectorAll('.q-opt')[q.a].classList.add('correct');showFB(false,'❌ Wrong. '+q.ex);}
+  document.getElementById('nextBtn').style.display='block';
 }
-
-function showFB(ok, txt) {
-  const el = document.getElementById('quizFeedback');
-  el.className = 'quiz-feedback show ' + (ok ? 'feedback-correct' : 'feedback-wrong');
-  document.getElementById('fbTitle').textContent = ok ? 'Correct!' : 'Incorrect';
-  document.getElementById('fbText').textContent = txt;
+function showFB(ok,txt){
+  const el=document.getElementById('qFeedback');
+  el.className='q-feedback show '+(ok?'fb-correct':'fb-wrong');
+  document.getElementById('fbTitle').textContent=ok?'Correct!':'Incorrect';
+  document.getElementById('fbText').textContent=txt;
 }
-
-function nextQ() { cQ++; loadQ(); }
-
-function showResult() {
-  clearInterval(timer);
-  const pct = Math.round((correct/cQuiz.qs.length)*100);
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('quizResult').style.display = 'block';
-  document.getElementById('scoreCircle').textContent = pct+'%';
-  document.getElementById('sCorrect').textContent = correct;
-  document.getElementById('sWrong').textContent = wrong;
-  document.getElementById('sPoints').textContent = score;
-  const t = pct<40?'Keep Practicing! 💪':pct<60?'Good Effort! 👍':pct<80?'Well Done! 🎉':pct<100?'Excellent! 🌟':'Perfect Score! 🏆';
-  document.getElementById('scoreTitle').textContent = t;
-  document.getElementById('scoreSub').textContent = `You got ${correct} out of ${cQuiz.qs.length} correct and earned ${score} points!`;
+function nextQ(){cIdx++;loadQ();}
+function showResult(){
+  clearInterval(tmr);
+  const pct=Math.round((corr/cQ2.qs.length)*100);
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('quizResult').style.display='block';
+  document.getElementById('rCircle').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=corr;
+  document.getElementById('rWrong').textContent=wrng;
+  document.getElementById('rPoints').textContent=pts;
+  const t=pct<40?'Keep Practicing! 💪':pct<60?'Good Effort! 👍':pct<80?'Well Done! 🎉':pct<100?'Excellent! 🌟':'Perfect Score! 🏆';
+  document.getElementById('rTitle').textContent=t;
+  document.getElementById('rSub').textContent=`You got ${corr} out of ${cQ2.qs.length} correct and earned ${pts} points!`;
 }
-
-function restartQ() {
-  cQ = 0; score = 0; correct = 0; wrong = 0;
-  document.getElementById('quizArea').style.display = 'block';
-  document.getElementById('quizResult').style.display = 'none';
+function restartQ(){
+  cIdx=0;pts=0;corr=0;wrng=0;
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('quizResult').style.display='none';
   loadQ();
 }
 
 // INIT
-window.onload = () => {
-  const me = getMe();
-  if (me) {
-    document.getElementById('navUser').style.display = 'flex';
-    document.getElementById('navAuth').style.display = 'none';
-    document.getElementById('navAvatar').textContent = me.fn[0] + me.ln[0];
-    document.getElementById('navName').textContent = me.fn;
+window.onload=()=>{
+  const me=getMe();
+  if(me){
+    document.getElementById('navUser').style.display='flex';
+    document.getElementById('navAuth').style.display='none';
+    document.getElementById('navAv').textContent=me.fn[0]+me.ln[0];
+    document.getElementById('navNm').textContent=me.fn;
   }
 };
 </script>
