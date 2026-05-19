@@ -3,859 +3,1729 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT Quest — Gamified Learning Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>ITQuest — Gamified IT Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ── ROOT ── */
 :root {
-  --purple: #6c35de;
-  --purple2: #8b5cf6;
-  --purple3: #a78bfa;
-  --purple-dark: #4c1d95;
-  --purple-light: #ede9fe;
-  --purple-bg: #f5f3ff;
-  --pink: #ec4899;
-  --yellow: #f59e0b;
-  --green: #10b981;
-  --red: #ef4444;
-  --white: #ffffff;
-  --gray: #6b7280;
-  --gray2: #9ca3af;
-  --dark: #1e1b4b;
-  --text: #1f2937;
-  --border: #e5e7eb;
-  --card-shadow: 0 4px 24px rgba(108,53,222,0.10);
-  --card-shadow-hover: 0 8px 40px rgba(108,53,222,0.18);
+  --bg: #0b0f1a;
+  --bg2: #111827;
+  --bg3: #1a2235;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --sky: #38bdf8;
+  --sky2: #0ea5e9;
+  --sky-dim: rgba(56,189,248,0.12);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.12);
+  --orange: #fb923c;
+  --orange-dim: rgba(251,146,60,0.12);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.12);
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,0.12);
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --r: 14px;
+  --r2: 10px;
+  --sidebar: 220px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body { font-family:'Poppins',sans-serif; background:#fff; color:var(--text); overflow-x:hidden; }
+body { font-family:'Space Grotesk',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--bg2); }
+::-webkit-scrollbar-thumb { background:var(--bg3); border-radius:99px; }
 
-/* PAGE */
-.page { display:none; min-height:100vh; }
-.page.active { display:block; }
-
-/* NAV */
-nav {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  padding:0 48px; height:70px;
-  display:flex; align-items:center; justify-content:space-between;
-  background:rgba(255,255,255,0.95);
-  backdrop-filter:blur(12px);
+/* ── SIDEBAR ── */
+.sidebar {
+  position:fixed; left:0; top:0; bottom:0; width:var(--sidebar);
+  background:var(--bg2); border-right:1px solid var(--border);
+  display:flex; flex-direction:column; z-index:300;
+  transition:transform .3s ease;
+}
+.sb-logo {
+  padding:22px 18px 18px;
   border-bottom:1px solid var(--border);
-  box-shadow:0 2px 20px rgba(108,53,222,0.08);
 }
-.nav-logo {
-  font-size:1.4rem; font-weight:800;
-  color:var(--purple); cursor:pointer; letter-spacing:-0.5px;
+.logo-mark {
+  display:flex; align-items:center; gap:8px; margin-bottom:4px;
 }
-.nav-logo span { color:var(--pink); }
-.nav-center { display:flex; gap:4px; }
-.nav-link {
-  background:none; border:none; color:var(--gray);
-  padding:8px 18px; border-radius:8px;
-  font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:500;
-  cursor:pointer; transition:all 0.2s;
-}
-.nav-link:hover { color:var(--purple); background:var(--purple-light); }
-.nav-link.anav { color:var(--purple); background:var(--purple-light); font-weight:600; }
-.nav-right { display:flex; gap:10px; align-items:center; }
-.nav-user { display:none; align-items:center; gap:10px; }
-.nav-avatar {
-  width:38px; height:38px; border-radius:50%;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
+.logo-icon {
+  width:32px; height:32px; border-radius:8px;
+  background:linear-gradient(135deg,var(--sky),var(--purple));
   display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.85rem; color:#fff;
+  font-size:1rem;
 }
-.nav-uname { font-size:0.9rem; font-weight:600; color:var(--dark); }
+.logo-text { font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; color:var(--text); }
+.logo-text span { color:var(--sky); }
+.logo-sub { font-size:.65rem; color:var(--text3); letter-spacing:.5px; }
 
-.btn { padding:10px 22px; border-radius:10px; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; cursor:pointer; transition:all 0.2s; border:none; display:inline-flex; align-items:center; gap:6px; }
-.btn-outline { background:transparent; color:var(--purple); border:2px solid var(--purple); }
-.btn-outline:hover { background:var(--purple); color:#fff; }
-.btn-purple { background:var(--purple); color:#fff; box-shadow:0 4px 15px rgba(108,53,222,0.3); }
-.btn-purple:hover { background:var(--purple-dark); transform:translateY(-1px); box-shadow:0 6px 20px rgba(108,53,222,0.4); }
-.btn-pink { background:var(--pink); color:#fff; box-shadow:0 4px 15px rgba(236,72,153,0.3); }
-.btn-pink:hover { background:#db2777; transform:translateY(-1px); }
-.btn-white { background:#fff; color:var(--purple); box-shadow:0 4px 15px rgba(0,0,0,0.1); }
-.btn-white:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,0,0,0.15); }
-.btn-lg { padding:14px 36px; font-size:1rem; border-radius:12px; }
+.sb-section { padding:16px 12px 5px; font-size:.6rem; font-weight:700; color:var(--text3); letter-spacing:2px; text-transform:uppercase; }
+.sb-nav { flex:1; overflow-y:auto; padding:6px 0; }
+.ni {
+  display:flex; align-items:center; gap:9px;
+  padding:9px 14px; margin:1px 8px;
+  border-radius:9px; cursor:pointer;
+  font-size:.83rem; font-weight:500;
+  color:var(--text2); transition:all .18s;
+  border:none; background:none;
+  width:calc(100% - 16px); text-align:left;
+  font-family:'Space Grotesk',sans-serif;
+}
+.ni:hover { background:rgba(255,255,255,.05); color:var(--text); }
+.ni.active { background:rgba(56,189,248,.12); color:var(--sky); font-weight:600; }
+.ni .ic { font-size:1rem; width:20px; text-align:center; }
+.ni .bdg {
+  margin-left:auto; background:var(--orange);
+  color:#fff; font-size:.58rem; font-weight:800;
+  padding:2px 6px; border-radius:99px;
+}
+
+.sb-user {
+  padding:14px; border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:9px;
+}
+.sb-av {
+  width:32px; height:32px; border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.7rem; color:#fff; flex-shrink:0;
+}
+.sb-uname { font-size:.78rem; font-weight:600; color:var(--text); }
+.sb-upts { font-size:.64rem; color:var(--sky); }
+
+/* ── TOPBAR ── */
+.main { margin-left:var(--sidebar); min-height:100vh; }
+.topbar {
+  position:sticky; top:0; z-index:200;
+  background:rgba(11,15,26,.9); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px; height:54px;
+  display:flex; align-items:center; gap:10px;
+}
+.breadcrumb { font-size:.8rem; color:var(--text2); }
+.breadcrumb b { color:var(--text); }
+.tb-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+.pts-badge {
+  display:flex; align-items:center; gap:5px;
+  background:var(--yellow-dim); border:1px solid rgba(251,191,36,.25);
+  padding:5px 11px; border-radius:99px;
+  font-size:.76rem; font-weight:700; color:var(--yellow);
+}
+.back-btn {
+  display:flex; align-items:center; gap:5px;
+  background:var(--bg3); border:1px solid var(--border2);
+  color:var(--text2); padding:6px 12px; border-radius:8px;
+  font-family:'Space Grotesk',sans-serif; font-size:.78rem; font-weight:600;
+  cursor:pointer; transition:all .18s;
+}
+.back-btn:hover { background:var(--border); color:var(--text); }
+.mob-toggle { display:none; background:none; border:none; color:var(--text2); font-size:1.3rem; cursor:pointer; }
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:290; }
+.overlay.show { display:block; }
+
+/* ── PAGES ── */
+.page { display:none; padding:24px; animation:fadeUp .25s ease; }
+.page.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── BUTTONS ── */
+.btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:9px 18px; border-radius:9px;
+  font-family:'Space Grotesk',sans-serif; font-size:.83rem; font-weight:600;
+  cursor:pointer; transition:all .2s; border:none;
+}
+.btn-sky { background:var(--sky); color:#0b0f1a; }
+.btn-sky:hover { background:#7dd3fc; transform:translateY(-1px); }
+.btn-ghost { background:transparent; border:1.5px solid var(--border2); color:var(--text2); }
+.btn-ghost:hover { border-color:var(--sky); color:var(--sky); }
+.btn-danger { background:var(--red); color:#fff; }
+.btn-danger:hover { background:#fca5a5; }
+.btn-sm { padding:6px 12px; font-size:.76rem; border-radius:7px; }
+.btn-lg { padding:12px 26px; font-size:.9rem; border-radius:11px; }
 .btn-full { width:100%; justify-content:center; }
-.btn-sm { padding:7px 16px; font-size:0.8rem; border-radius:8px; }
 
-/* HERO */
+/* ── CARDS ── */
+.card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:20px;
+  transition:all .22s;
+}
+.card:hover { border-color:var(--border2); }
+.card-interactive:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,.4); border-color:var(--sky); }
+
+/* ── HOME PAGE ── */
 .hero {
-  min-height:100vh;
-  background:linear-gradient(135deg, #6c35de 0%, #8b5cf6 50%, #a78bfa 100%);
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; text-align:center;
-  padding:100px 40px 80px;
+  background:linear-gradient(135deg,#0d1b2e 0%,#111827 60%,#0f1e34 100%);
+  border:1px solid var(--border);
+  border-radius:18px; padding:44px 40px;
   position:relative; overflow:hidden;
+  margin-bottom:24px;
 }
 .hero::before {
-  content:'';
-  position:absolute; inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  content:''; position:absolute;
+  top:-80px; right:-80px; width:360px; height:360px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,.15),transparent 65%);
+  pointer-events:none;
+}
+.hero::after {
+  content:''; position:absolute;
+  bottom:-60px; left:100px; width:280px; height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(167,139,250,.12),transparent 65%);
+  pointer-events:none;
 }
 .hero-tag {
-  display:inline-flex; align-items:center; gap:8px;
-  background:rgba(255,255,255,0.2);
-  border:1px solid rgba(255,255,255,0.3);
-  padding:8px 20px; border-radius:100px;
-  font-size:0.82rem; font-weight:600; color:#fff;
-  letter-spacing:1px; text-transform:uppercase; margin-bottom:28px;
-  backdrop-filter:blur(8px);
-  animation:fadeDown 0.6s ease;
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(56,189,248,.1); border:1px solid rgba(56,189,248,.2);
+  padding:5px 13px; border-radius:99px;
+  font-size:.65rem; font-weight:700; color:var(--sky);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:14px;
 }
 .hero h1 {
-  font-size:clamp(2.5rem,6vw,5rem); font-weight:900;
-  color:#fff; line-height:1.1; margin-bottom:20px;
-  animation:fadeUp 0.6s ease 0.1s both;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2rem,4.5vw,3.4rem);
+  font-weight:800; line-height:1.1;
+  color:var(--text); margin-bottom:12px; position:relative; z-index:1;
 }
-.hero h1 .yellow { color:#fde68a; }
+.hero h1 .hl { color:var(--sky); }
+.hero h1 .hl2 { color:var(--orange); }
 .hero-desc {
-  max-width:600px; font-size:1.1rem; color:rgba(255,255,255,0.85);
-  line-height:1.7; margin-bottom:40px;
-  animation:fadeUp 0.6s ease 0.2s both;
+  font-size:.9rem; color:var(--text2); line-height:1.7;
+  max-width:500px; margin-bottom:24px; position:relative; z-index:1;
 }
-.hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.6s ease 0.3s both; }
+.hero-btns { display:flex; gap:9px; flex-wrap:wrap; position:relative; z-index:1; }
 .hero-stats {
-  display:flex; gap:40px; margin-top:64px; flex-wrap:wrap; justify-content:center;
-  animation:fadeUp 0.6s ease 0.4s both;
+  display:flex; gap:28px; margin-top:36px;
+  flex-wrap:wrap; position:relative; z-index:1;
 }
-.hero-stat { text-align:center; }
-.hero-stat-num { font-size:2rem; font-weight:800; color:#fff; }
-.hero-stat-label { font-size:0.78rem; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+.hstat .n {
+  font-family:'Syne',sans-serif; font-size:1.7rem;
+  font-weight:800; color:var(--text);
+}
+.hstat .l { font-size:.62rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-top:1px; }
 
-/* CATEGORIES SECTION */
-.categories { padding:80px 48px; background:#fff; }
-.section-center { text-align:center; margin-bottom:52px; }
-.section-badge {
-  display:inline-block; background:var(--purple-light);
-  color:var(--purple); padding:6px 16px; border-radius:100px;
-  font-size:0.78rem; font-weight:600; letter-spacing:1px;
-  text-transform:uppercase; margin-bottom:14px;
+/* Stat row */
+.stat-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
+.scard {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px; text-align:center;
 }
-.section-title { font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:800; color:var(--dark); margin-bottom:14px; }
-.section-sub { font-size:1rem; color:var(--gray); max-width:540px; margin:0 auto; line-height:1.6; }
+.scard .si { font-size:1.5rem; margin-bottom:6px; }
+.scard .sn { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; color:var(--text); }
+.scard .sl { font-size:.63rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
-.categories-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:20px; max-width:1100px; margin:0 auto;
+/* ── QUIZ MODULES ── */
+.topic-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; }
+.topic-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 14px;
+  text-align:center; cursor:pointer; transition:all .22s;
 }
-.cat-card {
-  background:#fff; border:2px solid var(--border);
-  border-radius:16px; padding:28px 16px; text-align:center;
-  cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden;
+.topic-card:hover { transform:translateY(-4px); border-color:var(--sky); box-shadow:0 8px 24px rgba(56,189,248,.15); }
+.tc-icon { font-size:1.8rem; margin-bottom:8px; }
+.tc-name { font-weight:700; font-size:.84rem; color:var(--text); margin-bottom:3px; }
+.tc-count { font-size:.68rem; color:var(--text3); margin-bottom:7px; }
+.tc-level {
+  display:inline-block; padding:2px 9px; border-radius:99px;
+  font-size:.62rem; font-weight:700;
 }
-.cat-card::before { content:''; position:absolute; inset:0; background:var(--purple); opacity:0; transition:opacity 0.3s; }
-.cat-card:hover { border-color:var(--purple); transform:translateY(-6px); box-shadow:var(--card-shadow-hover); }
-.cat-card:hover::before { opacity:0.04; }
-.cat-icon { font-size:2.4rem; margin-bottom:12px; display:block; }
-.cat-name { font-weight:700; font-size:0.92rem; color:var(--dark); margin-bottom:4px; }
-.cat-count { font-size:0.78rem; color:var(--gray2); }
-.cat-pill {
-  display:inline-block; margin-top:10px;
-  padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600;
-}
-.cp-green { background:#d1fae5; color:#065f46; }
-.cp-yellow { background:#fef3c7; color:#92400e; }
-.cp-red { background:#fee2e2; color:#991b1b; }
+.lv-bg { background:var(--green-dim); color:var(--green); }
+.lv-in { background:var(--yellow-dim); color:var(--yellow); }
+.lv-ad { background:var(--red-dim); color:var(--red); }
+.lv-nw { background:var(--sky-dim); color:var(--sky); }
 
-/* FEATURES */
-.features { padding:80px 48px; background:var(--purple-bg); }
-.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; max-width:1100px; margin:0 auto; }
-.feature-card {
-  background:#fff; border-radius:18px; padding:32px 28px;
-  box-shadow:var(--card-shadow); transition:all 0.3s;
+/* ── QUIZ ── */
+.quiz-wrap { max-width:660px; margin:0 auto; }
+.qpb { height:5px; background:var(--bg3); border-radius:99px; overflow:hidden; margin-bottom:8px; }
+.qpf { height:100%; background:linear-gradient(90deg,var(--sky),var(--purple)); border-radius:99px; transition:width .4s ease; }
+.q-meta { display:flex; justify-content:space-between; align-items:center; font-size:.76rem; color:var(--text3); margin-bottom:16px; }
+.q-timer { font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--sky); font-size:.9rem; }
+.q-timer.warn { color:var(--red); animation:pulse .5s ease infinite alternate; }
+@keyframes pulse { to{opacity:.5} }
+.q-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:16px; padding:26px; margin-bottom:12px;
 }
-.feature-card:hover { transform:translateY(-4px); box-shadow:var(--card-shadow-hover); }
-.feat-icon {
-  width:56px; height:56px; border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.6rem; margin-bottom:18px;
+.q-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--sky-dim); border:1px solid rgba(56,189,248,.2);
+  padding:3px 10px; border-radius:99px;
+  font-size:.62rem; font-weight:700; color:var(--sky);
+  letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px;
 }
-.fi-purple { background:linear-gradient(135deg,#ede9fe,#ddd6fe); }
-.fi-pink { background:linear-gradient(135deg,#fce7f3,#fbcfe8); }
-.fi-yellow { background:linear-gradient(135deg,#fef9c3,#fde68a); }
-.fi-green { background:linear-gradient(135deg,#d1fae5,#a7f3d0); }
-.feat-title { font-weight:700; font-size:1.05rem; color:var(--dark); margin-bottom:8px; }
-.feat-desc { font-size:0.9rem; color:var(--gray); line-height:1.6; }
-
-/* EXPLORE */
-.explore { padding:80px 48px; background:#fff; }
-.modules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; max-width:1100px; margin:0 auto; }
-.module-card {
-  background:#fff; border:2px solid var(--border);
-  border-radius:18px; overflow:hidden; transition:all 0.3s; cursor:pointer;
-}
-.module-card:hover { border-color:var(--purple); transform:translateY(-5px); box-shadow:var(--card-shadow-hover); }
-.mod-header { padding:24px; display:flex; align-items:center; gap:16px; }
-.mod-icon {
-  width:54px; height:54px; border-radius:14px;
-  display:flex; align-items:center; justify-content:center; font-size:1.5rem;
-}
-.mod-title { font-weight:700; font-size:1rem; color:var(--dark); margin-bottom:4px; }
-.mod-tag { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600; }
-.tag-b { background:#d1fae5; color:#065f46; }
-.tag-i { background:#fef3c7; color:#92400e; }
-.tag-a { background:#fee2e2; color:#991b1b; }
-.mod-body { padding:0 24px 16px; }
-.mod-desc { font-size:0.88rem; color:var(--gray); line-height:1.6; margin-bottom:14px; }
-.mod-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
-.chip { background:var(--purple-bg); color:var(--purple); border:1px solid #ddd6fe; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:500; }
-.prog-bar { height:5px; background:#e5e7eb; border-radius:100px; overflow:hidden; }
-.prog-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--purple),var(--pink)); }
-.mod-footer { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-top:1px solid var(--border); }
-.mod-stats { display:flex; gap:14px; }
-.mod-stat { font-size:0.8rem; color:var(--gray); }
-
-/* QUIZ */
-.quiz-page { padding:100px 24px 60px; }
-.quiz-wrap { max-width:760px; margin:0 auto; }
-.quiz-top { margin-bottom:24px; }
-.qprog-bar { height:8px; background:#e5e7eb; border-radius:100px; overflow:hidden; margin-bottom:12px; }
-.qprog-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--pink)); border-radius:100px; transition:width 0.4s; }
-.q-meta { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gray); }
-.q-timer { font-weight:700; color:var(--purple); font-size:1rem; }
-.quiz-card {
-  background:#fff; border:2px solid var(--border);
-  border-radius:20px; padding:36px; margin-bottom:16px;
-  box-shadow:var(--card-shadow);
-}
-.q-cat { font-size:0.75rem; color:var(--purple); font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
-.q-text { font-size:1.15rem; font-weight:700; color:var(--dark); line-height:1.5; margin-bottom:28px; }
-.q-opts { display:flex; flex-direction:column; gap:12px; }
+.q-text { font-size:1.02rem; font-weight:600; color:var(--text); line-height:1.55; margin-bottom:20px; }
+.q-opts { display:flex; flex-direction:column; gap:8px; }
 .q-opt {
-  background:#fff; border:2px solid var(--border);
-  border-radius:12px; padding:14px 18px;
-  display:flex; align-items:center; gap:14px;
-  cursor:pointer; transition:all 0.2s;
-  font-size:0.95rem; font-weight:500; color:var(--dark);
-  text-align:left; width:100%; font-family:'Poppins',sans-serif;
+  background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:10px; padding:12px 14px;
+  display:flex; align-items:center; gap:10px;
+  cursor:pointer; transition:all .18s;
+  font-size:.86rem; font-weight:500; color:var(--text2);
+  text-align:left; width:100%;
+  font-family:'Space Grotesk',sans-serif;
 }
-.q-opt:hover:not(:disabled) { border-color:var(--purple); background:var(--purple-bg); color:var(--purple); }
-.q-opt.correct { border-color:var(--green) !important; background:#d1fae5 !important; color:#065f46 !important; }
-.q-opt.wrong { border-color:var(--red) !important; background:#fee2e2 !important; color:#991b1b !important; }
-.opt-letter {
-  width:32px; height:32px; border-radius:8px;
-  background:var(--purple-bg); border:1px solid #ddd6fe;
+.q-opt:hover:not(:disabled) { border-color:var(--sky); background:var(--sky-dim); color:var(--sky); }
+.q-opt.correct { border-color:var(--green)!important; background:var(--green-dim)!important; color:var(--green)!important; }
+.q-opt.wrong { border-color:var(--red)!important; background:var(--red-dim)!important; color:var(--red)!important; }
+.opt-lbl {
+  width:26px; height:26px; border-radius:6px; flex-shrink:0;
+  background:rgba(255,255,255,.06); border:1px solid var(--border2);
   display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.78rem; color:var(--purple); flex-shrink:0;
+  font-weight:700; font-size:.66rem; color:var(--text3);
 }
-.q-feedback {
-  background:#fff; border:2px solid var(--border);
-  border-radius:14px; padding:18px 22px; display:none; margin-bottom:16px;
-  box-shadow:var(--card-shadow);
+.q-fb {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:10px; padding:13px 16px; display:none; margin-top:10px;
 }
-.q-feedback.show { display:block; }
-.fb-correct { border-color:var(--green) !important; background:#f0fdf4; }
-.fb-wrong { border-color:var(--red) !important; background:#fff1f2; }
-.fb-title { font-weight:700; margin-bottom:4px; font-size:0.95rem; }
-.fb-correct .fb-title { color:var(--green); }
-.fb-wrong .fb-title { color:var(--red); }
-.fb-text { font-size:0.88rem; color:var(--gray); line-height:1.5; }
+.q-fb.show { display:block; }
+.q-fb.ok { border-color:var(--green); background:var(--green-dim); }
+.q-fb.no { border-color:var(--red); background:var(--red-dim); }
+.fb-hd { font-weight:700; font-size:.84rem; margin-bottom:3px; }
+.q-fb.ok .fb-hd { color:var(--green); }
+.q-fb.no .fb-hd { color:var(--red); }
+.fb-body { font-size:.79rem; color:var(--text2); line-height:1.5; }
 
-/* RESULT */
+/* Result */
 .result-card {
-  background:#fff; border:2px solid var(--border);
-  border-radius:20px; padding:48px 32px; text-align:center;
-  margin-bottom:28px; box-shadow:var(--card-shadow);
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:16px; padding:36px 28px; text-align:center; margin-bottom:18px;
 }
-.result-circle {
-  width:130px; height:130px; border-radius:50%;
-  border:5px solid var(--purple);
+.result-ring {
+  width:110px; height:110px; border-radius:50%;
+  border:3px solid var(--sky); margin:0 auto 16px;
   display:flex; align-items:center; justify-content:center;
-  margin:0 auto 20px;
-  font-size:2rem; font-weight:900; color:var(--purple);
-  box-shadow:0 0 30px rgba(108,53,222,0.15);
+  font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--sky);
 }
-.result-title { font-size:1.6rem; font-weight:800; color:var(--dark); margin-bottom:8px; }
-.result-sub { color:var(--gray); font-size:0.95rem; margin-bottom:28px; }
-.result-stats { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
-.rs-num { font-size:1.8rem; font-weight:800; }
-.rs-label { font-size:0.78rem; color:var(--gray2); }
+.result-ring.great { border-color:var(--green); color:var(--green); }
+.result-ring.poor { border-color:var(--red); color:var(--red); }
+.r-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:5px; }
+.r-sub { font-size:.85rem; color:var(--text2); margin-bottom:22px; }
+.r-stats { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+.rs-item .n { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; }
+.rs-item .l { font-size:.65rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
-/* LEADERBOARD */
-.lb-page { padding:80px 48px; }
-.lb-wrap { max-width:860px; margin:0 auto; }
-.podiums { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:16px; margin-bottom:32px; align-items:end; }
-.podium {
-  background:#fff; border:2px solid var(--border);
-  border-radius:18px; padding:24px 16px; text-align:center;
-  box-shadow:var(--card-shadow);
+/* ── GAMES ── */
+.game-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.game-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; cursor:pointer;
+  transition:all .22s;
 }
-.podium.p1 { border-color:var(--yellow); background:linear-gradient(135deg,#fffbeb,#fef9c3); }
-.podium.p2 { border-color:#d1d5db; }
-.podium.p3 { border-color:#d97706; }
-.pod-crown { font-size:2.2rem; margin-bottom:8px; }
+.game-card:hover { transform:translateY(-4px); border-color:var(--sky); box-shadow:0 12px 32px rgba(56,189,248,.12); }
+.game-thumb {
+  height:100px; display:flex; align-items:center; justify-content:center;
+  font-size:3rem; position:relative;
+}
+.game-body { padding:14px; }
+.game-title { font-weight:700; font-size:.88rem; color:var(--text); margin-bottom:4px; }
+.game-desc { font-size:.75rem; color:var(--text3); line-height:1.5; margin-bottom:10px; }
+.game-foot { display:flex; align-items:center; justify-content:space-between; }
+.game-tag {
+  font-size:.61rem; font-weight:700; padding:2px 8px;
+  border-radius:99px;
+}
+.gt-css { background:rgba(59,130,246,.15); color:#60a5fa; }
+.gt-js { background:var(--yellow-dim); color:var(--yellow); }
+.gt-html { background:var(--orange-dim); color:var(--orange); }
+.gt-sql { background:var(--purple-dim); color:var(--purple); }
+.gt-py { background:var(--green-dim); color:var(--green); }
+.gt-any { background:var(--sky-dim); color:var(--sky); }
+
+/* ── SECTION HEADER ── */
+.sh { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.sh-left {}
+.sh-title { font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:800; color:var(--text); }
+.sh-sub { font-size:.78rem; color:var(--text3); margin-top:2px; }
+
+/* ── LEADERBOARD ── */
+.podiums { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:10px; margin-bottom:22px; align-items:end; }
+.pod {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 12px; text-align:center;
+}
+.pod.p1 { border-color:rgba(251,191,36,.4); background:rgba(251,191,36,.05); }
+.pod-crown { font-size:1.6rem; margin-bottom:5px; }
 .pod-av {
-  width:60px; height:60px; border-radius:50%;
-  margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:1.1rem; color:#fff;
+  width:46px; height:46px; border-radius:50%;
+  margin:0 auto 8px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.9rem; color:#fff;
 }
-.av1 { background:linear-gradient(135deg,#f59e0b,#d97706); }
-.av2 { background:linear-gradient(135deg,#94a3b8,#64748b); }
-.av3 { background:linear-gradient(135deg,#cd7f32,#a16207); }
-.pod-name { font-weight:700; font-size:0.95rem; color:var(--dark); margin-bottom:4px; }
-.pod-score { font-size:1.2rem; font-weight:800; color:var(--purple); }
-.pod-info { font-size:0.72rem; color:var(--gray2); margin-top:4px; }
+.pod-name { font-weight:700; font-size:.83rem; margin-bottom:2px; }
+.pod-score { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:800; color:var(--sky); }
+.pod-info { font-size:.64rem; color:var(--text3); margin-top:2px; }
 .lb-table {
-  background:#fff; border:2px solid var(--border);
-  border-radius:18px; overflow:hidden; box-shadow:var(--card-shadow);
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
 }
-.lb-head { display:grid; grid-template-columns:60px 1fr 110px 110px; padding:14px 24px; background:var(--purple-bg); border-bottom:1px solid var(--border); font-size:0.75rem; color:var(--purple); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
-.lb-row { display:grid; grid-template-columns:60px 1fr 110px 110px; padding:15px 24px; border-bottom:1px solid var(--border); align-items:center; transition:background 0.2s; }
+.lb-head {
+  display:grid; grid-template-columns:48px 1fr 90px 90px;
+  padding:9px 16px; background:rgba(255,255,255,.03);
+  border-bottom:1px solid var(--border);
+  font-size:.64rem; font-weight:700; color:var(--text3);
+  text-transform:uppercase; letter-spacing:1px;
+}
+.lb-row {
+  display:grid; grid-template-columns:48px 1fr 90px 90px;
+  padding:11px 16px; border-bottom:1px solid var(--border);
+  align-items:center; transition:background .15s;
+}
 .lb-row:last-child { border-bottom:none; }
-.lb-row:hover { background:var(--purple-bg); }
-.lb-rank { font-weight:800; font-size:0.9rem; color:var(--purple); }
-.lb-player { display:flex; align-items:center; gap:12px; }
-.lb-av { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--purple),var(--pink)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; color:#fff; }
-.lb-pname { font-weight:600; font-size:0.92rem; color:var(--dark); }
-.lb-pid { font-size:0.76rem; color:var(--gray2); }
-.lb-score { font-weight:800; color:var(--purple); font-size:0.92rem; }
-.badge-pill { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.7rem; font-weight:600; }
-.bp-gold { background:#fef3c7; color:#92400e; }
-.bp-silver { background:#f1f5f9; color:#475569; }
-.bp-purple { background:var(--purple-light); color:var(--purple); }
-.bp-green { background:#d1fae5; color:#065f46; }
+.lb-row:hover { background:rgba(255,255,255,.02); }
+.lb-row.me { background:rgba(56,189,248,.06); border-left:2px solid var(--sky); }
+.lb-rank { font-weight:800; font-size:.82rem; color:var(--sky); }
+.lb-pl { display:flex; align-items:center; gap:8px; }
+.lb-av {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.65rem; color:#fff;
+}
+.lb-pname { font-weight:600; font-size:.82rem; }
+.lb-psub { font-size:.64rem; color:var(--text3); }
+.lb-score { font-weight:800; font-size:.82rem; color:var(--sky); }
+.rank-badge {
+  display:inline-block; padding:2px 8px; border-radius:99px;
+  font-size:.61rem; font-weight:700;
+}
+.rb-g { background:var(--green-dim); color:var(--green); }
+.rb-b { background:var(--sky-dim); color:var(--sky); }
+.rb-y { background:var(--yellow-dim); color:var(--yellow); }
 
-/* ACHIEVEMENTS */
-.ach-page { padding:80px 48px; background:var(--purple-bg); }
-.ach-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:16px; max-width:1100px; margin:0 auto; }
+/* ── ACHIEVEMENTS ── */
+.ach-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
 .ach-card {
-  background:#fff; border:2px solid var(--border);
-  border-radius:16px; padding:24px 16px; text-align:center;
-  transition:all 0.3s; position:relative; box-shadow:var(--card-shadow);
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 14px; text-align:center;
+  transition:all .22s; position:relative;
 }
-.ach-card.unlocked { border-color:var(--yellow); }
-.ach-card.unlocked::after { content:'✓'; position:absolute; top:10px; right:12px; color:var(--green); font-weight:800; }
-.ach-card:hover { transform:translateY(-4px); box-shadow:var(--card-shadow-hover); }
-.ach-card.locked { opacity:0.5; }
-.ach-icon { font-size:2.4rem; margin-bottom:10px; }
-.ach-name { font-weight:700; font-size:0.88rem; color:var(--dark); margin-bottom:5px; }
-.ach-desc { font-size:0.75rem; color:var(--gray); line-height:1.4; }
+.ach-card.unlocked { border-color:rgba(251,191,36,.35); background:rgba(251,191,36,.04); }
+.ach-card.unlocked::after { content:'✓'; position:absolute; top:8px; right:10px; color:var(--green); font-weight:800; font-size:.75rem; }
+.ach-card.locked { opacity:.4; }
+.ach-card:hover { transform:translateY(-3px); }
+.ach-icon { font-size:1.8rem; margin-bottom:7px; }
+.ach-name { font-weight:700; font-size:.78rem; margin-bottom:3px; }
+.ach-desc { font-size:.66rem; color:var(--text3); line-height:1.4; }
 
-/* AUTH */
-.auth-page { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:100px 24px 60px; background:var(--purple-bg); }
+/* ── COMMUNITY ── */
+.post-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px; margin-bottom:10px;
+  transition:border-color .18s;
+}
+.post-card:hover { border-color:var(--border2); }
+.post-top { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.post-av {
+  width:32px; height:32px; border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.68rem; color:#fff; flex-shrink:0;
+}
+.post-author { font-weight:700; font-size:.8rem; }
+.post-time { font-size:.66rem; color:var(--text3); }
+.post-tag {
+  margin-left:auto; font-size:.6rem; font-weight:700;
+  padding:2px 7px; border-radius:99px;
+}
+.ptag-tip { background:var(--sky-dim); color:var(--sky); }
+.ptag-win { background:var(--yellow-dim); color:var(--yellow); }
+.ptag-q { background:var(--purple-dim); color:var(--purple); }
+.post-body { font-size:.82rem; color:var(--text2); line-height:1.6; margin-bottom:10px; }
+.post-actions { display:flex; gap:6px; }
+.pa {
+  background:none; border:1px solid var(--border);
+  color:var(--text3); font-family:'Space Grotesk',sans-serif;
+  font-size:.71rem; font-weight:600; padding:4px 10px;
+  border-radius:6px; cursor:pointer; transition:all .18s;
+  display:flex; align-items:center; gap:4px;
+}
+.pa:hover { background:var(--sky-dim); border-color:var(--sky); color:var(--sky); }
+.pa.liked { color:var(--red); border-color:var(--red); background:var(--red-dim); }
+.new-post {
+  background:var(--bg2); border:1px dashed var(--border2);
+  border-radius:var(--r); padding:16px; margin-bottom:14px;
+}
+.new-post textarea {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; padding:10px 12px;
+  font-family:'Space Grotesk',sans-serif; font-size:.82rem;
+  color:var(--text); outline:none; resize:none; height:74px;
+  transition:border-color .2s;
+}
+.new-post textarea:focus { border-color:var(--sky); }
+.new-post textarea::placeholder { color:var(--text3); }
+.np-foot { display:flex; align-items:center; justify-content:space-between; margin-top:9px; gap:8px; flex-wrap:wrap; }
+.ptags { display:flex; gap:5px; }
+.ptag-btn {
+  background:var(--bg3); border:1px solid var(--border);
+  color:var(--text3); font-family:'Space Grotesk',sans-serif;
+  font-size:.68rem; font-weight:600; padding:4px 10px;
+  border-radius:6px; cursor:pointer; transition:all .18s;
+}
+.ptag-btn.sel { background:var(--sky); border-color:var(--sky); color:#0b0f1a; }
+
+/* ── AUTH ── */
+.auth-wrap { min-height:calc(100vh - 54px); display:flex; align-items:center; justify-content:center; padding:32px 16px; }
 .auth-card {
-  background:#fff; border-radius:24px; padding:48px 40px;
-  width:100%; max-width:480px;
-  box-shadow:0 20px 60px rgba(108,53,222,0.15);
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:18px; padding:36px 30px;
+  width:100%; max-width:420px;
 }
-.auth-logo { font-size:1.8rem; font-weight:900; color:var(--purple); text-align:center; margin-bottom:6px; }
-.auth-logo span { color:var(--pink); }
-.auth-sub { text-align:center; color:var(--gray); font-size:0.92rem; margin-bottom:32px; }
-.auth-hero { width:80px; height:80px; background:linear-gradient(135deg,var(--purple),var(--pink)); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 20px; }
-.form-group { margin-bottom:18px; }
-.form-label { display:block; font-size:0.82rem; font-weight:600; color:var(--dark); margin-bottom:7px; }
-.form-input {
-  width:100%; background:#f9fafb; border:2px solid var(--border);
-  border-radius:10px; color:var(--dark);
-  padding:13px 16px; font-family:'Poppins',sans-serif;
-  font-size:0.92rem; outline:none; transition:all 0.2s;
+.auth-icon {
+  width:56px; height:56px; border-radius:14px;
+  background:linear-gradient(135deg,var(--sky),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; margin:0 auto 12px;
 }
-.form-input:focus { border-color:var(--purple); background:#fff; box-shadow:0 0 0 4px rgba(108,53,222,0.08); }
-.form-input::placeholder { color:var(--gray2); }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.alert { border-radius:10px; padding:12px 16px; font-size:0.85rem; margin-bottom:16px; display:none; font-weight:500; }
+.auth-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; text-align:center; margin-bottom:4px; }
+.auth-title span { color:var(--sky); }
+.auth-sub { text-align:center; color:var(--text3); font-size:.82rem; margin-bottom:22px; }
+.fgroup { margin-bottom:13px; }
+.flabel { display:block; font-size:.72rem; font-weight:700; color:var(--text2); margin-bottom:5px; }
+.finput {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; color:var(--text); padding:10px 12px;
+  font-family:'Space Grotesk',sans-serif; font-size:.84rem;
+  outline:none; transition:border-color .2s;
+}
+.finput:focus { border-color:var(--sky); }
+.finput::placeholder { color:var(--text3); }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.alert {
+  border-radius:8px; padding:9px 12px; font-size:.77rem;
+  margin-bottom:12px; display:none; font-weight:500;
+}
 .alert.show { display:block; }
-.alert-error { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
-.alert-success { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
-.auth-footer { text-align:center; margin-top:20px; font-size:0.88rem; color:var(--gray); }
-.auth-footer a { color:var(--purple); cursor:pointer; font-weight:600; }
+.alert-e { background:var(--red-dim); border:1px solid rgba(248,113,113,.3); color:var(--red); }
+.alert-s { background:var(--green-dim); border:1px solid rgba(74,222,128,.3); color:var(--green); }
+.auth-foot { text-align:center; margin-top:14px; font-size:.79rem; color:var(--text3); }
+.auth-foot a { color:var(--sky); cursor:pointer; font-weight:700; text-decoration:none; }
+.auth-foot a:hover { text-decoration:underline; }
 
-/* FOOTER */
-footer {
-  background:var(--dark); color:rgba(255,255,255,0.7);
-  padding:40px 48px; text-align:center;
-}
-footer .footer-logo { font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:10px; }
-footer .footer-logo span { color:var(--purple3); }
+/* ── EDITOR ── */
+.ed-layout { display:grid; grid-template-columns:1fr 1fr; gap:12px; height:calc(100vh - 140px); min-height:460px; }
+.ed-pane { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; display:flex; flex-direction:column; }
+.ed-bar { background:var(--bg); padding:8px 12px; display:flex; align-items:center; gap:6px; border-bottom:1px solid var(--border); }
+.ed-bar-title { font-size:.67rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
+.etab { background:none; border:none; color:var(--text3); font-family:'Space Grotesk',sans-serif; font-size:.72rem; font-weight:600; padding:4px 9px; border-radius:5px; cursor:pointer; transition:all .18s; }
+.etab.active { background:var(--sky); color:#0b0f1a; }
+.etab:hover:not(.active) { background:rgba(255,255,255,.07); color:var(--text); }
+.code-ta { flex:1; background:transparent; border:none; outline:none; color:#e2e8f0; font-family:'JetBrains Mono',monospace; font-size:.8rem; padding:12px; resize:none; line-height:1.65; tab-size:2; }
+.run-btn { background:var(--green); color:#0b0f1a; border:none; font-family:'Space Grotesk',sans-serif; font-size:.72rem; font-weight:700; padding:4px 11px; border-radius:5px; cursor:pointer; transition:background .18s; }
+.run-btn:hover { background:#86efac; }
+.clr-btn { background:rgba(255,255,255,.05); color:var(--text3); border:none; font-family:'Space Grotesk',sans-serif; font-size:.72rem; padding:4px 9px; border-radius:5px; cursor:pointer; transition:all .18s; }
+.clr-btn:hover { background:rgba(255,255,255,.1); color:var(--text); }
+.console-out { background:var(--bg); color:#86efac; font-family:'JetBrains Mono',monospace; font-size:.73rem; padding:9px 12px; max-height:110px; overflow-y:auto; white-space:pre-wrap; line-height:1.5; flex:1; }
+.co-err { color:var(--red); }
+.co-info { color:var(--sky); }
+.prev-pane { background:#fff; border-radius:var(--r); overflow:hidden; display:flex; flex-direction:column; border:1px solid var(--border); }
+.prev-bar { background:var(--bg2); padding:8px 12px; display:flex; align-items:center; gap:7px; border-bottom:1px solid var(--border); }
+.prev-title { font-size:.67rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; flex:1; }
+.prev-iframe { flex:1; border:none; width:100%; background:#fff; }
 
-/* ANIMATIONS */
-@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-@keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+/* ── DIVIDER ── */
+.sec-div { height:1px; background:var(--border); margin:28px 0; }
 
-@media(max-width:768px) {
-  nav { padding:0 16px; }
-  .nav-center { display:none; }
-  .categories,.features,.explore,.lb-page,.ach-page { padding:60px 20px; }
+/* ── PROFILE MODAL ── */
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:500; align-items:center; justify-content:center; padding:16px; }
+.modal-bg.show { display:flex; }
+.modal { background:var(--bg2); border:1px solid var(--border); border-radius:18px; padding:30px; width:100%; max-width:380px; }
+.modal-close { float:right; background:none; border:none; color:var(--text3); font-size:1.2rem; cursor:pointer; transition:color .18s; }
+.modal-close:hover { color:var(--text); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px) {
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; }
+  .topbar { top:0; }
+  .mob-toggle { display:block; }
+  .overlay.show { display:block; }
+  .ed-layout { grid-template-columns:1fr; height:auto; }
   .podiums { grid-template-columns:1fr; }
-  .lb-head,.lb-row { grid-template-columns:50px 1fr 90px; }
-  .lb-head>*:last-child,.lb-row>*:last-child { display:none; }
-  .form-row { grid-template-columns:1fr; }
-  .auth-card { padding:36px 20px; }
+  .frow { grid-template-columns:1fr; }
+  .page { padding:16px 14px; }
+  .hero { padding:30px 20px; }
+  .topic-grid { grid-template-columns:repeat(3,1fr); }
+  #comGrid { grid-template-columns:1fr!important; }
+  .com-sidebar { display:none; }
+}
+@media(max-width:560px) {
+  .topic-grid { grid-template-columns:repeat(2,1fr); }
+  .game-grid { grid-template-columns:1fr; }
+  .hero h1 { font-size:1.8rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo" onclick="goHome()"><span>IT</span>Quest</div>
-  <div class="nav-center">
-    <button class="nav-link anav" onclick="goHome()">Home</button>
-    <button class="nav-link" onclick="goTo('explore')">Discover Quiz</button>
-    <button class="nav-link" onclick="goTo('leaderboard')">Leaderboard</button>
-    <button class="nav-link" onclick="goTo('achievements')">Badges</button>
-  </div>
-  <div class="nav-right">
-    <div class="nav-user" id="navUser">
-      <div class="nav-avatar" id="navAv">A</div>
-      <span class="nav-uname" id="navNm">Student</span>
-      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
-    </div>
-    <div id="navAuth" style="display:flex;gap:10px;">
-      <button class="btn btn-outline" onclick="goTo('login')">Log In</button>
-      <button class="btn btn-purple" onclick="goTo('register')">Sign Up</button>
-    </div>
-  </div>
-</nav>
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
 
-<!-- HOME -->
+<!-- ══ SIDEBAR ══ -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🎮</div>
+      <div class="logo-text"><span>IT</span>Quest</div>
+    </div>
+    <div class="logo-sub">Gamified IT Learning</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Main</div>
+    <button class="ni active" data-p="home" onclick="navTo('home')"><span class="ic">🏠</span> Home</button>
+    <button class="ni" data-p="quiz" onclick="navTo('quiz')"><span class="ic">❓</span> Quizzes</button>
+    <button class="ni" data-p="games" onclick="navTo('games')"><span class="ic">🎮</span> Games Hub <span class="bdg">HOT</span></button>
+    <button class="ni" data-p="editor" onclick="navTo('editor')"><span class="ic">💻</span> Code Editor</button>
+    <div class="sb-section">Social</div>
+    <button class="ni" data-p="leaderboard" onclick="navTo('leaderboard')"><span class="ic">🏆</span> Leaderboard</button>
+    <button class="ni" data-p="achievements" onclick="navTo('achievements')"><span class="ic">🎖️</span> Badges</button>
+    <button class="ni" data-p="community" onclick="navTo('community')"><span class="ic">💬</span> Community</button>
+    <div class="sb-section">Account</div>
+    <button class="ni" id="sbLogin" data-p="login" onclick="navTo('login')"><span class="ic">🔑</span> Login</button>
+    <button class="ni" id="sbReg" data-p="register" onclick="navTo('register')"><span class="ic">🚀</span> Sign Up</button>
+    <button class="ni" id="sbLogout" style="display:none" onclick="doLogout()"><span class="ic">🚪</span> Logout</button>
+  </nav>
+  <div class="sb-user" id="sbUser" style="display:none">
+    <div class="sb-av" id="sbAv">?</div>
+    <div><div class="sb-uname" id="sbName">Student</div><div class="sb-upts" id="sbPts">0 pts</div></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+<div class="topbar">
+  <button class="mob-toggle" onclick="toggleSB()">☰</button>
+  <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none">← Back</button>
+  <div class="breadcrumb" id="breadcrumb"><b>Home</b></div>
+  <div class="tb-right">
+    <div id="tbPtsWrap" style="display:none"><div class="pts-badge" id="tbPts">⭐ 0 pts</div></div>
+    <div id="tbAuthBtns" style="display:flex;gap:7px">
+      <button class="btn btn-ghost btn-sm" onclick="navTo('login')">Log In</button>
+      <button class="btn btn-sky btn-sm" onclick="navTo('register')">Sign Up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ HOME ════ -->
 <div class="page active" id="page-home">
-
-  <!-- HERO -->
   <div class="hero">
-    <div class="hero-tag">🎓 BSIT Gamified Learning Platform</div>
-    <h1>Dive into a World of<br><span class="yellow">IT Quest</span> Learning!</h1>
-    <p class="hero-desc">Get ready for an exciting journey filled with IT challenges, quizzes, and coding puzzles. Whether you're a beginner or an expert, there's always something new to discover!</p>
+    <div class="hero-tag">🎓 BSIT · Gamified Learning</div>
+    <h1>Level Up Your<br><span class="hl">IT Skills</span> with<br><span class="hl2">ITQuest!</span></h1>
+    <p class="hero-desc">Quizzes, games, a live code editor, leaderboard, and community — everything a BSIT student needs to level up fast.</p>
     <div class="hero-btns">
-      <button class="btn btn-white btn-lg" onclick="goTo('register')">▶ Play Now</button>
-      <button class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.3);" onclick="goTo('explore')">Discover Modules</button>
+      <button class="btn btn-sky btn-lg" onclick="startPlay()">▶ Start Playing</button>
+      <button class="btn btn-ghost btn-lg" onclick="navTo('quiz')">📚 Browse Quizzes</button>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">Students</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">120+</div><div class="hero-stat-label">Quizzes</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Challenges</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Badges</div></div>
+      <div class="hstat"><div class="n">500+</div><div class="l">Students</div></div>
+      <div class="hstat"><div class="n">120</div><div class="l">Questions</div></div>
+      <div class="hstat"><div class="n">12</div><div class="l">Topics</div></div>
+      <div class="hstat"><div class="n">30+</div><div class="l">Badges</div></div>
     </div>
   </div>
 
-  <!-- CATEGORIES -->
-  <div class="categories">
-    <div class="section-center">
-      <div class="section-badge">Quiz Categories</div>
-      <div class="section-title">Choose Your <span style="color:var(--purple)">Topic</span></div>
-      <p class="section-sub">Pick a category and start testing your knowledge right away!</p>
-    </div>
-    <div class="categories-grid">
-      <div class="cat-card" onclick="startQuiz('networking')"><span class="cat-icon">🌐</span><div class="cat-name">Networking</div><div class="cat-count">20 Quizzes</div><span class="cat-pill cp-green">Beginner</span></div>
-      <div class="cat-card" onclick="startQuiz('programming')"><span class="cat-icon">💻</span><div class="cat-name">Programming</div><div class="cat-count">25 Quizzes</div><span class="cat-pill cp-green">Beginner</span></div>
-      <div class="cat-card" onclick="startQuiz('database')"><span class="cat-icon">🗄️</span><div class="cat-name">Database</div><div class="cat-count">18 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
-      <div class="cat-card" onclick="startQuiz('webdev')"><span class="cat-icon">🌍</span><div class="cat-name">Web Dev</div><div class="cat-count">22 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
-      <div class="cat-card" onclick="startQuiz('os')"><span class="cat-icon">⚙️</span><div class="cat-name">OS</div><div class="cat-count">16 Quizzes</div><span class="cat-pill cp-yellow">Intermediate</span></div>
-      <div class="cat-card" onclick="startQuiz('cybersecurity')"><span class="cat-icon">🔒</span><div class="cat-name">Cybersecurity</div><div class="cat-count">14 Quizzes</div><span class="cat-pill cp-red">Advanced</span></div>
+  <!-- Progress (logged in) -->
+  <div id="homeProgress" style="display:none;margin-bottom:26px">
+    <div class="sh"><div class="sh-left"><div class="sh-title">📊 Your Progress</div><div class="sh-sub">Keep going — you're doing great!</div></div></div>
+    <div class="stat-row">
+      <div class="scard"><div class="si">⭐</div><div class="sn" id="hPts">0</div><div class="sl">Points</div></div>
+      <div class="scard"><div class="si">✅</div><div class="sn" id="hQ">0</div><div class="sl">Quizzes Done</div></div>
+      <div class="scard"><div class="si">🔥</div><div class="sn">3</div><div class="sl">Day Streak</div></div>
+      <div class="scard"><div class="si">🎖️</div><div class="sn">3</div><div class="sl">Badges</div></div>
     </div>
   </div>
 
-  <!-- FEATURES -->
-  <div class="features">
-    <div class="section-center">
-      <div class="section-badge">Why IT Quest</div>
-      <div class="section-title">Everything You Need to <span style="color:var(--purple)">Level Up</span></div>
+  <div class="sh"><div class="sh-left"><div class="sh-title">🎮 Quick Access</div><div class="sh-sub">Jump straight in</div></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px">
+    <div class="card card-interactive" onclick="navTo('quiz')" style="cursor:pointer;display:flex;align-items:center;gap:14px">
+      <div style="font-size:2rem">❓</div>
+      <div><div style="font-weight:700;font-size:.9rem">Take a Quiz</div><div style="font-size:.75rem;color:var(--text3);margin-top:2px">12 topics · 10 Qs each</div></div>
     </div>
-    <div class="features-grid">
-      <div class="feature-card"><div class="feat-icon fi-purple">🧩</div><div class="feat-title">Coding Challenges</div><div class="feat-desc">Write and run JavaScript & Java directly in your browser with instant console output.</div></div>
-      <div class="feature-card"><div class="feat-icon fi-pink">📝</div><div class="feat-title">Interactive Quizzes</div><div class="feat-desc">Timed quizzes covering all major IT topics. Get instant feedback on every answer.</div></div>
-      <div class="feature-card"><div class="feat-icon fi-yellow">🏆</div><div class="feat-title">Live Leaderboard</div><div class="feat-desc">Compete with classmates in real-time. Track who leads the rankings every day.</div></div>
-      <div class="feature-card"><div class="feat-icon fi-green">🎖️</div><div class="feat-title">Achievement Badges</div><div class="feat-desc">Earn unique badges by completing challenges and reaching milestones.</div></div>
+    <div class="card card-interactive" onclick="navTo('games')" style="cursor:pointer;display:flex;align-items:center;gap:14px">
+      <div style="font-size:2rem">🎮</div>
+      <div><div style="font-weight:700;font-size:.9rem">Play Games</div><div style="font-size:.75rem;color:var(--text3);margin-top:2px">CSS, SQL, JS &amp; more</div></div>
+    </div>
+    <div class="card card-interactive" onclick="navTo('editor')" style="cursor:pointer;display:flex;align-items:center;gap:14px">
+      <div style="font-size:2rem">💻</div>
+      <div><div style="font-weight:700;font-size:.9rem">Code Editor</div><div style="font-size:.75rem;color:var(--text3);margin-top:2px">HTML · CSS · JS live</div></div>
+    </div>
+    <div class="card card-interactive" onclick="navTo('leaderboard')" style="cursor:pointer;display:flex;align-items:center;gap:14px">
+      <div style="font-size:2rem">🏆</div>
+      <div><div style="font-weight:700;font-size:.9rem">Leaderboard</div><div style="font-size:.75rem;color:var(--text3);margin-top:2px">See who's winning</div></div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo"><span>IT</span>Quest</div>
-    <p>© 2026 IT Quest — Gamified Learning for BSIT Students</p>
-    <p style="margin-top:6px;font-size:0.8rem;">Built with 💜 for learning</p>
-  </footer>
-
-</div>
-
-<!-- EXPLORE -->
-<div class="page" id="page-explore">
-  <div class="explore" style="padding-top:100px;">
-    <div class="section-center">
-      <div class="section-badge">All Modules</div>
-      <div class="section-title">Discover <span style="color:var(--purple)">Quiz Modules</span></div>
-      <p class="section-sub">Choose a module to start. Each has real quiz questions, topics, and challenges to complete.</p>
-    </div>
-    <div class="modules-grid">
-      <div class="module-card" onclick="startQuiz('networking')">
-        <div class="mod-header"><div class="mod-icon fi-purple">🌐</div><div><div class="mod-title">Computer Networking</div><span class="mod-tag tag-b">Beginner</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Learn OSI model, TCP/IP, IP addressing, DNS, HTTP and how data travels across networks.</div><div class="mod-chips"><span class="chip">OSI Model</span><span class="chip">TCP/IP</span><span class="chip">HTTP/HTTPS</span><span class="chip">DNS</span><span class="chip">IP Address</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 20 Quizzes</span><span class="mod-stat">🧩 8 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-      <div class="module-card" onclick="startQuiz('programming')">
-        <div class="mod-header"><div class="mod-icon fi-pink">💻</div><div><div class="mod-title">Programming Fundamentals</div><span class="mod-tag tag-b">Beginner</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Master variables, loops, functions, arrays, and OOP principles in Java and JavaScript.</div><div class="mod-chips"><span class="chip">Variables</span><span class="chip">Loops</span><span class="chip">Functions</span><span class="chip">OOP</span><span class="chip">Arrays</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 25 Quizzes</span><span class="mod-stat">🧩 12 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-      <div class="module-card" onclick="startQuiz('database')">
-        <div class="mod-header"><div class="mod-icon fi-green">🗄️</div><div><div class="mod-title">Database Management</div><span class="mod-tag tag-i">Intermediate</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Learn SQL, database design, normalization, ERDs, and MySQL queries for real applications.</div><div class="mod-chips"><span class="chip">SQL</span><span class="chip">Normalization</span><span class="chip">ERD</span><span class="chip">MySQL</span><span class="chip">Joins</span></div><div class="prog-bar"><div class="prog-fill" style="width:20%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 18 Quizzes</span><span class="mod-stat">🧩 10 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-      <div class="module-card" onclick="startQuiz('webdev')">
-        <div class="mod-header"><div class="mod-icon fi-yellow">🌍</div><div><div class="mod-title">Web Development</div><span class="mod-tag tag-i">Intermediate</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Build websites using HTML5, CSS3, and JavaScript. Learn responsive design and DOM manipulation.</div><div class="mod-chips"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">DOM</span><span class="chip">Responsive</span></div><div class="prog-bar"><div class="prog-fill" style="width:10%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 22 Quizzes</span><span class="mod-stat">🧩 15 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-      <div class="module-card" onclick="startQuiz('os')">
-        <div class="mod-header"><div class="mod-icon fi-purple">⚙️</div><div><div class="mod-title">Operating Systems</div><span class="mod-tag tag-i">Intermediate</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Understand processes, memory management, file systems, and CPU scheduling algorithms.</div><div class="mod-chips"><span class="chip">Processes</span><span class="chip">Memory</span><span class="chip">File Systems</span><span class="chip">Scheduling</span></div><div class="prog-bar"><div class="prog-fill" style="width:5%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 16 Quizzes</span><span class="mod-stat">🧩 6 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-      <div class="module-card" onclick="startQuiz('cybersecurity')">
-        <div class="mod-header"><div class="mod-icon fi-pink">🔒</div><div><div class="mod-title">Cybersecurity Basics</div><span class="mod-tag tag-a">Advanced</span></div></div>
-        <div class="mod-body"><div class="mod-desc">Learn threats, encryption, firewalls, VPNs, phishing, and ethical hacking fundamentals.</div><div class="mod-chips"><span class="chip">Encryption</span><span class="chip">Firewalls</span><span class="chip">Phishing</span><span class="chip">VPN</span></div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></div>
-        <div class="mod-footer"><div class="mod-stats"><span class="mod-stat">📝 14 Quizzes</span><span class="mod-stat">🧩 5 Challenges</span></div><button class="btn btn-purple btn-sm">Start →</button></div>
-      </div>
-    </div>
+  <div class="sh"><div class="sh-left"><div class="sh-title">📚 Quiz Topics</div><div class="sh-sub">Pick a topic and test your knowledge</div></div></div>
+  <div class="topic-grid">
+    <div class="topic-card" onclick="startQuiz('networking')"><div class="tc-icon">🌐</div><div class="tc-name">Networking</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('programming')"><div class="tc-icon">💻</div><div class="tc-name">Programming</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('python')"><div class="tc-icon">🐍</div><div class="tc-name">Python</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('java')"><div class="tc-icon">☕</div><div class="tc-name">Java</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('javascript')"><div class="tc-icon">⚡</div><div class="tc-name">JavaScript</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('database')"><div class="tc-icon">🗄️</div><div class="tc-name">Database</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('webdev')"><div class="tc-icon">🌍</div><div class="tc-name">Web Dev</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('os')"><div class="tc-icon">⚙️</div><div class="tc-name">OS</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('cybersecurity')"><div class="tc-icon">🔒</div><div class="tc-name">Cybersecurity</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('datastructs')"><div class="tc-icon">🌳</div><div class="tc-name">Data Structures</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('algorithms')"><div class="tc-icon">🧮</div><div class="tc-name">Algorithms</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('cloud')"><div class="tc-icon">☁️</div><div class="tc-name">Cloud &amp; DevOps</div><div class="tc-count">10 questions</div><span class="tc-level lv-nw">New</span></div>
   </div>
 </div>
 
-<!-- QUIZ PAGE -->
+<!-- ════ QUIZ SELECT ════ -->
 <div class="page" id="page-quiz">
-  <div class="quiz-page">
-    <div class="quiz-wrap">
-      <div id="quizArea">
-        <div class="quiz-top">
-          <div class="qprog-bar"><div class="qprog-fill" id="qFill" style="width:0%"></div></div>
-          <div class="q-meta"><span id="qNum">Question 1 of 5</span><span class="q-timer" id="qTimer">⏱ 30s</span></div>
-        </div>
-        <div class="quiz-card">
-          <div class="q-cat" id="qCat">NETWORKING</div>
-          <div class="q-text" id="qText">Loading...</div>
-          <div class="q-opts" id="qOpts"></div>
-        </div>
-        <div class="q-feedback" id="qFeedback">
-          <div class="fb-title" id="fbTitle"></div>
-          <div class="fb-text" id="fbText"></div>
-        </div>
-        <div style="display:flex;justify-content:flex-end;margin-top:10px;">
-          <button class="btn btn-purple" id="nextBtn" onclick="nextQ()" style="display:none;">Next Question →</button>
+  <div class="sh"><div class="sh-left"><div class="sh-title">❓ Quiz Modules</div><div class="sh-sub">Click any topic to start a 10-question quiz</div></div></div>
+  <div class="topic-grid">
+    <div class="topic-card" onclick="startQuiz('networking')"><div class="tc-icon">🌐</div><div class="tc-name">Networking</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('programming')"><div class="tc-icon">💻</div><div class="tc-name">Programming</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('python')"><div class="tc-icon">🐍</div><div class="tc-name">Python</div><div class="tc-count">10 questions</div><span class="tc-level lv-bg">Beginner</span></div>
+    <div class="topic-card" onclick="startQuiz('java')"><div class="tc-icon">☕</div><div class="tc-name">Java</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('javascript')"><div class="tc-icon">⚡</div><div class="tc-name">JavaScript</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('database')"><div class="tc-icon">🗄️</div><div class="tc-name">Database</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('webdev')"><div class="tc-icon">🌍</div><div class="tc-name">Web Dev</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('os')"><div class="tc-icon">⚙️</div><div class="tc-name">OS</div><div class="tc-count">10 questions</div><span class="tc-level lv-in">Intermediate</span></div>
+    <div class="topic-card" onclick="startQuiz('cybersecurity')"><div class="tc-icon">🔒</div><div class="tc-name">Cybersecurity</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('datastructs')"><div class="tc-icon">🌳</div><div class="tc-name">Data Structures</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('algorithms')"><div class="tc-icon">🧮</div><div class="tc-name">Algorithms</div><div class="tc-count">10 questions</div><span class="tc-level lv-ad">Advanced</span></div>
+    <div class="topic-card" onclick="startQuiz('cloud')"><div class="tc-icon">☁️</div><div class="tc-name">Cloud &amp; DevOps</div><div class="tc-count">10 questions</div><span class="tc-level lv-nw">New</span></div>
+  </div>
+</div>
+
+<!-- ════ QUIZ ACTIVE ════ -->
+<div class="page" id="page-quiz-active">
+  <div class="quiz-wrap">
+    <div id="quizArea">
+      <div style="margin-bottom:14px">
+        <div class="qpb"><div class="qpf" id="qFill" style="width:0%"></div></div>
+        <div class="q-meta">
+          <span id="qNum">Q 1 / 10</span>
+          <span class="q-timer" id="qTimer">⏱ 30s</span>
         </div>
       </div>
-      <div id="quizResult" style="display:none;">
-        <div class="result-card">
-          <div class="result-circle" id="rCircle">0%</div>
-          <div class="result-title" id="rTitle">Quiz Complete!</div>
-          <div class="result-sub" id="rSub"></div>
-          <div class="result-stats">
-            <div><div class="rs-num" id="rCorrect" style="color:var(--green)">0</div><div class="rs-label">Correct</div></div>
-            <div><div class="rs-num" id="rWrong" style="color:var(--red)">0</div><div class="rs-label">Wrong</div></div>
-            <div><div class="rs-num" id="rPoints" style="color:var(--purple)">0</div><div class="rs-label">Points</div></div>
+      <div class="q-card">
+        <div class="q-badge" id="qBadge">TOPIC</div>
+        <div class="q-text" id="qText">Loading…</div>
+        <div class="q-opts" id="qOpts"></div>
+        <div class="q-fb" id="qFb">
+          <div class="fb-hd" id="fbHd">✓ Correct!</div>
+          <div class="fb-body" id="fbBody"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:10px">
+        <button class="btn btn-sky" id="nextBtn" onclick="nextQ()" style="display:none">Next →</button>
+      </div>
+    </div>
+    <div id="quizResult" style="display:none">
+      <div class="result-card">
+        <div class="result-ring" id="rRing">0%</div>
+        <div class="r-title" id="rTitle">Quiz Complete!</div>
+        <div class="r-sub" id="rSub">Good effort!</div>
+        <div class="r-stats">
+          <div class="rs-item"><div class="n" style="color:var(--green)" id="rC">0</div><div class="l">Correct</div></div>
+          <div class="rs-item"><div class="n" style="color:var(--red)" id="rW">0</div><div class="l">Wrong</div></div>
+          <div class="rs-item"><div class="n" style="color:var(--sky)" id="rP">+0</div><div class="l">Points</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-sky btn-lg" onclick="retryQuiz()">🔄 Try Again</button>
+        <button class="btn btn-ghost btn-lg" onclick="navTo('quiz')">📚 All Topics</button>
+        <button class="btn btn-ghost btn-lg" onclick="navTo('leaderboard')">🏆 Leaderboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GAMES ════ -->
+<div class="page" id="page-games">
+  <div class="sh"><div class="sh-left"><div class="sh-title">🎮 Games Hub</div><div class="sh-sub">Click any game to open it and start practising</div></div></div>
+
+  <div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:24px;background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(167,139,250,.08));border-color:rgba(56,189,248,.2)">
+    <div style="font-size:2rem">🎯</div>
+    <div style="flex:1"><div style="font-weight:700;font-size:.95rem;margin-bottom:2px">Daily Challenge</div><div style="font-size:.78rem;color:var(--text3)">Complete any 3 games today to earn the "Daily Grind" badge!</div></div>
+    <button class="btn btn-sky btn-sm" onclick="navTo('achievements')">View Badges</button>
+  </div>
+
+  <div class="sh" style="margin-bottom:10px"><div class="sh-left"><div class="sh-title" style="font-size:.95rem">🌐 CSS &amp; Layout</div></div></div>
+  <div class="game-grid" style="margin-bottom:24px">
+    <div class="game-card" onclick="openGame('https://flexboxfroggy.com/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#0c2d4a,#1a4a6b)">🐸</div>
+      <div class="game-body">
+        <div class="game-title">Flexbox Froggy</div>
+        <div class="game-desc">Help frogs reach their lily pads using CSS Flexbox. 24 levels of fun!</div>
+        <div class="game-foot"><span class="game-tag gt-css">CSS Flexbox</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://cssgridgarden.com/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#0c3d1a,#1a5e2b)">🥕</div>
+      <div class="game-body">
+        <div class="game-title">CSS Grid Garden</div>
+        <div class="game-desc">Grow your carrot garden using CSS Grid. 28 progressive levels.</div>
+        <div class="game-foot"><span class="game-tag gt-css">CSS Grid</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://flukeout.github.io/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#3d0c2b,#5e1a42)">🍽️</div>
+      <div class="game-body">
+        <div class="game-title">CSS Diner</div>
+        <div class="game-desc">Master CSS selectors by serving the correct dishes. 32 dishes!</div>
+        <div class="game-foot"><span class="game-tag gt-css">CSS Selectors</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh" style="margin-bottom:10px"><div class="sh-left"><div class="sh-title" style="font-size:.95rem">💻 JavaScript &amp; Coding</div></div></div>
+  <div class="game-grid" style="margin-bottom:24px">
+    <div class="game-card" onclick="navTo('editor')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#3d2f0c,#5e491a)">⚡</div>
+      <div class="game-body">
+        <div class="game-title">JS Playground</div>
+        <div class="game-desc">Write and run JavaScript live in the built-in editor. Instant output.</div>
+        <div class="game-foot"><span class="game-tag gt-js">JavaScript</span><button class="btn btn-sky btn-sm">Open →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://checkio.org/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#0c3d2b,#1a5e42)">🗺️</div>
+      <div class="game-body">
+        <div class="game-title">CheckiO</div>
+        <div class="game-desc">Solve coding missions in an island adventure. Python &amp; JS.</div>
+        <div class="game-foot"><span class="game-tag gt-py">Python / JS</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://www.codewars.com/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#3d0c0c,#5e1a1a)">⚔️</div>
+      <div class="game-body">
+        <div class="game-title">Codewars</div>
+        <div class="game-desc">Rank up solving real coding challenges (kata). Multi-language.</div>
+        <div class="game-foot"><span class="game-tag gt-any">Multi-lang</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh" style="margin-bottom:10px"><div class="sh-left"><div class="sh-title" style="font-size:.95rem">🗄️ SQL &amp; Database</div></div></div>
+  <div class="game-grid">
+    <div class="game-card" onclick="openGame('https://mystery.knightlab.com/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#111827,#1f2d40)">🔍</div>
+      <div class="game-body">
+        <div class="game-title">SQL Murder Mystery</div>
+        <div class="game-desc">Solve a crime using only SQL queries. Real detective work!</div>
+        <div class="game-foot"><span class="game-tag gt-sql">SQL</span><button class="btn btn-sky btn-sm">Solve →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://sqlzoo.net/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#3d2f0c,#5e491a)">🦁</div>
+      <div class="game-body">
+        <div class="game-title">SQLZoo</div>
+        <div class="game-desc">Interactive SQL tutorials with live database challenges at every level.</div>
+        <div class="game-foot"><span class="game-tag gt-sql">SQL</span><button class="btn btn-sky btn-sm">Play →</button></div>
+      </div>
+    </div>
+    <div class="game-card" onclick="openGame('https://www.sql-practice.com/')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#1a2a1a,#2a3f2a)">📊</div>
+      <div class="game-body">
+        <div class="game-title">SQL Practice</div>
+        <div class="game-desc">Practice SQL queries against a real hospital database. Beginner to expert.</div>
+        <div class="game-foot"><span class="game-tag gt-sql">SQL</span><button class="btn btn-sky btn-sm">Practice →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ EDITOR ════ -->
+<div class="page" id="page-editor">
+  <div class="sh" style="margin-bottom:10px">
+    <div class="sh-left"><div class="sh-title">💻 Live Code Editor</div><div class="sh-sub">Write HTML, CSS, JS — see live preview instantly</div></div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="loadTpl('html')">HTML Starter</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadTpl('css')">CSS Demo</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadTpl('js')">JS Demo</button>
+    </div>
+  </div>
+  <div class="ed-layout">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="ed-pane" style="flex:1">
+        <div class="ed-bar">
+          <button class="etab active" id="etab-html" onclick="switchTab('html')">HTML</button>
+          <button class="etab" id="etab-css" onclick="switchTab('css')">CSS</button>
+          <button class="etab" id="etab-js" onclick="switchTab('js')">JavaScript</button>
+          <div style="margin-left:auto;display:flex;gap:4px">
+            <button class="run-btn" onclick="runCode()">▶ Run</button>
+            <button class="clr-btn" onclick="clearAll()">Clear</button>
           </div>
         </div>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <button class="btn btn-purple btn-lg" onclick="restartQ()">Try Again</button>
-          <button class="btn btn-outline btn-lg" onclick="goTo('explore')">More Modules</button>
-          <button class="btn btn-pink btn-lg" onclick="goTo('leaderboard')">Leaderboard</button>
+        <textarea class="code-ta" id="cHtml" spellcheck="false" placeholder="Write your HTML here…"></textarea>
+        <textarea class="code-ta" id="cCss" spellcheck="false" placeholder="Write your CSS here…" style="display:none"></textarea>
+        <textarea class="code-ta" id="cJs" spellcheck="false" placeholder="Write your JavaScript here…" style="display:none"></textarea>
+      </div>
+      <div class="ed-pane" style="max-height:120px">
+        <div class="ed-bar"><span class="ed-bar-title">Console</span><button class="clr-btn" onclick="clearConsole()">Clear</button></div>
+        <div class="console-out" id="consoleOut"><span class="co-info">// Output appears here when you click Run</span></div>
+      </div>
+    </div>
+    <div class="prev-pane">
+      <div class="prev-bar"><span class="prev-title">Live Preview</span><button class="clr-btn" style="background:var(--bg3);color:var(--text3);border:1px solid var(--border)" onclick="runCode()">↺ Refresh</button></div>
+      <iframe class="prev-iframe" id="preview" sandbox="allow-scripts"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LEADERBOARD ════ -->
+<div class="page" id="page-leaderboard">
+  <div class="sh"><div class="sh-left"><div class="sh-title">🏆 Leaderboard</div><div class="sh-sub">Rankings update after every quiz you complete</div></div></div>
+  <div class="podiums">
+    <div class="pod"><div class="pod-crown">🥈</div><div class="pod-av" style="background:linear-gradient(135deg,#94a3b8,#64748b)">SM</div><div class="pod-name">Sarah Martinez</div><div class="pod-score">8,720</div><div class="pod-info">BSIT-2A</div></div>
+    <div class="pod p1"><div class="pod-crown">👑</div><div class="pod-av" style="background:linear-gradient(135deg,#f59e0b,#d97706)">AJ</div><div class="pod-name">Alex Johnson</div><div class="pod-score">9,850</div><div class="pod-info">BSIT-3B · Champion</div></div>
+    <div class="pod"><div class="pod-crown">🥉</div><div class="pod-av" style="background:linear-gradient(135deg,#cd7f32,#a16207)">KC</div><div class="pod-name">Kevin Cruz</div><div class="pod-score">7,540</div><div class="pod-info">BSIT-2B</div></div>
+  </div>
+  <div class="lb-table">
+    <div class="lb-head"><div>Rank</div><div>Student</div><div>Score</div><div>Tier</div></div>
+    <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-pl"><div class="lb-av">ML</div><div><div class="lb-pname">Maria Lopez</div><div class="lb-psub">BSIT-1A</div></div></div><div class="lb-score">6,890</div><div><span class="rank-badge rb-b">Skilled</span></div></div>
+    <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-pl"><div class="lb-av">JR</div><div><div class="lb-pname">James Reyes</div><div class="lb-psub">BSIT-3A</div></div></div><div class="lb-score">5,430</div><div><span class="rank-badge rb-b">Skilled</span></div></div>
+    <div class="lb-row" id="myRow" style="display:none"><div class="lb-rank" id="myRank">#6</div><div class="lb-pl"><div class="lb-av" id="myAv">ME</div><div><div class="lb-pname" id="myLbName">You</div><div class="lb-psub" id="myLbSec">—</div></div></div><div class="lb-score" id="myLbScore">0</div><div><span class="rank-badge rb-g">Newcomer</span></div></div>
+  </div>
+</div>
+
+<!-- ════ ACHIEVEMENTS ════ -->
+<div class="page" id="page-achievements">
+  <div class="sh"><div class="sh-left"><div class="sh-title">🎖️ Achievements</div><div class="sh-sub">Complete quizzes and challenges to unlock badges</div></div><div style="font-size:.8rem;color:var(--text3)">3 / 16 Unlocked</div></div>
+  <div class="ach-grid">
+    <div class="ach-card unlocked"><div class="ach-icon">🔥</div><div class="ach-name">First Blood</div><div class="ach-desc">Complete your first quiz</div></div>
+    <div class="ach-card unlocked"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div><div class="ach-desc">Finish a quiz under 60s</div></div>
+    <div class="ach-card unlocked"><div class="ach-icon">🎯</div><div class="ach-name">Perfectionist</div><div class="ach-desc">Score 100% on any quiz</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🧠</div><div class="ach-name">Big Brain</div><div class="ach-desc">Complete 10 quizzes</div></div>
+    <div class="ach-card locked"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div><div class="ach-desc">Reach 5,000 points</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">Reach #1 on leaderboard</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🚀</div><div class="ach-name">Rocket Start</div><div class="ach-desc">Complete 3 quizzes in a day</div></div>
+    <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-name">Grandmaster</div><div class="ach-desc">Complete all 12 topics</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🌐</div><div class="ach-name">Network Guru</div><div class="ach-desc">Perfect score in Networking</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🐍</div><div class="ach-name">Python Pro</div><div class="ach-desc">Perfect score in Python</div></div>
+    <div class="ach-card locked"><div class="ach-icon">☕</div><div class="ach-name">Java Master</div><div class="ach-desc">Perfect score in Java</div></div>
+    <div class="ach-card locked"><div class="ach-icon">⚡</div><div class="ach-name">JS Ninja</div><div class="ach-desc">Perfect score in JavaScript</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🗄️</div><div class="ach-name">Data Master</div><div class="ach-desc">Perfect score in Database</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🔒</div><div class="ach-name">Cyber Shield</div><div class="ach-desc">Finish Cybersecurity</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🌟</div><div class="ach-name">Star Student</div><div class="ach-desc">3 perfect scores in a row</div></div>
+    <div class="ach-card locked"><div class="ach-icon">🎮</div><div class="ach-name">Game On</div><div class="ach-desc">Play 5 external games</div></div>
+  </div>
+</div>
+
+<!-- ════ COMMUNITY ════ -->
+<div class="page" id="page-community">
+  <div class="sh"><div class="sh-left"><div class="sh-title">💬 Community Hub</div><div class="sh-sub">Share tips, ask questions, celebrate wins</div></div></div>
+  <div style="display:grid;grid-template-columns:1fr 260px;gap:16px" id="comGrid">
+    <div>
+      <div class="new-post" id="npcWrap">
+        <div style="font-size:.74rem;font-weight:700;color:var(--text2);margin-bottom:8px">Share with your class…</div>
+        <textarea id="npText" placeholder="Write a tip, share a win, or ask a question…"></textarea>
+        <div class="np-foot">
+          <div class="ptags">
+            <button class="ptag-btn sel" onclick="setPT(this,'tip')">💡 Tip</button>
+            <button class="ptag-btn" onclick="setPT(this,'achievement')">🏆 Win</button>
+            <button class="ptag-btn" onclick="setPT(this,'question')">❓ Q&amp;A</button>
+          </div>
+          <button class="btn btn-sky btn-sm" onclick="submitPost()">Post</button>
         </div>
       </div>
+      <div id="postsWrap"></div>
     </div>
-  </div>
-</div>
-
-<!-- LEADERBOARD -->
-<div class="page" id="page-leaderboard">
-  <div class="lb-page" style="padding-top:100px;">
-    <div class="lb-wrap">
-      <div class="section-center">
-        <div class="section-badge">Top Performers</div>
-        <div class="section-title">Global <span style="color:var(--purple)">Leaderboard</span></div>
-        <p class="section-sub">Rankings update based on quiz scores and challenge completions.</p>
+    <div class="com-sidebar">
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:10px">🔥 Trending</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:.77rem;color:var(--sky);font-weight:600;cursor:pointer">#NetworkingTips</span>
+          <span style="font-size:.77rem;color:var(--sky);font-weight:600;cursor:pointer">#SQLHelp</span>
+          <span style="font-size:.77rem;color:var(--sky);font-weight:600;cursor:pointer">#CSSFlexbox</span>
+          <span style="font-size:.77rem;color:var(--sky);font-weight:600;cursor:pointer">#PythonTips</span>
+          <span style="font-size:.77rem;color:var(--sky);font-weight:600;cursor:pointer">#JavaOOP</span>
+        </div>
       </div>
-      <div class="podiums">
-        <div class="podium p2"><div class="pod-crown">🥈</div><div class="pod-av av2">SM</div><div class="pod-name">Sarah Martinez</div><div class="pod-score">8,720</div><div class="pod-info">BSIT-2A • Expert</div></div>
-        <div class="podium p1"><div class="pod-crown">👑</div><div class="pod-av av1">AJ</div><div class="pod-name">Alex Johnson</div><div class="pod-score">9,850</div><div class="pod-info">BSIT-3B • Grandmaster</div></div>
-        <div class="podium p3"><div class="pod-crown">🥉</div><div class="pod-av av3">KC</div><div class="pod-name">Kevin Cruz</div><div class="pod-score">7,540</div><div class="pod-info">BSIT-2B • Advanced</div></div>
-      </div>
-      <div class="lb-table">
-        <div class="lb-head"><div>Rank</div><div>Student</div><div>Score</div><div>Badge</div></div>
-        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-player"><div class="lb-av">ML</div><div><div class="lb-pname">Maria Lopez</div><div class="lb-pid">BSIT-1A</div></div></div><div class="lb-score">6,890</div><div><span class="badge-pill bp-purple">Skilled</span></div></div>
-        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-player"><div class="lb-av">JR</div><div><div class="lb-pname">James Reyes</div><div class="lb-pid">BSIT-3A</div></div></div><div class="lb-score">5,430</div><div><span class="badge-pill bp-purple">Skilled</span></div></div>
-        <div class="lb-row"><div class="lb-rank">#6</div><div class="lb-player"><div class="lb-av">AT</div><div><div class="lb-pname">Ana Torres</div><div class="lb-pid">BSIT-2C</div></div></div><div class="lb-score">4,200</div><div><span class="badge-pill bp-green">Rising</span></div></div>
-        <div class="lb-row"><div class="lb-rank">#7</div><div class="lb-player"><div class="lb-av">RD</div><div><div class="lb-pname">Rico Dela Cruz</div><div class="lb-pid">BSIT-1B</div></div></div><div class="lb-score">3,750</div><div><span class="badge-pill bp-green">Rising</span></div></div>
-        <div class="lb-row"><div class="lb-rank">#8</div><div class="lb-player"><div class="lb-av">MN</div><div><div class="lb-pname">Maya Nguyen</div><div class="lb-pid">BSIT-2A</div></div></div><div class="lb-score">2,980</div><div><span class="badge-pill bp-green">Rising</span></div></div>
+      <div class="card">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:10px">👥 Top Members</div>
+        <div id="topMembers" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ACHIEVEMENTS -->
-<div class="page" id="page-achievements">
-  <div class="ach-page" style="padding-top:100px;">
-    <div class="section-center">
-      <div class="section-badge">Achievements</div>
-      <div class="section-title">Earn <span style="color:var(--purple)">Badges</span></div>
-      <p class="section-sub">Complete quizzes and challenges to unlock achievements and show off your skills.</p>
-    </div>
-    <div class="ach-grid">
-      <div class="ach-card unlocked"><div class="ach-icon">🔥</div><div class="ach-name">First Blood</div><div class="ach-desc">Complete your first quiz</div></div>
-      <div class="ach-card unlocked"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div><div class="ach-desc">Finish a quiz under 60 seconds</div></div>
-      <div class="ach-card unlocked"><div class="ach-icon">🎯</div><div class="ach-name">Perfectionist</div><div class="ach-desc">Score 100% on any quiz</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🧠</div><div class="ach-name">Big Brain</div><div class="ach-desc">Complete 10 quizzes</div></div>
-      <div class="ach-card locked"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div><div class="ach-desc">Reach 5,000 points</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">Reach #1 on leaderboard</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🚀</div><div class="ach-name">Rocket Start</div><div class="ach-desc">Complete 3 modules in a day</div></div>
-      <div class="ach-card locked"><div class="ach-icon">👑</div><div class="ach-name">Grandmaster</div><div class="ach-desc">Complete all 6 modules</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🌐</div><div class="ach-name">Network Guru</div><div class="ach-desc">Finish Networking module</div></div>
-      <div class="ach-card locked"><div class="ach-icon">💻</div><div class="ach-name">Code Wizard</div><div class="ach-desc">Finish Programming module</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🗄️</div><div class="ach-name">Data Master</div><div class="ach-desc">Finish Database module</div></div>
-      <div class="ach-card locked"><div class="ach-icon">🔒</div><div class="ach-name">Cyber Shield</div><div class="ach-desc">Finish Cybersecurity module</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- LOGIN -->
+<!-- ════ LOGIN ════ -->
 <div class="page" id="page-login">
-  <div class="auth-page">
+  <div class="auth-wrap">
     <div class="auth-card">
-      <div class="auth-hero">🎮</div>
-      <div class="auth-logo"><span>IT</span>Quest</div>
-      <div class="auth-sub">Welcome back! Login to continue your quest.</div>
-      <div class="alert alert-error" id="loginErr">Invalid Student ID or password.</div>
-      <div class="form-group"><label class="form-label">Student ID</label><input type="text" class="form-input" id="loginId" placeholder="e.g. BSIT-2024-001"></div>
-      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPass" placeholder="Enter your password"></div>
-      <button class="btn btn-purple btn-full btn-lg" onclick="doLogin()" style="margin-top:10px;">Log In →</button>
-      <div class="auth-footer">Don't have an account? <a onclick="goTo('register')">Sign Up Free</a></div>
+      <div class="auth-icon">🎮</div>
+      <div class="auth-title"><span>IT</span>Quest</div>
+      <div class="auth-sub">Welcome back! Log in to continue your quest.</div>
+      <div class="alert alert-e" id="loginErr">Invalid Student ID or password.</div>
+      <div class="fgroup"><label class="flabel">Student ID</label><input type="text" class="finput" id="loginId" placeholder="e.g. BSIT-2024-001"></div>
+      <div class="fgroup"><label class="flabel">Password</label><input type="password" class="finput" id="loginPass" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-sky btn-full btn-lg" onclick="doLogin()" style="margin-top:6px">Log In →</button>
+      <div class="auth-foot">No account? <a onclick="navTo('register')">Sign Up Free</a></div>
     </div>
   </div>
 </div>
 
-<!-- REGISTER -->
+<!-- ════ REGISTER ════ -->
 <div class="page" id="page-register">
-  <div class="auth-page">
+  <div class="auth-wrap">
     <div class="auth-card">
-      <div class="auth-hero">🚀</div>
-      <div class="auth-logo"><span>IT</span>Quest</div>
-      <div class="auth-sub">Create your free account and start your learning quest!</div>
-      <div class="alert alert-error" id="regErr"></div>
-      <div class="alert alert-success" id="regOk"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="regFn" placeholder="Juan"></div>
-        <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="regLn" placeholder="Dela Cruz"></div>
+      <div class="auth-icon">🚀</div>
+      <div class="auth-title"><span>IT</span>Quest</div>
+      <div class="auth-sub">Create your account and start your quest!</div>
+      <div class="alert alert-e" id="regErr"></div>
+      <div class="alert alert-s" id="regOk"></div>
+      <div class="frow">
+        <div class="fgroup"><label class="flabel">First Name</label><input type="text" class="finput" id="regFn" placeholder="Juan"></div>
+        <div class="fgroup"><label class="flabel">Last Name</label><input type="text" class="finput" id="regLn" placeholder="Dela Cruz"></div>
       </div>
-      <div class="form-group"><label class="form-label">Student ID</label><input type="text" class="form-input" id="regId" placeholder="e.g. BSIT-2024-001"></div>
-      <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="regEmail" placeholder="student@school.edu"></div>
-      <div class="form-group"><label class="form-label">Section</label><input type="text" class="form-input" id="regSec" placeholder="e.g. BSIT-2A"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="regP1" placeholder="Min. 6 characters"></div>
-        <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" class="form-input" id="regP2" placeholder="Repeat password"></div>
+      <div class="fgroup"><label class="flabel">Student ID</label><input type="text" class="finput" id="regId" placeholder="BSIT-2024-001"></div>
+      <div class="fgroup"><label class="flabel">Email</label><input type="email" class="finput" id="regEmail" placeholder="student@school.edu"></div>
+      <div class="fgroup"><label class="flabel">Section</label><input type="text" class="finput" id="regSec" placeholder="BSIT-2A"></div>
+      <div class="frow">
+        <div class="fgroup"><label class="flabel">Password</label><input type="password" class="finput" id="regP1" placeholder="Min 6 chars"></div>
+        <div class="fgroup"><label class="flabel">Confirm</label><input type="password" class="finput" id="regP2" placeholder="Repeat"></div>
       </div>
-      <button class="btn btn-purple btn-full btn-lg" onclick="doRegister()" style="margin-top:10px;">Create My Account →</button>
-      <div class="auth-footer">Already have an account? <a onclick="goTo('login')">Log In</a></div>
+      <button class="btn btn-sky btn-full btn-lg" onclick="doRegister()" style="margin-top:6px">Create Account →</button>
+      <div class="auth-foot">Already have an account? <a onclick="navTo('login')">Log In</a></div>
     </div>
   </div>
 </div>
 
+</div><!-- /main -->
+
+<!-- ══════════════════════════ SCRIPT ══════════════════════════ -->
 <script>
-// STORAGE
-function getUsers(){return JSON.parse(localStorage.getItem('itq_u')||'[]');}
-function saveUsers(u){localStorage.setItem('itq_u',JSON.stringify(u));}
-function getMe(){return JSON.parse(localStorage.getItem('itq_me')||'null');}
-function setMe(u){localStorage.setItem('itq_me',JSON.stringify(u));}
-
-// NAVIGATION
-function goTo(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  window.scrollTo(0,0);
-  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('anav'));
-}
-function goHome(){
-  goTo('home');
-  document.querySelectorAll('.nav-link')[0].classList.add('anav');
-}
-document.querySelectorAll('.nav-link').forEach((b,i)=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('anav'));
-    b.classList.add('anav');
-  });
-});
-
-// AUTH
-function doRegister(){
-  const fn=document.getElementById('regFn').value.trim();
-  const ln=document.getElementById('regLn').value.trim();
-  const id=document.getElementById('regId').value.trim();
-  const email=document.getElementById('regEmail').value.trim();
-  const sec=document.getElementById('regSec').value.trim();
-  const p1=document.getElementById('regP1').value;
-  const p2=document.getElementById('regP2').value;
-  const err=document.getElementById('regErr');
-  const ok=document.getElementById('regOk');
-  err.classList.remove('show'); ok.classList.remove('show');
-  if(!fn||!ln||!id||!email||!sec||!p1||!p2){err.textContent='Please fill in all fields.';err.classList.add('show');return;}
-  if(p1.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
-  if(p1!==p2){err.textContent='Passwords do not match.';err.classList.add('show');return;}
-  const users=getUsers();
-  if(users.find(u=>u.id===id)){err.textContent='Student ID already registered.';err.classList.add('show');return;}
-  users.push({fn,ln,id,email,sec,pass:p1,score:0});
-  saveUsers(users);
-  ok.textContent='✅ Account created successfully! Redirecting to login...';
-  ok.classList.add('show');
-  setTimeout(()=>goTo('login'),2000);
-}
-
-function doLogin(){
-  const id=document.getElementById('loginId').value.trim();
-  const pass=document.getElementById('loginPass').value;
-  const err=document.getElementById('loginErr');
-  err.classList.remove('show');
-  const user=getUsers().find(u=>u.id===id&&u.pass===pass);
-  if(!user){err.classList.add('show');return;}
-  setMe(user);
-  document.getElementById('navUser').style.display='flex';
-  document.getElementById('navAuth').style.display='none';
-  document.getElementById('navAv').textContent=user.fn[0]+user.ln[0];
-  document.getElementById('navNm').textContent=user.fn;
-  goHome();
-}
-
-function logout(){
-  localStorage.removeItem('itq_me');
-  document.getElementById('navUser').style.display='none';
-  document.getElementById('navAuth').style.display='flex';
-  goHome();
-}
-
-// QUIZ DATA
-const QD={
-  networking:{title:'Computer Networking',qs:[
-    {q:'What does HTTP stand for?',o:['HyperText Transfer Protocol','High Transfer Text Protocol','Hyperlink Text Protocol','HyperText Transmission Protocol'],a:0,ex:'HTTP stands for HyperText Transfer Protocol — the foundation of web communication.'},
-    {q:'Which OSI layer handles IP addressing and routing?',o:['Data Link','Transport','Network','Session'],a:2,ex:'The Network Layer (Layer 3) handles logical IP addressing and routing.'},
-    {q:'What is the default port for HTTPS?',o:['80','8080','443','21'],a:2,ex:'HTTPS uses port 443. HTTP uses port 80.'},
-    {q:'What does DNS stand for?',o:['Domain Name System','Data Network Service','Digital Name Server','Dynamic Network System'],a:0,ex:'DNS (Domain Name System) translates domain names into IP addresses.'},
-    {q:'Which protocol is used for sending emails?',o:['HTTP','FTP','SMTP','SSH'],a:2,ex:'SMTP (Simple Mail Transfer Protocol) is the standard for sending emails.'},
-  ]},
-  programming:{title:'Programming Fundamentals',qs:[
-    {q:'How do you declare a variable in JavaScript?',o:['variable x = 5','let x = 5','int x = 5','dim x = 5'],a:1,ex:'In JavaScript, variables are declared using let, const, or var.'},
-    {q:'What does OOP stand for?',o:['Object Oriented Programming','Open Output Processing','Object Output Protocol','Ordered Object Programming'],a:0,ex:'OOP stands for Object Oriented Programming — based on objects and classes.'},
-    {q:'Which loop always runs at least once?',o:['for loop','while loop','do-while loop','foreach loop'],a:2,ex:'A do-while loop executes the body at least once before checking the condition.'},
-    {q:'What is recursion?',o:['A loop structure','A function that calls itself','A type of array','An error handler'],a:1,ex:'Recursion is when a function calls itself. It must have a base case to stop.'},
-    {q:'What does the "return" statement do?',o:['Stops the program','Outputs a value and ends the function','Creates a variable','Starts a loop'],a:1,ex:'The return statement sends a value back from a function and ends its execution.'},
-  ]},
-  database:{title:'Database Management',qs:[
-    {q:'What does SQL stand for?',o:['Structured Query Language','Simple Question Language','System Query Logic','Structured Question Logic'],a:0,ex:'SQL stands for Structured Query Language — used to manage relational databases.'},
-    {q:'Which SQL command retrieves data?',o:['INSERT','UPDATE','SELECT','DELETE'],a:2,ex:'SELECT retrieves data from tables in a database.'},
-    {q:'What is a Primary Key?',o:['An encryption key','A unique identifier for each record','The first column','A foreign reference'],a:1,ex:'A Primary Key uniquely identifies each record in a database table.'},
-    {q:'What is normalization?',o:['Sorting alphabetically','Reducing data redundancy','Encrypting files','Backing up data'],a:1,ex:'Normalization reduces redundancy and improves data integrity in a database.'},
-    {q:'Which SQL clause filters records?',o:['ORDER BY','GROUP BY','WHERE','HAVING'],a:2,ex:'The WHERE clause filters records based on a specified condition.'},
-  ]},
-  webdev:{title:'Web Development',qs:[
-    {q:'What does HTML stand for?',o:['HyperText Markup Language','High Text Machine Language','Hyperlink Text Mode Language','HyperText Managed Language'],a:0,ex:'HTML stands for HyperText Markup Language — the standard for web pages.'},
-    {q:'Which HTML tag creates a hyperlink?',o:['<link>','<href>','<a>','<url>'],a:2,ex:'The <a> anchor tag creates hyperlinks using the href attribute.'},
-    {q:'What does CSS stand for?',o:['Creative Style Sheets','Cascading Style Sheets','Computer Style System','Coded Style Sheets'],a:1,ex:'CSS stands for Cascading Style Sheets — used to style HTML elements.'},
-    {q:'Which JS method selects an element by ID?',o:['getElement()','querySelector()','getElementById()','findById()'],a:2,ex:'document.getElementById() selects an element by its id attribute.'},
-    {q:'What is the DOM?',o:['Document Object Model','Data Output Manager','Design Object Method','Document Output Mode'],a:0,ex:'DOM (Document Object Model) is a programming interface for HTML documents.'},
-  ]},
-  os:{title:'Operating Systems',qs:[
-    {q:'What is a process in an OS?',o:['A file on disk','A program in execution','A type of memory','A hardware component'],a:1,ex:'A process is a program in execution, including its code and current activity.'},
-    {q:'What does CPU stand for?',o:['Central Processing Unit','Computer Power Unit','Central Program Utility','Control Processing Unit'],a:0,ex:'CPU stands for Central Processing Unit — the main component that executes instructions.'},
-    {q:'What is virtual memory?',o:['RAM inside GPU','Extra USB storage','Using disk space as extended RAM','Cloud memory'],a:2,ex:'Virtual memory uses hard disk space to extend the available RAM for processes.'},
-    {q:'Which scheduling gives equal CPU time?',o:['FIFO','Round Robin','Priority','Shortest Job First'],a:1,ex:'Round Robin gives each process a fixed time slice (quantum) in rotation.'},
-    {q:'What is deadlock?',o:['A crashed program','Processes waiting for each other indefinitely','A virus attack','CPU overheating'],a:1,ex:'Deadlock occurs when processes each wait for resources held by another, halting progress.'},
-  ]},
-  cybersecurity:{title:'Cybersecurity Basics',qs:[
-    {q:'What is phishing?',o:['A type of encryption','Fraudulent attempt to steal info','A firewall technique','A programming language'],a:1,ex:'Phishing uses fake emails or websites to trick users into revealing sensitive info.'},
-    {q:'What does VPN stand for?',o:['Virtual Private Network','Verified Protocol Node','Virtual Public Network','Verified Private Node'],a:0,ex:'VPN stands for Virtual Private Network — encrypts your internet connection.'},
-    {q:'What is encryption?',o:['Deleting data','Converting data to unreadable format','Compressing files','Backing up'],a:1,ex:'Encryption converts readable data into unreadable format to protect it.'},
-    {q:'What is a firewall?',o:['Antivirus software','A system that monitors network traffic','A type of malware','An OS'],a:1,ex:'A firewall monitors and controls incoming and outgoing network traffic.'},
-    {q:'What is two-factor authentication (2FA)?',o:['Using two passwords','Logging in twice','Verification using two different methods','Having two accounts'],a:2,ex:'2FA requires two different types of verification to access an account.'},
-  ]}
+/* ── STORAGE ── */
+const S = {
+  users:     () => JSON.parse(localStorage.getItem('itq_users')  || '[]'),
+  saveUsers: u  => localStorage.setItem('itq_users', JSON.stringify(u)),
+  me:        () => JSON.parse(localStorage.getItem('itq_me')     || 'null'),
+  setMe:     u  => localStorage.setItem('itq_me', JSON.stringify(u)),
+  rmMe:      () => localStorage.removeItem('itq_me'),
+  posts:     () => JSON.parse(localStorage.getItem('itq_posts')  || '[]'),
+  savePosts: p  => localStorage.setItem('itq_posts', JSON.stringify(p)),
+  updateMe:  ()  => {
+    const me = S.me(); if(!me) return;
+    const users = S.users();
+    const idx = users.findIndex(u => u.id === me.id);
+    if(idx !== -1) S.setMe(users[idx]);
+  }
 };
 
-// QUIZ ENGINE
-let cQ2,cIdx,pts,corr,wrng,tmr,tLeft,done;
-function startQuiz(mod){
-  cQ2=QD[mod];cIdx=0;pts=0;corr=0;wrng=0;
-  document.getElementById('quizArea').style.display='block';
-  document.getElementById('quizResult').style.display='none';
-  goTo('quiz'); loadQ();
+/* ── HELPERS ── */
+const el  = id => document.getElementById(id);
+const gv  = id => el(id).value.trim();
+const hide = e  => e.style.display = 'none';
+const show = (e, msg) => { if(msg) e.textContent = msg; e.classList.add('show'); };
+const hide2 = e => e.classList.remove('show');
+
+/* ── NAV ── */
+let hist = [], cur = 'home';
+const LABELS = {
+  home:'Home', quiz:'Quizzes', 'quiz-active':'Quiz',
+  games:'Games Hub', editor:'Code Editor',
+  leaderboard:'Leaderboard', achievements:'Badges',
+  community:'Community', login:'Login', register:'Sign Up'
+};
+
+function navTo(name, addH = true) {
+  if(S.me() && (name==='login' || name==='register')) name = 'quiz';
+  if(addH && cur !== name) hist.push(cur);
+  cur = name;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el('page-' + name).classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelectorAll('.ni').forEach(b => b.classList.toggle('active', b.dataset.p === name));
+  el('breadcrumb').innerHTML = '<b>' + (LABELS[name] || name) + '</b>';
+  el('backBtn').style.display = hist.length ? 'flex' : 'none';
+  closeSB();
+  if(name === 'community') initCommunity();
+  if(name === 'editor') initEditor();
+  if(name === 'leaderboard') initLeaderboard();
 }
-function loadQ(){
-  if(cIdx>=cQ2.qs.length){showResult();return;}
-  done=false;
-  const q=cQ2.qs[cIdx],total=cQ2.qs.length;
-  document.getElementById('qCat').textContent=cQ2.title.toUpperCase();
-  document.getElementById('qText').textContent=q.q;
-  document.getElementById('qNum').textContent=`Question ${cIdx+1} of ${total}`;
-  document.getElementById('qFill').style.width=((cIdx/total)*100)+'%';
-  document.getElementById('qFeedback').className='q-feedback';
-  document.getElementById('nextBtn').style.display='none';
-  const opts=document.getElementById('qOpts');
-  opts.innerHTML='';
-  q.o.forEach((opt,i)=>{
-    const btn=document.createElement('button');
-    btn.className='q-opt';
-    btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+i)}</span>${opt}`;
-    btn.onclick=()=>pick(i,btn);
-    opts.appendChild(btn);
-  });
-  startTmr();
+
+function goBack() {
+  if(hist.length) { const p = hist.pop(); navTo(p, false); }
+  else navTo('home', false);
 }
-function startTmr(){
-  clearInterval(tmr);tLeft=30;
-  document.getElementById('qTimer').textContent=`⏱ ${tLeft}s`;
-  tmr=setInterval(()=>{
-    tLeft--;document.getElementById('qTimer').textContent=`⏱ ${tLeft}s`;
-    if(tLeft<=0){clearInterval(tmr);timeUp();}
-  },1000);
+
+function startPlay() {
+  if(S.me()) navTo('quiz'); else navTo('register');
 }
-function timeUp(){
-  if(done)return;done=true;wrng++;
-  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
-  document.querySelectorAll('.q-opt')[cQ2.qs[cIdx].a].classList.add('correct');
-  showFB(false,'⏰ Time\'s up! '+cQ2.qs[cIdx].ex);
-  document.getElementById('nextBtn').style.display='block';
+
+/* ── SIDEBAR ── */
+function toggleSB() { el('sidebar').classList.toggle('open'); el('overlay').classList.toggle('show'); }
+function closeSB()   { el('sidebar').classList.remove('open'); el('overlay').classList.remove('show'); }
+
+/* ── AUTH ── */
+function updateUI() {
+  const me = S.me();
+  if(me) {
+    hide(el('tbAuthBtns'));
+    el('tbPtsWrap').style.display = 'flex';
+    el('tbPts').textContent = '⭐ ' + (me.points||0) + ' pts';
+    hide(el('sbLogin')); hide(el('sbReg'));
+    el('sbLogout').style.display = '';
+    el('sbUser').style.display = 'flex';
+    el('sbAv').textContent  = (me.fn[0] + me.ln[0]).toUpperCase();
+    el('sbName').textContent = me.fn + ' ' + me.ln;
+    el('sbPts').textContent  = (me.points||0) + ' pts';
+    el('homeProgress').style.display = '';
+    el('hPts').textContent = me.points || 0;
+    el('hQ').textContent   = me.quizzesDone || 0;
+    el('npcWrap').style.display = '';
+  } else {
+    el('tbAuthBtns').style.display = 'flex';
+    hide(el('tbPtsWrap'));
+    el('sbLogin').style.display  = '';
+    el('sbReg').style.display    = '';
+    el('sbLogout').style.display = 'none';
+    el('sbUser').style.display   = 'none';
+    el('homeProgress').style.display = 'none';
+    el('npcWrap').style.display  = 'none';
+  }
 }
-function pick(idx,btn){
-  if(done)return;done=true;clearInterval(tmr);
-  const q=cQ2.qs[cIdx];
-  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
-  if(idx===q.a){btn.classList.add('correct');corr++;pts+=Math.max(100,tLeft*10);showFB(true,'✅ Correct! '+q.ex);}
-  else{btn.classList.add('wrong');wrng++;document.querySelectorAll('.q-opt')[q.a].classList.add('correct');showFB(false,'❌ Wrong. '+q.ex);}
-  document.getElementById('nextBtn').style.display='block';
+
+function doRegister() {
+  const fn=gv('regFn'), ln=gv('regLn'), id=gv('regId'),
+        em=gv('regEmail'), sec=gv('regSec'), p1=gv('regP1'), p2=gv('regP2');
+  const errEl=el('regErr'), okEl=el('regOk');
+  hide2(errEl); hide2(okEl);
+  if(!fn||!ln||!id||!em||!sec||!p1||!p2) { show(errEl,'Please fill in all fields.'); return; }
+  if(p1.length < 6) { show(errEl,'Password must be at least 6 characters.'); return; }
+  if(p1 !== p2) { show(errEl,'Passwords do not match.'); return; }
+  const users = S.users();
+  if(users.find(u => u.id === id)) { show(errEl,'Student ID already registered.'); return; }
+  const user = { id, fn, ln, email:em, section:sec, pass:p1, points:0, quizzesDone:0, joined:Date.now() };
+  users.push(user); S.saveUsers(users); S.setMe(user);
+  show(okEl,'Account created! Redirecting…');
+  setTimeout(() => { updateUI(); navTo('home'); }, 900);
 }
-function showFB(ok,txt){
-  const el=document.getElementById('qFeedback');
-  el.className='q-feedback show '+(ok?'fb-correct':'fb-wrong');
-  document.getElementById('fbTitle').textContent=ok?'Correct!':'Incorrect';
-  document.getElementById('fbText').textContent=txt;
+
+function doLogin() {
+  const id=gv('loginId'), pass=gv('loginPass');
+  const errEl=el('loginErr'); hide2(errEl);
+  const users = S.users();
+  const user = users.find(u => u.id===id && u.pass===pass);
+  if(!user) { show(errEl); return; }
+  S.setMe(user); updateUI(); navTo('home');
 }
-function nextQ(){cIdx++;loadQ();}
-function showResult(){
-  clearInterval(tmr);
-  const pct=Math.round((corr/cQ2.qs.length)*100);
-  document.getElementById('quizArea').style.display='none';
-  document.getElementById('quizResult').style.display='block';
-  document.getElementById('rCircle').textContent=pct+'%';
-  document.getElementById('rCorrect').textContent=corr;
-  document.getElementById('rWrong').textContent=wrng;
-  document.getElementById('rPoints').textContent=pts;
-  const t=pct<40?'Keep Practicing! 💪':pct<60?'Good Effort! 👍':pct<80?'Well Done! 🎉':pct<100?'Excellent! 🌟':'Perfect Score! 🏆';
-  document.getElementById('rTitle').textContent=t;
-  document.getElementById('rSub').textContent=`You got ${corr} out of ${cQ2.qs.length} correct and earned ${pts} points!`;
+
+function doLogout() {
+  S.rmMe(); updateUI();
+  ['loginId','loginPass'].forEach(id => el(id).value='');
+  navTo('home');
 }
-function restartQ(){
-  cIdx=0;pts=0;corr=0;wrng=0;
-  document.getElementById('quizArea').style.display='block';
-  document.getElementById('quizResult').style.display='none';
+
+function addPoints(pts) {
+  const me = S.me(); if(!me) return;
+  const users = S.users();
+  const u = users.find(x => x.id===me.id); if(!u) return;
+  u.points = (u.points||0) + pts;
+  S.saveUsers(users); S.setMe(u); updateUI();
+}
+
+/* ── QUIZ DATA ── */
+const QUIZ_DATA = {
+  networking: {
+    label:'🌐 Networking',
+    questions: [
+      { q:'Which layer of the OSI model handles IP addressing?', opts:['Physical','Data Link','Network','Transport'], a:2, exp:'The Network layer (Layer 3) handles logical addressing — IP addresses.' },
+      { q:'What does DNS stand for?', opts:['Data Network System','Domain Name System','Dynamic Name Server','Distributed Name Set'], a:1, exp:'DNS (Domain Name System) translates domain names like google.com to IP addresses.' },
+      { q:'Which protocol is used to send email?', opts:['HTTP','FTP','SMTP','SSH'], a:2, exp:'SMTP (Simple Mail Transfer Protocol) is the standard for sending email.' },
+      { q:'What is the default port for HTTPS?', opts:['80','8080','443','21'], a:2, exp:'HTTPS uses port 443 by default. HTTP uses port 80.' },
+      { q:'What does TCP stand for?', opts:['Transfer Control Protocol','Transmission Control Protocol','Transport Communication Protocol','Total Connection Point'], a:1, exp:'TCP = Transmission Control Protocol. It provides reliable, ordered delivery.' },
+      { q:'Which device operates at Layer 3 of the OSI model?', opts:['Hub','Switch','Router','Repeater'], a:2, exp:'Routers operate at Layer 3 (Network layer) and forward packets based on IP addresses.' },
+      { q:'What is an IP address used for?', opts:['Identifying hardware','Identifying devices on a network','Encrypting data','Compressing files'], a:1, exp:'An IP address uniquely identifies a device on a network for routing purposes.' },
+      { q:'Which IP version uses 128-bit addresses?', opts:['IPv4','IPv5','IPv6','IPv8'], a:2, exp:'IPv6 uses 128-bit addresses, compared to IPv4\'s 32-bit addresses.' },
+      { q:'What is the purpose of a subnet mask?', opts:['Encrypting data','Dividing a network into subnetworks','Increasing speed','Blocking traffic'], a:1, exp:'A subnet mask separates the network portion from the host portion of an IP address.' },
+      { q:'Which protocol resolves IP addresses to MAC addresses?', opts:['DNS','DHCP','ARP','ICMP'], a:2, exp:'ARP (Address Resolution Protocol) maps IP addresses to physical MAC addresses.' }
+    ]
+  },
+  programming: {
+    label:'💻 Programming',
+    questions: [
+      { q:'What is a variable in programming?', opts:['A fixed value','A named storage location','A function','A loop'], a:1, exp:'A variable is a named storage location that holds a value which can change.' },
+      { q:'Which of these is NOT a primitive data type?', opts:['int','float','string','array'], a:3, exp:'Arrays are composite/reference types, not primitives. int, float, and string are primitives.' },
+      { q:'What does OOP stand for?', opts:['Object Oriented Program','Object Oriented Programming','Online Object Protocol','Ordered Object Program'], a:1, exp:'OOP = Object-Oriented Programming. It organizes code around objects and classes.' },
+      { q:'What is a loop used for?', opts:['Storing data','Repeating code','Defining functions','Creating objects'], a:1, exp:'Loops allow you to execute a block of code repeatedly until a condition is met.' },
+      { q:'Which of these is a valid comparison operator?', opts:['=','!=','<>','::'], a:1, exp:'!= is the "not equal to" operator used in most programming languages.' },
+      { q:'What is a function?', opts:['A type of variable','A block of reusable code','A data structure','A loop type'], a:1, exp:'A function is a named block of reusable code that performs a specific task.' },
+      { q:'What does "debugging" mean?', opts:['Writing new code','Finding and fixing errors','Deleting old code','Running a program'], a:1, exp:'Debugging is the process of finding, analyzing, and fixing errors (bugs) in code.' },
+      { q:'What is an algorithm?', opts:['A type of computer','A step-by-step problem-solving procedure','A programming language','A database'], a:1, exp:'An algorithm is a finite set of step-by-step instructions to solve a problem.' },
+      { q:'What is inheritance in OOP?', opts:['Copying code manually','A class acquiring properties of another','Deleting a class','Renaming a variable'], a:1, exp:'Inheritance lets a class (child) acquire the properties and methods of another class (parent).' },
+      { q:'What is a syntax error?', opts:['Logic mistake','Runtime crash','Violation of language rules','Memory overflow'], a:2, exp:'A syntax error occurs when code violates the grammatical rules of the programming language.' }
+    ]
+  },
+  python: {
+    label:'🐍 Python',
+    questions: [
+      { q:'How do you print "Hello" in Python?', opts:['echo "Hello"','print("Hello")','console.log("Hello")','System.out.println("Hello")'], a:1, exp:'Python uses print() to output text to the console.' },
+      { q:'Which symbol is used for comments in Python?', opts:['//','/* */','#','--'], a:2, exp:'In Python, the # symbol starts a single-line comment.' },
+      { q:'What data type is [1, 2, 3] in Python?', opts:['tuple','set','list','dict'], a:2, exp:'Square brackets create a list in Python — an ordered, mutable collection.' },
+      { q:'How do you define a function in Python?', opts:['function myFunc():','def myFunc():','func myFunc():','define myFunc():'], a:1, exp:'Python uses the "def" keyword to define functions.' },
+      { q:'What is the output of: 10 // 3', opts:['3.33','3','1','0'], a:1, exp:'// is floor division in Python. 10 // 3 = 3 (the quotient without the remainder).' },
+      { q:'Which method adds an item to a Python list?', opts:['.add()','.push()','.append()','.insert_last()'], a:2, exp:'list.append(item) adds an item to the end of a Python list.' },
+      { q:'What is a dictionary in Python?', opts:['An ordered list','A key-value pair collection','A set of unique values','A string type'], a:1, exp:'A dictionary (dict) stores data as key-value pairs, e.g. {"name": "Alice"}.' },
+      { q:'What keyword is used for inheritance in Python?', opts:['extends','inherits','class Child(Parent):','implement'], a:2, exp:'In Python, inheritance is done by putting the parent class name in parentheses: class Child(Parent).' },
+      { q:'What does len() do in Python?', opts:['Returns the largest element','Returns the number of items','Sorts a list','Reverses a list'], a:1, exp:'len() returns the number of items in an object (list, string, dict, etc.).' },
+      { q:'Which of these is a Python tuple?', opts:['[1,2,3]','{1,2,3}','(1,2,3)','<1,2,3>'], a:2, exp:'Tuples use parentheses: (1, 2, 3). They are immutable unlike lists.' }
+    ]
+  },
+  java: {
+    label:'☕ Java',
+    questions: [
+      { q:'Java programs are compiled into what?', opts:['Machine code','Python code','Bytecode','Assembly'], a:2, exp:'Java compiles to bytecode which is then executed by the JVM (Java Virtual Machine).' },
+      { q:'Which keyword declares a constant in Java?', opts:['const','static','final','immutable'], a:2, exp:'The "final" keyword in Java declares a variable as a constant — its value cannot change.' },
+      { q:'What is the entry point of a Java program?', opts:['start()','init()','main()','run()'], a:2, exp:'Java programs begin execution at the public static void main(String[] args) method.' },
+      { q:'Which of these is NOT a Java access modifier?', opts:['public','private','protected','friend'], a:3, exp:'"friend" is not a Java keyword. Java uses public, private, protected, and default.' },
+      { q:'What does JVM stand for?', opts:['Java Virtual Memory','Java Visible Machine','Java Virtual Machine','Java Variable Method'], a:2, exp:'JVM = Java Virtual Machine. It runs Java bytecode on any platform.' },
+      { q:'How do you create an object in Java?', opts:['object Dog = new Dog()','Dog = Dog()','Dog myDog = new Dog()','create Dog myDog'], a:2, exp:'Java syntax: ClassName varName = new ClassName(); e.g. Dog myDog = new Dog();' },
+      { q:'What is an interface in Java?', opts:['A type of variable','A class with all abstract methods','A loop structure','A data structure'], a:1, exp:'An interface defines a contract — it contains abstract method signatures without implementations.' },
+      { q:'Which collection maintains insertion order in Java?', opts:['HashSet','HashMap','ArrayList','TreeSet'], a:2, exp:'ArrayList maintains insertion order and allows duplicates, unlike Set implementations.' },
+      { q:'What is method overloading?', opts:['Overriding a parent method','Multiple methods with same name but different parameters','Calling a method twice','A recursive method'], a:1, exp:'Overloading lets you define multiple methods with the same name but different parameter lists.' },
+      { q:'What keyword is used to handle exceptions in Java?', opts:['handle','error','try-catch','except'], a:2, exp:'Java uses try { } catch(Exception e) { } blocks to handle runtime exceptions.' }
+    ]
+  },
+  javascript: {
+    label:'⚡ JavaScript',
+    questions: [
+      { q:'Which keyword declares a block-scoped variable in modern JS?', opts:['var','let','dim','local'], a:1, exp:'"let" declares block-scoped variables introduced in ES6. "var" is function-scoped.' },
+      { q:'What does === check in JavaScript?', opts:['Value only','Value and type','Reference','Nothing'], a:1, exp:'=== is strict equality — it checks both value AND type without type coercion.' },
+      { q:'What is a closure?', opts:['A closed HTML tag','A function that remembers its outer scope','A type of loop','A module'], a:1, exp:'A closure is a function that retains access to variables from its enclosing scope even after that scope has closed.' },
+      { q:'What does the spread operator (...) do?', opts:['Creates a loop','Expands an iterable into individual elements','Closes a function','Declares a variable'], a:1, exp:'The spread operator (...) expands an array or object into individual elements.' },
+      { q:'What is a Promise in JavaScript?', opts:['A variable declaration','An object representing a future async value','A type of loop','A CSS property'], a:1, exp:'A Promise represents the eventual result of an asynchronous operation — pending, fulfilled, or rejected.' },
+      { q:'Which method selects an element by its ID?', opts:['querySelector()','getElementById()','getElement()','selectId()'], a:1, exp:'document.getElementById("id") returns the element with the specified ID.' },
+      { q:'What does async/await do?', opts:['Makes code synchronous','Lets you write async code that looks synchronous','Creates loops','Defines classes'], a:1, exp:'async/await is syntax sugar over Promises, making asynchronous code look and feel synchronous.' },
+      { q:'What is the output of typeof null?', opts:['null','undefined','object','boolean'], a:2, exp:'"object" — this is a well-known JavaScript bug that has never been fixed for backward compatibility.' },
+      { q:'Which array method creates a new transformed array?', opts:['.forEach()','.filter()','.map()','.reduce()'], a:2, exp:'.map() transforms each element and returns a new array of the same length.' },
+      { q:'What is event bubbling?', opts:['Creating an event','An event propagating up through parent elements','Canceling an event','An event loop'], a:1, exp:'Event bubbling: when an event fires on an element, it propagates up through ancestor elements.' }
+    ]
+  },
+  database: {
+    label:'🗄️ Database',
+    questions: [
+      { q:'What does SQL stand for?', opts:['Structured Query Language','Simple Query Logic','Structured Question List','System Query Language'], a:0, exp:'SQL = Structured Query Language. It\'s the standard language for relational databases.' },
+      { q:'Which SQL command retrieves data?', opts:['INSERT','UPDATE','SELECT','DELETE'], a:2, exp:'SELECT is used to query and retrieve data from a database table.' },
+      { q:'What is a primary key?', opts:['Any column in a table','A column that uniquely identifies each row','A foreign table reference','A duplicate key'], a:1, exp:'A primary key uniquely identifies each record in a table and cannot be NULL or duplicate.' },
+      { q:'What does normalization do?', opts:['Makes data faster','Reduces redundancy and improves data integrity','Creates backups','Encrypts data'], a:1, exp:'Normalization organizes a database to reduce redundancy and improve data integrity.' },
+      { q:'Which SQL clause filters results?', opts:['ORDER BY','GROUP BY','WHERE','HAVING'], a:2, exp:'WHERE filters rows before aggregation. HAVING filters after GROUP BY.' },
+      { q:'What is a foreign key?', opts:['A key from another database','A column that references the primary key of another table','An encrypted key','A unique constraint'], a:1, exp:'A foreign key creates a link between two tables by referencing another table\'s primary key.' },
+      { q:'What type of JOIN returns all rows from both tables?', opts:['INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL OUTER JOIN'], a:3, exp:'FULL OUTER JOIN returns all rows from both tables, matching where possible.' },
+      { q:'Which normal form eliminates partial dependencies?', opts:['1NF','2NF','3NF','BCNF'], a:1, exp:'2NF (Second Normal Form) eliminates partial dependencies on the primary key.' },
+      { q:'What does ACID stand for?', opts:['Atomic Consistent Isolated Durable','Automated Compiled Indexed Data','Active Controlled Indexed Database','All Consistent In Data'], a:0, exp:'ACID = Atomicity, Consistency, Isolation, Durability — properties of reliable transactions.' },
+      { q:'What is an index in a database?', opts:['A backup copy','A data structure that speeds up queries','A type of join','A stored procedure'], a:1, exp:'An index is a data structure that allows faster retrieval of rows from a table.' }
+    ]
+  },
+  webdev: {
+    label:'🌍 Web Dev',
+    questions: [
+      { q:'What does HTML stand for?', opts:['Hyper Text Markup Language','High Tech Modern Language','Hyper Transfer Markup Link','Home Tool Markup Language'], a:0, exp:'HTML = HyperText Markup Language. It structures the content of web pages.' },
+      { q:'Which HTML tag creates a hyperlink?', opts:['<link>','<href>','<a>','<url>'], a:2, exp:'The <a> (anchor) tag creates hyperlinks. The href attribute specifies the destination.' },
+      { q:'What does CSS stand for?', opts:['Cascading Style Sheets','Computer Style System','Coded Style Syntax','Cascading Script Source'], a:0, exp:'CSS = Cascading Style Sheets. It controls the visual presentation of HTML elements.' },
+      { q:'Which CSS property controls text color?', opts:['font-color','text-color','color','background-color'], a:2, exp:'The "color" property sets the foreground (text) color of an element.' },
+      { q:'What is the Box Model in CSS?', opts:['A 3D rendering','Content + Padding + Border + Margin','A grid system','A flex container'], a:1, exp:'Every HTML element is a box: content → padding → border → margin from inside out.' },
+      { q:'Which HTTP method is used to send form data?', opts:['GET','POST','PUT','DELETE'], a:1, exp:'POST sends data in the request body (not visible in URL), suitable for form submissions.' },
+      { q:'What is responsive design?', opts:['Fast loading pages','Design that adapts to different screen sizes','Animated websites','Database-driven pages'], a:1, exp:'Responsive design uses flexible layouts and media queries to adapt to any screen size.' },
+      { q:'What does DOM stand for?', opts:['Document Object Model','Data Object Method','Display Output Mode','Document Online Manager'], a:0, exp:'DOM = Document Object Model. It represents the HTML page as a tree of objects.' },
+      { q:'Which CSS unit is relative to the viewport width?', opts:['px','em','rem','vw'], a:3, exp:'vw (viewport width) is relative to 1% of the browser window\'s width.' },
+      { q:'What is Flexbox used for?', opts:['Database queries','Creating 1D flexible layouts','Drawing graphics','Server-side logic'], a:1, exp:'CSS Flexbox provides a one-dimensional layout model for arranging items in rows or columns.' }
+    ]
+  },
+  os: {
+    label:'⚙️ Operating Systems',
+    questions: [
+      { q:'What is the kernel?', opts:['The computer case','The core of an OS managing hardware','A programming language','A database'], a:1, exp:'The kernel is the core of an operating system — it manages CPU, memory, and hardware.' },
+      { q:'What is virtual memory?', opts:['RAM inside the CPU','Using disk space as extra RAM','A type of cache','A virtual machine'], a:1, exp:'Virtual memory uses hard disk space to extend the apparent size of RAM.' },
+      { q:'What is a process in OS terms?', opts:['A file on disk','A program in execution','A user account','A network connection'], a:1, exp:'A process is an instance of a running program, with its own memory space and state.' },
+      { q:'Which scheduling algorithm runs the shortest job first?', opts:['FCFS','Round Robin','SJF','Priority'], a:2, exp:'SJF (Shortest Job First) selects the process with the smallest estimated run time next.' },
+      { q:'What is deadlock?', opts:['A crashed hard drive','Processes stuck waiting for each other indefinitely','A type of virus','A file system error'], a:1, exp:'Deadlock occurs when processes wait for resources held by each other, none can proceed.' },
+      { q:'What does BIOS stand for?', opts:['Binary Input Output System','Basic Input Output System','Boot Initialization OS','Basic Internal Operating Set'], a:1, exp:'BIOS = Basic Input/Output System. It initializes hardware during the boot process.' },
+      { q:'What is a thread?', opts:['A network cable','The smallest unit of execution within a process','A type of file','A disk partition'], a:1, exp:'A thread is the smallest unit of execution. Processes can have multiple threads sharing memory.' },
+      { q:'What is paging in OS?', opts:['Loading a web page','Dividing memory into fixed-size pages','A printer function','A file system'], a:1, exp:'Paging divides physical memory and processes into fixed-size pages/frames for management.' },
+      { q:'Which OS type allows multiple users simultaneously?', opts:['Single-user','Multi-user','Real-time','Batch'], a:1, exp:'Multi-user OS (like Linux) allows multiple users to access the system concurrently.' },
+      { q:'What is a file system?', opts:['A folder structure','A method for organizing and storing files on storage devices','A network protocol','A memory type'], a:1, exp:'A file system defines how data is stored, organized, and retrieved on storage devices.' }
+    ]
+  },
+  cybersecurity: {
+    label:'🔒 Cybersecurity',
+    questions: [
+      { q:'What is phishing?', opts:['A fishing game','Social engineering to steal credentials via fake communications','A network scan','A type of encryption'], a:1, exp:'Phishing tricks users into revealing sensitive info through fake emails, websites, or messages.' },
+      { q:'What does encryption do?', opts:['Deletes data','Converts data into unreadable ciphertext','Speeds up internet','Compresses files'], a:1, exp:'Encryption converts plaintext data into ciphertext, making it unreadable without a key.' },
+      { q:'What is a firewall?', opts:['A physical wall','A security system that monitors and controls network traffic','An antivirus','A VPN'], a:1, exp:'A firewall monitors incoming/outgoing network traffic and allows or blocks it based on rules.' },
+      { q:'What is a DDoS attack?', opts:['Data Deletion on Demand','Distributed Denial of Service — overwhelming a server with traffic','A disk formatting attack','A dictionary attack'], a:1, exp:'DDoS floods a target server with traffic from many sources, making it unavailable.' },
+      { q:'What is two-factor authentication (2FA)?', opts:['Two passwords','Using two independent verification methods','A double firewall','Encrypted login'], a:1, exp:'2FA requires two separate forms of verification (e.g. password + SMS code) to log in.' },
+      { q:'What is a VPN used for?', opts:['Speeding up internet','Creating an encrypted tunnel for private internet access','Storing passwords','Blocking ads'], a:1, exp:'A VPN (Virtual Private Network) encrypts your connection and masks your IP address.' },
+      { q:'What is malware?', opts:['Good software','Slow software','Software designed to damage or gain unauthorized access','A firewall type'], a:2, exp:'Malware is malicious software including viruses, worms, ransomware, spyware, and trojans.' },
+      { q:'What is SQL injection?', opts:['Adding data to SQL','An attack inserting malicious SQL code into input fields','A SQL query type','Database backup'], a:1, exp:'SQL injection exploits input fields by injecting SQL commands to manipulate databases.' },
+      { q:'What does SSL/TLS provide?', opts:['Faster loading','Encrypted communication between client and server','Offline access','File compression'], a:1, exp:'SSL/TLS encrypts data in transit between browsers and servers (HTTPS uses TLS).' },
+      { q:'What is the principle of least privilege?', opts:['Giving all users admin rights','Granting users only the minimum access they need','Using simple passwords','Disabling all security'], a:1, exp:'Least privilege limits user/process access rights to only what is needed for their role.' }
+    ]
+  },
+  datastructs: {
+    label:'🌳 Data Structures',
+    questions: [
+      { q:'What is an array?', opts:['A random collection','A fixed-size sequential collection of same-type elements','A tree structure','A key-value map'], a:1, exp:'An array is a contiguous block of memory storing elements of the same type with indexed access.' },
+      { q:'What is the time complexity of accessing an array element by index?', opts:['O(n)','O(log n)','O(1)','O(n²)'], a:2, exp:'O(1) — array access by index is constant time since memory address is calculated directly.' },
+      { q:'What is a stack?', opts:['A random structure','LIFO (Last In First Out) structure','FIFO structure','A sorted list'], a:1, exp:'A stack follows LIFO — the last element added is the first one removed (like a stack of plates).' },
+      { q:'What is a queue?', opts:['LIFO structure','A tree type','FIFO (First In First Out) structure','A graph type'], a:2, exp:'A queue follows FIFO — the first element added is the first one removed (like a line).' },
+      { q:'What is a linked list?', opts:['A sorted array','Nodes connected via pointers, each pointing to the next','A tree','A hash map'], a:1, exp:'A linked list consists of nodes where each node contains data and a pointer to the next node.' },
+      { q:'What is the difference between a tree and a graph?', opts:['Nothing','Trees have no cycles; graphs can have cycles','Graphs are sorted','Trees are 2D'], a:1, exp:'A tree is a connected acyclic graph. Trees have hierarchy; graphs can have cycles and multiple paths.' },
+      { q:'What is hashing used for?', opts:['Sorting data','Fast data lookup using a key','Drawing graphs','Sorting trees'], a:1, exp:'Hashing maps data to fixed-size values (hash codes) for O(1) average-time lookups.' },
+      { q:'What is a binary search tree (BST)?', opts:['A tree with 2 children max','Left child < parent < right child','A balanced tree','A graph type'], a:1, exp:'In a BST: left subtree values < root < right subtree values. Enables efficient searching.' },
+      { q:'Which data structure is used for BFS traversal?', opts:['Stack','Queue','Array','Linked List'], a:1, exp:'BFS (Breadth-First Search) uses a Queue to process nodes level by level.' },
+      { q:'What is a heap used for?', opts:['Memory management only','Priority queues — fast access to min/max element','Sorting strings','Network routing'], a:1, exp:'A heap is a complete binary tree used to implement priority queues with O(log n) insert/extract.' }
+    ]
+  },
+  algorithms: {
+    label:'🧮 Algorithms',
+    questions: [
+      { q:'What is the time complexity of Binary Search?', opts:['O(n)','O(n²)','O(log n)','O(1)'], a:2, exp:'Binary search halves the search space each step — O(log n) time complexity.' },
+      { q:'Which sorting algorithm has O(n log n) worst case?', opts:['Bubble Sort','Selection Sort','Quick Sort','Merge Sort'], a:3, exp:'Merge Sort always runs in O(n log n) regardless of input. Quick Sort is O(n²) worst case.' },
+      { q:'What is Big O notation?', opts:['A letter O','A way to describe algorithm efficiency','A sorting method','A data structure'], a:1, exp:'Big O notation describes the upper bound on an algorithm\'s time/space complexity.' },
+      { q:'What is recursion?', opts:['A type of loop','A function that calls itself','A sorting algorithm','An array operation'], a:1, exp:'Recursion is when a function calls itself with a smaller input until a base case is reached.' },
+      { q:'What is dynamic programming?', opts:['Writing programs dynamically','Solving problems by storing overlapping subproblem results','A sorting technique','A search method'], a:1, exp:'Dynamic programming solves problems by breaking them into overlapping subproblems and caching results.' },
+      { q:'Which algorithm finds the shortest path in a weighted graph?', opts:['BFS','DFS','Dijkstra\'s','Quick Sort'], a:2, exp:'Dijkstra\'s algorithm finds the shortest path from a source to all other vertices in a weighted graph.' },
+      { q:'What does DFS stand for?', opts:['Data First Search','Depth First Search','Distance Field Scan','Direct Function Search'], a:1, exp:'DFS (Depth-First Search) explores as far as possible down each branch before backtracking.' },
+      { q:'What is the worst-case complexity of Bubble Sort?', opts:['O(n)','O(n log n)','O(n²)','O(log n)'], a:2, exp:'Bubble Sort compares adjacent pairs repeatedly — O(n²) comparisons in the worst case.' },
+      { q:'What is a greedy algorithm?', opts:['An inefficient algorithm','Makes locally optimal choices at each step hoping for global optimum','Always finds the best solution','A recursive algorithm'], a:1, exp:'Greedy algorithms make the best local choice at each step, not always globally optimal.' },
+      { q:'What is time complexity O(1)?', opts:['Linear time','Quadratic time','Constant time','Logarithmic time'], a:2, exp:'O(1) means constant time — execution time doesn\'t grow with input size.' }
+    ]
+  },
+  cloud: {
+    label:'☁️ Cloud & DevOps',
+    questions: [
+      { q:'What does IaaS stand for?', opts:['Internet as a Service','Infrastructure as a Service','Integrated Application Service','Internal Access System'], a:1, exp:'IaaS = Infrastructure as a Service. Provides virtualized computing resources over the internet.' },
+      { q:'What is Docker?', opts:['A database','A containerization platform','A programming language','A cloud provider'], a:1, exp:'Docker packages applications with their dependencies into lightweight, portable containers.' },
+      { q:'What is CI/CD?', opts:['Code Inspection / Code Design','Continuous Integration / Continuous Deployment','Computer Interface / Connection Detail','Central Integration / Core Deployment'], a:1, exp:'CI/CD automates building, testing, and deploying code for faster, more reliable software delivery.' },
+      { q:'What does AWS stand for?', opts:['Advanced Web Services','Automated Web System','Amazon Web Services','Application Web Stack'], a:2, exp:'AWS = Amazon Web Services — the world\'s largest cloud platform.' },
+      { q:'What is a container?', opts:['A cloud server','A lightweight, isolated package running an app with its dependencies','A database type','A network device'], a:1, exp:'Containers package code + dependencies into isolated units that run consistently anywhere.' },
+      { q:'What is Kubernetes used for?', opts:['Writing code','Container orchestration — managing containers at scale','Database management','Security scanning'], a:1, exp:'Kubernetes automates deploying, scaling, and managing containerized applications.' },
+      { q:'What is the main benefit of cloud computing?', opts:['More physical servers','On-demand scalability without owning hardware','Faster internet','Free hosting'], a:1, exp:'Cloud computing provides on-demand resources (compute, storage) that scale with needs without upfront hardware costs.' },
+      { q:'What is a microservice?', opts:['A small computer','A small, independently deployable service doing one thing','A micro database','A mobile app'], a:1, exp:'Microservices architecture splits an app into small, independent services that communicate via APIs.' },
+      { q:'What does PaaS stand for?', opts:['Platform as a Service','Process and Application Stack','Public Application Server','Portable App Service'], a:0, exp:'PaaS = Platform as a Service. Provides a platform for developers to build and run applications.' },
+      { q:'What is Infrastructure as Code (IaC)?', opts:['Writing code on paper','Managing infrastructure using code/configuration files','A type of cloud','A DevOps team'], a:1, exp:'IaC manages and provisions infrastructure through machine-readable configuration files rather than manual processes.' }
+    ]
+  }
+};
+
+/* ── QUIZ ENGINE ── */
+let currentTopic = null, questions = [], qIdx = 0, correct = 0, wrong = 0, timer = null, timeLeft = 30;
+
+function startQuiz(topic) {
+  currentTopic = topic;
+  const data = QUIZ_DATA[topic];
+  questions = shuffle([...data.questions]);
+  qIdx = 0; correct = 0; wrong = 0;
+  navTo('quiz-active');
+  el('quizArea').style.display = '';
+  el('quizResult').style.display = 'none';
   loadQ();
 }
 
-// INIT
-window.onload=()=>{
-  const me=getMe();
-  if(me){
-    document.getElementById('navUser').style.display='flex';
-    document.getElementById('navAuth').style.display='none';
-    document.getElementById('navAv').textContent=me.fn[0]+me.ln[0];
-    document.getElementById('navNm').textContent=me.fn;
+function shuffle(arr) {
+  for(let i = arr.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function loadQ() {
+  const q = questions[qIdx];
+  const pct = (qIdx / questions.length) * 100;
+  el('qFill').style.width = pct + '%';
+  el('qNum').textContent  = 'Q ' + (qIdx+1) + ' / ' + questions.length;
+  el('qBadge').textContent = QUIZ_DATA[currentTopic].label;
+  el('qText').textContent  = q.q;
+
+  const optsEl = el('qOpts');
+  optsEl.innerHTML = '';
+  const labels = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.innerHTML = `<span class="opt-lbl">${labels[i]}</span>${opt}`;
+    btn.onclick = () => answerQ(i, btn, q);
+    optsEl.appendChild(btn);
+  });
+
+  const fbEl = el('qFb');
+  fbEl.className = 'q-fb';
+  el('nextBtn').style.display = 'none';
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 30;
+  updateTimerDisplay();
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft <= 0) { clearInterval(timer); autoFail(); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const t = el('qTimer');
+  t.textContent = '⏱ ' + timeLeft + 's';
+  t.className = 'q-timer' + (timeLeft <= 10 ? ' warn' : '');
+}
+
+function autoFail() {
+  wrong++;
+  const fbEl = el('qFb');
+  fbEl.className = 'q-fb show no';
+  el('fbHd').textContent = '⏰ Time\'s up!';
+  el('fbBody').textContent = 'Correct answer: ' + questions[qIdx].opts[questions[qIdx].a] + '. ' + questions[qIdx].exp;
+  document.querySelectorAll('.q-opt').forEach((b,i) => {
+    b.disabled = true;
+    if(i === questions[qIdx].a) b.classList.add('correct');
+  });
+  el('nextBtn').style.display = '';
+}
+
+function answerQ(chosen, btn, q) {
+  clearInterval(timer);
+  document.querySelectorAll('.q-opt').forEach(b => b.disabled = true);
+  const fbEl = el('qFb');
+  if(chosen === q.a) {
+    correct++;
+    btn.classList.add('correct');
+    fbEl.className = 'q-fb show ok';
+    el('fbHd').textContent = '✓ Correct!';
+    el('fbBody').textContent = q.exp;
+  } else {
+    wrong++;
+    btn.classList.add('wrong');
+    document.querySelectorAll('.q-opt')[q.a].classList.add('correct');
+    fbEl.className = 'q-fb show no';
+    el('fbHd').textContent = '✗ Wrong!';
+    el('fbBody').textContent = 'Correct: ' + q.opts[q.a] + '. ' + q.exp;
+  }
+  el('nextBtn').style.display = '';
+}
+
+function nextQ() {
+  qIdx++;
+  if(qIdx >= questions.length) { showResult(); return; }
+  loadQ();
+}
+
+function showResult() {
+  clearInterval(timer);
+  el('quizArea').style.display = 'none';
+  el('quizResult').style.display = '';
+  const total = questions.length;
+  const pct = Math.round((correct/total)*100);
+  const pts = correct * 10;
+
+  const ring = el('rRing');
+  ring.textContent = pct + '%';
+  ring.className = 'result-ring' + (pct>=80?' great':pct<50?' poor':'');
+
+  el('rTitle').textContent = pct===100 ? '🎉 Perfect Score!' : pct>=80 ? '🌟 Excellent Work!' : pct>=60 ? '👍 Good Effort!' : 'Keep Practising!';
+  el('rSub').textContent   = `You scored ${correct} out of ${total} in ${QUIZ_DATA[currentTopic].label}`;
+  el('rC').textContent = correct;
+  el('rW').textContent = wrong;
+  el('rP').textContent = '+' + pts;
+
+  if(S.me()) {
+    const users = S.users();
+    const u = users.find(x => x.id===S.me().id);
+    if(u) {
+      u.points = (u.points||0) + pts;
+      u.quizzesDone = (u.quizzesDone||0) + 1;
+      S.saveUsers(users); S.setMe(u); updateUI();
+    }
+  }
+}
+
+function retryQuiz() { startQuiz(currentTopic); }
+
+/* ── GAMES ── */
+function openGame(url) { window.open(url, '_blank'); }
+
+/* ── EDITOR ── */
+let editorInited = false;
+function initEditor() {
+  if(editorInited) return; editorInited = true;
+  loadTpl('html');
+}
+
+function switchTab(tab) {
+  ['html','css','js'].forEach(t => {
+    el('c'+t.charAt(0).toUpperCase()+t.slice(1)).style.display = t===tab ? '' : 'none';
+    el('etab-'+t).classList.toggle('active', t===tab);
+  });
+}
+
+const TEMPLATES = {
+  html: {
+    html:`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f0f4f8; }
+    h1 { color: #0ea5e9; }
+    button { background: #0ea5e9; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+    button:hover { background: #0284c7; }
+  </style>
+</head>
+<body>
+  <h1>Hello, World! 👋</h1>
+  <p>Edit this code and click <strong>Run</strong> to see changes live.</p>
+  <button onclick="greet()">Click Me!</button>
+  <p id="msg"></p>
+  <script>
+    function greet() {
+      document.getElementById('msg').textContent = '🎉 You clicked the button!';
+    }
+  &lt;/script>
+</body>
+</html>`, css:'', js:''
+  },
+  css: {
+    html:`<div class="card">
+  <div class="avatar">🚀</div>
+  <h2>CSS Demo</h2>
+  <p>A styled card using pure CSS.</p>
+  <button class="btn">Learn More</button>
+</div>`,
+    css:`* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  font-family: 'Segoe UI', sans-serif;
+}
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  max-width: 300px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: slideUp 0.6s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.avatar { font-size: 3rem; margin-bottom: 14px; }
+h2 { color: #0f172a; margin-bottom: 8px; }
+p  { color: #64748b; margin-bottom: 20px; font-size: 0.9rem; }
+.btn {
+  background: #0ea5e9; color: white;
+  border: none; padding: 10px 24px;
+  border-radius: 99px; cursor: pointer;
+  font-size: 0.9rem; font-weight: 600;
+  transition: transform 0.2s, background 0.2s;
+}
+.btn:hover { background: #0284c7; transform: scale(1.05); }`, js:''
+  },
+  js: {
+    html:`<div id="app">
+  <h2>JavaScript Counter</h2>
+  <div class="counter-display" id="count">0</div>
+  <div class="controls">
+    <button onclick="change(-1)">−</button>
+    <button onclick="reset()">Reset</button>
+    <button onclick="change(1)">+</button>
+  </div>
+  <p id="msg">Start counting!</p>
+</div>`,
+    css:`body { font-family: sans-serif; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#f8fafc; margin:0; }
+#app { text-align:center; background:white; padding:36px 40px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.1); }
+h2 { color:#0f172a; margin-bottom:20px; }
+.counter-display { font-size:5rem; font-weight:900; color:#0ea5e9; margin:10px 0 20px; transition:transform .15s; }
+.controls { display:flex; gap:10px; justify-content:center; }
+button { width:52px; height:52px; border-radius:50%; border:none; font-size:1.4rem; font-weight:700; cursor:pointer; background:#e0f2fe; color:#0369a1; transition:all .2s; }
+button:hover { background:#0ea5e9; color:white; transform:scale(1.1); }
+#msg { margin-top:16px; color:#64748b; font-size:.88rem; }`,
+    js:`let count = 0;
+function change(val) {
+  count += val;
+  const el = document.getElementById('count');
+  el.textContent = count;
+  el.style.transform = 'scale(1.2)';
+  setTimeout(() => el.style.transform = 'scale(1)', 150);
+  const msg = document.getElementById('msg');
+  if(count > 10) msg.textContent = '🔥 Getting high!';
+  else if(count < -10) msg.textContent = '❄️ Going negative!';
+  else if(count === 0) msg.textContent = 'Back to zero!';
+  else msg.textContent = count > 0 ? '⬆️ Counting up!' : '⬇️ Going down!';
+}
+function reset() {
+  count = 0;
+  document.getElementById('count').textContent = 0;
+  document.getElementById('msg').textContent = 'Reset!';
+}`
   }
 };
+
+function loadTpl(type) {
+  const t = TEMPLATES[type];
+  el('cHtml').value = t.html || '';
+  el('cCss').value  = t.css  || '';
+  el('cJs').value   = t.js   || '';
+  switchTab('html');
+  setTimeout(runCode, 100);
+}
+
+function runCode() {
+  const html = el('cHtml').value;
+  const css  = el('cCss').value;
+  const js   = el('cJs').value;
+  const doc  = `<!DOCTYPE html><html><head><style>${css}</style></head><body>${html}<script>
+    (function(){
+      const origLog = console.log, origErr = console.error;
+      console.log = function(...a){ window.parent.postMessage({type:'log',msg:a.map(String).join(' ')},'*'); origLog(...a); };
+      console.error = function(...a){ window.parent.postMessage({type:'err',msg:a.map(String).join(' ')},'*'); origErr(...a); };
+    })();
+    try{ ${js} }catch(e){ console.error(e.message); }
+  \<\/script></body></html>`;
+  el('preview').srcdoc = doc;
+}
+
+window.addEventListener('message', e => {
+  if(!e.data || !e.data.type) return;
+  const co = el('consoleOut');
+  const span = document.createElement('span');
+  span.className = e.data.type === 'err' ? 'co-err' : '';
+  span.textContent = (e.data.type === 'err' ? '✗ ' : '▸ ') + e.data.msg + '\n';
+  if(co.querySelector('.co-info')) co.innerHTML = '';
+  co.appendChild(span);
+  co.scrollTop = co.scrollHeight;
+});
+
+function clearAll() {
+  ['cHtml','cCss','cJs'].forEach(id => el(id).value = '');
+  el('preview').srcdoc = '';
+  clearConsole();
+}
+function clearConsole() {
+  el('consoleOut').innerHTML = '<span class="co-info">// Console cleared</span>';
+}
+
+/* ── LEADERBOARD ── */
+function initLeaderboard() {
+  const me = S.me();
+  if(me) {
+    el('myRow').style.display = '';
+    el('myRank').textContent  = '#6';
+    el('myAv').textContent    = (me.fn[0]+me.ln[0]).toUpperCase();
+    el('myLbName').textContent= me.fn+' '+me.ln;
+    el('myLbSec').textContent = me.section||'—';
+    el('myLbScore').textContent= (me.points||0).toLocaleString();
+  } else {
+    el('myRow').style.display = 'none';
+  }
+}
+
+/* ── COMMUNITY ── */
+let currentPostTag = 'tip';
+
+function setPT(btn, tag) {
+  currentPostTag = tag;
+  document.querySelectorAll('.ptag-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+const SAMPLE_POSTS = [
+  { author:'Alex Johnson', init:'AJ', time:'2h ago', tag:'tip', body:'Quick tip for Networking: Remember OSI layers with "Please Do Not Throw Sausage Pizza Away" — Physical, Data Link, Network, Transport, Session, Presentation, Application! 🌐', likes:14, liked:false },
+  { author:'Maria Lopez', init:'ML', time:'4h ago', tag:'achievement', body:'Just got 100% on the Cybersecurity quiz on my first try! 🎉 The encryption concepts really clicked after studying. Keep pushing everyone!', likes:22, liked:false },
+  { author:'Kevin Cruz', init:'KC', time:'6h ago', tag:'question', body:'Anyone know a good trick for remembering the difference between LEFT JOIN and INNER JOIN? I keep getting them mixed up on quizzes 😅', likes:8, liked:false },
+  { author:'Sarah Martinez', init:'SM', time:'1d ago', tag:'tip', body:'For Python lists vs tuples: Lists use [ ] and are mutable (can change). Tuples use ( ) and are immutable (can\'t change). Easy!', likes:19, liked:false }
+];
+
+function initCommunity() {
+  renderPosts();
+  renderTopMembers();
+}
+
+function renderPosts() {
+  const stored = S.posts();
+  const all = [...stored, ...SAMPLE_POSTS.map((p,i) => ({...p, id:'sample_'+i}))];
+  const wrap = el('postsWrap');
+  wrap.innerHTML = '';
+  all.forEach((p, idx) => {
+    const tagMap = { tip:'ptag-tip', achievement:'ptag-win', question:'ptag-q' };
+    const tagLabel = { tip:'💡 Tip', achievement:'🏆 Win', question:'❓ Q&A' };
+    const div = document.createElement('div');
+    div.className = 'post-card';
+    div.innerHTML = `
+      <div class="post-top">
+        <div class="post-av">${p.init||p.author.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+        <div>
+          <div class="post-author">${p.author}</div>
+          <div class="post-time">${p.time}</div>
+        </div>
+        <span class="post-tag ${tagMap[p.tag]||'ptag-tip'}">${tagLabel[p.tag]||'💡 Tip'}</span>
+      </div>
+      <div class="post-body">${p.body}</div>
+      <div class="post-actions">
+        <button class="pa ${p.liked?'liked':''}" onclick="likePost(${idx},this)">
+          ${p.liked?'❤️':'🤍'} ${p.likes||0}
+        </button>
+        <button class="pa">💬 Reply</button>
+        <button class="pa">🔗 Share</button>
+      </div>`;
+    wrap.appendChild(div);
+  });
+}
+
+function likePost(idx, btn) {
+  btn.classList.toggle('liked');
+  const isLiked = btn.classList.contains('liked');
+  const countStr = btn.textContent.trim().split(' ').pop();
+  const count = parseInt(countStr) || 0;
+  btn.innerHTML = (isLiked ? '❤️' : '🤍') + ' ' + (isLiked ? count+1 : count-1);
+}
+
+function submitPost() {
+  const me = S.me();
+  if(!me) { navTo('login'); return; }
+  const text = el('npText').value.trim();
+  if(!text) return;
+  const posts = S.posts();
+  posts.unshift({
+    id: Date.now(), author: me.fn+' '+me.ln,
+    init: (me.fn[0]+me.ln[0]).toUpperCase(),
+    time:'Just now', tag: currentPostTag, body: text, likes:0, liked:false
+  });
+  S.savePosts(posts);
+  el('npText').value = '';
+  renderPosts();
+}
+
+function renderTopMembers() {
+  const members = [
+    {n:'Alex Johnson',i:'AJ',pts:'9,850',av:'linear-gradient(135deg,#f59e0b,#d97706)'},
+    {n:'Sarah Martinez',i:'SM',pts:'8,720',av:'linear-gradient(135deg,#94a3b8,#64748b)'},
+    {n:'Kevin Cruz',i:'KC',pts:'7,540',av:'linear-gradient(135deg,#cd7f32,#a16207)'},
+  ];
+  const wrap = el('topMembers');
+  if(!wrap) return;
+  wrap.innerHTML = members.map(m => `
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${m.av};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.62rem;color:#fff;flex-shrink:0">${m.i}</div>
+      <div>
+        <div style="font-weight:600;font-size:.78rem">${m.n}</div>
+        <div style="font-size:.66rem;color:var(--sky)">${m.pts} pts</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── INIT ── */
+updateUI();
 </script>
 </body>
-</html>
